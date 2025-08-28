@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Modelos lineales – Estadística II: modelos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Cap2-DoE.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-77205cbbef6a5b90ba72edc25dea2156.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Cap1-LM.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelos lineales</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Estadística II: modelos</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefacio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap1-LM.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelos lineales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap2-DoE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño de experimentos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap3-GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelos lineales generalizados</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap4-Superv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Análisis de supervivencia o fiabilidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap5-Seleccion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Selección de variables</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#modelo-estadístico-de-regresión" id="toc-modelo-estadístico-de-regresión" class="nav-link active" data-scroll-target="#modelo-estadístico-de-regresión"><span class="header-section-number">1.1</span> Modelo estadístico de regresión</a>
+  <ul class="collapse">
+  <li><a href="#objetivos-de-la-regresión" id="toc-objetivos-de-la-regresión" class="nav-link" data-scroll-target="#objetivos-de-la-regresión"><span class="header-section-number">1.1.1</span> Objetivos de la regresión</a></li>
+  <li><a href="#supuestos-del-modelo-de-regresión" id="toc-supuestos-del-modelo-de-regresión" class="nav-link" data-scroll-target="#supuestos-del-modelo-de-regresión"><span class="header-section-number">1.1.2</span> Supuestos del modelo de regresión</a></li>
+  </ul></li>
+  <li><a href="#lm" id="toc-lm" class="nav-link" data-scroll-target="#lm"><span class="header-section-number">1.2</span> Modelo lineal de regresión simple</a>
+  <ul class="collapse">
+  <li><a href="#estimación-de-los-parámetros-del-modelo" id="toc-estimación-de-los-parámetros-del-modelo" class="nav-link" data-scroll-target="#estimación-de-los-parámetros-del-modelo"><span class="header-section-number">1.2.1</span> Estimación de los parámetros del modelo</a></li>
+  <li><a href="#método-de-mínimos-cuadrados" id="toc-método-de-mínimos-cuadrados" class="nav-link" data-scroll-target="#método-de-mínimos-cuadrados"><span class="header-section-number">1.2.2</span> Método de mínimos cuadrados</a></li>
+  <li><a href="#interpretación-geométrica" id="toc-interpretación-geométrica" class="nav-link" data-scroll-target="#interpretación-geométrica"><span class="header-section-number">1.2.3</span> Interpretación geométrica</a></li>
+  <li><a href="#método-de-máxima-verosimilitud" id="toc-método-de-máxima-verosimilitud" class="nav-link" data-scroll-target="#método-de-máxima-verosimilitud"><span class="header-section-number">1.2.4</span> Método de máxima verosimilitud</a></li>
+  <li><a href="#estimación-de-la-varianza-del-modelo" id="toc-estimación-de-la-varianza-del-modelo" class="nav-link" data-scroll-target="#estimación-de-la-varianza-del-modelo"><span class="header-section-number">1.2.5</span> Estimación de la varianza del modelo</a></li>
+  <li><a href="#propiedades-de-los-estimadores" id="toc-propiedades-de-los-estimadores" class="nav-link" data-scroll-target="#propiedades-de-los-estimadores"><span class="header-section-number">1.2.6</span> Propiedades de los estimadores</a></li>
+  <li><a href="#contrastes-de-hipótesis" id="toc-contrastes-de-hipótesis" class="nav-link" data-scroll-target="#contrastes-de-hipótesis"><span class="header-section-number">1.2.7</span> Contrastes de hipótesis</a></li>
+  <li><a href="#suma-de-cuadrados-en-la-regresión" id="toc-suma-de-cuadrados-en-la-regresión" class="nav-link" data-scroll-target="#suma-de-cuadrados-en-la-regresión"><span class="header-section-number">1.2.8</span> Suma de Cuadrados en la regresión</a></li>
+  <li><a href="#bondad-de-ajuste-coeficiente-de-determinación-r2" id="toc-bondad-de-ajuste-coeficiente-de-determinación-r2" class="nav-link" data-scroll-target="#bondad-de-ajuste-coeficiente-de-determinación-r2"><span class="header-section-number">1.2.9</span> Bondad de ajuste: Coeficiente de Determinación, <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#error-estándar-de-la-pendiente-y-la-ordenada-en-el-origen" id="toc-error-estándar-de-la-pendiente-y-la-ordenada-en-el-origen" class="nav-link" data-scroll-target="#error-estándar-de-la-pendiente-y-la-ordenada-en-el-origen"><span class="header-section-number">1.2.10</span> Error estándar de la pendiente y la ordenada en el origen</a></li>
+  <li><a href="#interpretación-de-la-recta-de-regresión" id="toc-interpretación-de-la-recta-de-regresión" class="nav-link" data-scroll-target="#interpretación-de-la-recta-de-regresión"><span class="header-section-number">1.2.11</span> Interpretación de la recta de regresión</a></li>
+  <li><a href="#sec-diagnosis" id="toc-sec-diagnosis" class="nav-link" data-scroll-target="#sec-diagnosis"><span class="header-section-number">1.2.12</span> Diagnosis</a></li>
+  <li><a href="#homocedasticidad" id="toc-homocedasticidad" class="nav-link" data-scroll-target="#homocedasticidad"><span class="header-section-number">1.2.13</span> Homocedasticidad</a></li>
+  <li><a href="#normalidad" id="toc-normalidad" class="nav-link" data-scroll-target="#normalidad"><span class="header-section-number">1.2.14</span> Normalidad</a></li>
+  <li><a href="#observaciones-influyentes" id="toc-observaciones-influyentes" class="nav-link" data-scroll-target="#observaciones-influyentes"><span class="header-section-number">1.2.15</span> Observaciones influyentes</a></li>
+  </ul></li>
+  <li><a href="#modelo-lineal-de-regresión-múltiple" id="toc-modelo-lineal-de-regresión-múltiple" class="nav-link" data-scroll-target="#modelo-lineal-de-regresión-múltiple"><span class="header-section-number">1.3</span> Modelo lineal de regresión múltiple</a>
+  <ul class="collapse">
+  <li><a href="#estimación-mc" id="toc-estimación-mc" class="nav-link" data-scroll-target="#estimación-mc"><span class="header-section-number">1.3.1</span> Estimación MC</a></li>
+  <li><a href="#bondad-de-ajuste" id="toc-bondad-de-ajuste" class="nav-link" data-scroll-target="#bondad-de-ajuste"><span class="header-section-number">1.3.2</span> Bondad de ajuste</a></li>
+  <li><a href="#teorema-de-gauss-markov" id="toc-teorema-de-gauss-markov" class="nav-link" data-scroll-target="#teorema-de-gauss-markov"><span class="header-section-number">1.3.3</span> Teorema de Gauss-Markov</a></li>
+  <li><a href="#identificabilidad" id="toc-identificabilidad" class="nav-link" data-scroll-target="#identificabilidad"><span class="header-section-number">1.3.4</span> (Identificabilidad)</a></li>
+  <li><a href="#transformaciones" id="toc-transformaciones" class="nav-link" data-scroll-target="#transformaciones"><span class="header-section-number">1.3.5</span> Transformaciones</a></li>
+  <li><a href="#otros-casos-de-regresión-lineal" id="toc-otros-casos-de-regresión-lineal" class="nav-link" data-scroll-target="#otros-casos-de-regresión-lineal"><span class="header-section-number">1.3.6</span> Otros casos de regresión lineal</a></li>
+  </ul></li>
+  <li><a href="#sec-pract-airquality" id="toc-sec-pract-airquality" class="nav-link" data-scroll-target="#sec-pract-airquality"><span class="header-section-number">1.4</span> Caso práctico: <code>airquality</code></a>
+  <ul class="collapse">
+  <li><a href="#exploración-de-los-datos" id="toc-exploración-de-los-datos" class="nav-link" data-scroll-target="#exploración-de-los-datos"><span class="header-section-number">1.4.1</span> Exploración de los datos</a></li>
+  <li><a href="#lm-simple" id="toc-lm-simple" class="nav-link" data-scroll-target="#lm-simple"><span class="header-section-number">1.4.2</span> lm() simple</a></li>
+  </ul></li>
+  <li><a href="#por-aquí" id="toc-por-aquí" class="nav-link" data-scroll-target="#por-aquí"><span class="header-section-number">1.5</span> POR AQUÍ</a>
+  <ul class="collapse">
+  <li><a href="#lm-múltiple" id="toc-lm-múltiple" class="nav-link" data-scroll-target="#lm-múltiple"><span class="header-section-number">1.5.1</span> lm() múltiple</a></li>
+  <li><a href="#sec-pract-Boston" id="toc-sec-pract-Boston" class="nav-link" data-scroll-target="#sec-pract-Boston"><span class="header-section-number">1.5.2</span> Caso práctico: <code>Boston</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-LM" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelos lineales</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+body {text-align: justify}
+</style>
+<p>En este tema se estudiarán los denominados <strong>modelos lineales</strong>. El caso paradigmático es la <strong>regresión lineal <em>simple</em></strong>, caso particular del modelo de <strong>regresión lineal <em>múltiple</em></strong>. Los modelos de <strong>diseño de experimentos</strong> (que estudiaremos en el <a href="Cap2-DoE.html" class="quarto-xref"><span>Capítulo 2</span></a>) también son modelos lineales. En ambos modelos, la denominada variable <em>respuesta</em> debe ser cuantitativa/numérica continua, a diferencia del modelo lineal generalizado (que estudiaremos en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>).</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: Generalmente los modelos de regresión se basan en <em>estudios observacionales</em> recogiendo las variables de interés intentando no influir sobre las respuestas. Sin embargo, en un <em>experimento</em> se someten de forma deliberada los individuos a algún tratamiento (combinación de valores de variables) con el objetivo de observar sus respuestas. El <em>diseño óptimo de experimentos</em> (mi línea principal de investigación) combina el enfoque experimental en modelos de regresión.</p>
+</blockquote>
+<p>Una buena referencia para este tema es el libro “Regresión y diseño de experimentos”, <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, concretamente la segunda parte, capítulos 5 a 10. Otro libro de referencia con un buen contenido matemático y práctico es “Linear Models with R”, <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>, capítulos 1 a 7. Otra referencia, con un enfoque más aplicado, es el capítulo 15 “Modelización lineal”, <span class="citation" data-cites="CDRlm">Casero-Alonso y Durbán (<a href="#ref-CDRlm" role="doc-biblioref">2024</a>)</span>, <a href="https://cdr-book.github.io/cap-lm.html" class="uri">https://cdr-book.github.io/cap-lm.html</a> del libro “Fundamentos de Ciencia de Datos con R”, <span class="citation" data-cites="CDR">Fernández-Avilés y Montero (<a href="#ref-CDR" role="doc-biblioref">2024</a>)</span>, que denominaremos en el texto como CDR.</p>
+<section id="modelo-estadístico-de-regresión" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="modelo-estadístico-de-regresión"><span class="header-section-number">1.1</span> Modelo estadístico de regresión</h2>
+<p>Parafraseando a G.E.P. Box <em>…Todos los modelos son falsos. Pero algunos son útiles</em>. Es imposible describir la realidad de forma exacta mediante un modelo, pero puede ser útil utilizar un modelo aproximado, basado en los “datos”, que permita entender y explicar el fenómeno o experimento de interés. En matemáticas un modelo es una relación matemática, no necesariamente algebraica, que permite entender el fenómeno. En estadística, a los modelos matemáticos se les añade un término de <em>error</em>, para incluir lo que la parte estructual (algebraica) no es capaz de explicar Este término de <em>error</em> se desea <em>aleatorio</em>, <em>estocástico</em>, y tiene el papel de “cajón de sastre”.</p>
+<p>El <strong>modelo lineal de regresión lineal <em>simple</em></strong> permite modelizar (de forma aproximada) el comportamiento de una variable cuantitativa, denominada <em>respuesta</em> o <em>dependiente</em>, denotada por <span class="math inline">\(Y\)</span>, mediante una función lineal de otra variable cuantitativa, denominada <em>explicativa</em> o <em>predictora</em>, <span class="math inline">\(X\)</span>, que se supone está correlacionada con ella (<em>correlación no implica causalidad</em>). La forma habitual de expresar el modelo es: <span class="math display">\[ Y = \beta_0 + \beta_1 X + \epsilon,\]</span></p>
+<p>donde <span class="math inline">\(Y = (y_1, y_2, \ldots, y_n)^\top\)</span> es el vector de las <span class="math inline">\(n\)</span> observaciones de la variable respuesta, <span class="math inline">\(X = (x_1, x_2, \ldots, x_n)^\top\)</span> es el vector de las <span class="math inline">\(n\)</span> observaciones de la variable explicativa, <span class="math inline">\(\beta_i \ (i=0 \ ó \ 1)\)</span> son los coeficientes o parámetros del modelo, y <span class="math inline">\(\epsilon=(\epsilon_1, \epsilon_2, \ldots, \epsilon_n)\)</span> es el vector de errores aleatorio que convierte el modelo determinista (<span class="math inline">\(\beta_0 + \beta_1 X\)</span>) en modelo estocástico. Los supuestos más habituales sobre el error son:</p>
+<ul>
+<li>tener media cero,</li>
+<li>varianza constante y</li>
+<li>seguir una distribución normal.</li>
+</ul>
+<p>La generalización a varias variables <em>explicativas</em> es inmediata: <span class="math display">\[ Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \epsilon.\]</span> A este modelo se le denomina <strong>modelo lineal de regresión lineal <em>múltiple</em></strong>.</p>
+<blockquote class="blockquote">
+<p>En este contexto, cuando se habla de modelo lineal hay que distinguir entre modelo lineal <em>en las variables</em> y modelo lineal <em>en los parámetros</em>. Así:<br>
+- <span class="math inline">\(Y=\beta_1 X_1 + \beta_2 X_2 + \epsilon\)</span> es un modelo lineal en las variables y en los parámetros.<br>
+- <span class="math inline">\(Y=\beta_1 X_1 + \beta_2 X_1^2  + \epsilon\)</span> es un modelo lineal en los parámetros, pero no en la variable.<br>
+- <span class="math inline">\(Y = \beta_1X_1^{\beta_2}  + \epsilon\)</span> es un modelo no lineal tanto en los parámetros como en la variable.</p>
+</blockquote>
+<p>Utilizando notación matricial: <span class="math display">\[Y = X \beta + \epsilon ;\]</span></p>
+<p><span class="math display">\[\begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &amp; x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1k} \\
+1 &amp; x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2k} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nk}
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_k
+\end{bmatrix} +
+\begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\
+\vdots \\
+\epsilon_n \\
+\end{bmatrix}.\]</span> donde <span class="math inline">\(Y\)</span> vuelve a ser el vector de <span class="math inline">\(n\)</span> respuestas, <span class="math inline">\(X\)</span> es ahora la matriz <span class="math inline">\(n\times(k+1)\)</span> de variables explicativas, que contiene una columna de unos para incluir en el modelo el parámetro <span class="math inline">\(\beta_0\)</span> que no depende de las variables explicativas, <span class="math inline">\(\beta\)</span> el vector de <span class="math inline">\(k+1\)</span> parámetros del modelo y <span class="math inline">\(\epsilon\)</span> vuelve a ser el vector de los términos de error aleatorios, <span class="math inline">\(\epsilon \sim N(0, \sigma^2I)\)</span>.</p>
+<blockquote class="blockquote">
+<p>Los modelos que se puedan expresar en forma matricial son lineales.</p>
+</blockquote>
+<p><strong>Pregunta</strong><br>
+En el modelo de regresión ¿tienen que ser todas las variables cuantitativas?<br>
+Respuesta corta: No.<br>
+Dependiendo del tipo de variables (<span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span>) se tendrán distintos modelos…</p>
+<p>¿Si hay más de una variable <span class="math inline">\(Y\)</span>? Se habla de <em>regresión múltiple multivariante</em>, que se podrá ver en otra asignatura del grado.</p>
+<section id="objetivos-de-la-regresión" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="objetivos-de-la-regresión"><span class="header-section-number">1.1.1</span> Objetivos de la regresión</h3>
+<ol type="1">
+<li><p>Describir la estructura general entre la(s) variable(s) explicativa(s) y la respuesta, estimando y evaluando su efecto.<br>
+Este proceso suele ser iterativo, hasta seleccionar la(s) variable(s) del mejor modelo posible.</p></li>
+<li><p>Predecir observaciones futuras.</p></li>
+</ol>
+<p>Ambos objetivos pueden ser muy distintos!!! Bajo el prisma del “machine learning” suele relajarse la descripción estructural y evaluación de los efectos dando toda la importancia a la mejor predicción posible.</p>
+</section>
+<section id="supuestos-del-modelo-de-regresión" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="supuestos-del-modelo-de-regresión"><span class="header-section-number">1.1.2</span> Supuestos del modelo de regresión</h3>
+<p>Los supuestos en los que se basa el modelo de regresión expuesto son:</p>
+<ul>
+<li><strong>Normalidad</strong>: no solo la variable <span class="math inline">\(Y\)</span> debe seguir una distribución normal, sino los valores de <span class="math inline">\(Y\)</span> para cada valor de <span class="math inline">\(X_i\)</span> (distribución condicionada) también deben seguir una distribución normal.</li>
+<li><strong>Linealidad</strong>: relación lineal entre cada una de las variables explicativas y la respuesta.</li>
+<li><strong>Homocedasticidad</strong> (homogeneidad de varianzas): la varianza de la variable <span class="math inline">\(Y\)</span> para cada valor de <span class="math inline">\(X_i\)</span> debe ser homogénea.</li>
+<li><strong>Independencia</strong>: cada observación de la variable <span class="math inline">\(Y\)</span> debe ser independiente de las demás.</li>
+</ul>
+<p>Los supuestos anteriores se basan en las hipótesis de los errores:</p>
+<ul>
+<li>esperanza nula: <span class="math inline">\(E[\epsilon]=0\)</span>,</li>
+<li>varianza constante: <span class="math inline">\(Var[\epsilon]=\sigma^2I\)</span>,</li>
+<li>distribución normal <span class="math inline">\(\epsilon \sim N(0, \sigma^2 I)\)</span></li>
+<li>independencia entre errores: <span class="math inline">\(E[\epsilon_i\epsilon_j]=0\)</span></li>
+</ul>
+<p>Se puede encontrar mas información sobre las también denominadas hipótesis básicas en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (capítulo 5, apartados 5.2.1 Hipótesis básicas y 5.2.2 Comentarios a las hipótesis) y en <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>…</p>
+<p><strong>Residuos</strong></p>
+<p>Los residuos, <span class="math inline">\(u_i\)</span>, son los errores observados para los datos y el modelo escogido (realizaciones de la variable aleatoria error <span class="math inline">\(\epsilon\)</span>). Recogen toda la información que la estructura del modelo no ha sido capaz de asimilar. Es muy importante el estudio de los residuos para comprobar las hipótesis y supuestos anteriores y dar con ello validez al uso del modelo, como veremos en la <a href="#sec-diagnosis" class="quarto-xref"><span>Sección 1.2.12</span></a> a nivel teórico y en los casos prácticos (<span class="quarto-unresolved-ref">?sec-pract</span>).</p>
+</section>
+</section>
+<section id="lm" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="lm"><span class="header-section-number">1.2</span> Modelo lineal de regresión simple</h2>
+<p>Es habitual comenzar el estudio de los modelos lineales con el caso más sencillo de regresión lineal simple para profundizar en los detalles de cada uno de los pasos del proceso de modelización, estimación, validación y predicción. Posteriormente se señalarán los aspectos que cambian al pasar a la regresión lineal múltiple, que es el caso más habitual en la práctica.</p>
+<p>Partiendo de los datos <em>muestrales</em> recogidos sobre el fenómeno de interés. ¿Cómo obtener el modelo de regresión lineal simple?</p>
+<p><strong>REVISAR EL ORDEN</strong></p>
+<ol type="1">
+<li>Estructura: se deben identificar la variable respuesta (la que se pretende explicar) y la variable explicativa. Esta identificación define una forma estructural, que en este caso sencillo podría tener 2 formas:</li>
+</ol>
+<ul>
+<li><span class="math inline">\(E(Y)=\beta_0 + \beta_1 X\)</span>, la habitual (incluso diría “por defecto”) o</li>
+<li><span class="math inline">\(E(Y)= \beta_1 X\)</span> (proporcionalidad directa, sin término independiente).</li>
+</ul>
+<ol start="2" type="1">
+<li><p>Estimación: con los valores muestrales recogidos <span class="math inline">\((x_i, y_i)\)</span> se obtendrán estimaciones <span class="math inline">\(\hat{\beta}_i\)</span> de los parámetros <span class="math inline">\(\beta_i\)</span> del modelo preestablecido.</p></li>
+<li><p>Validación: mediante el análisis de residuos se comprobarán las hipótesis que validan el uso del modelo.</p></li>
+<li><p>Interpretación/Inferencia: validado el modelo se interpretarán los coeficientes, valorando previamente su significación y su utilidad práctica. También se dará cuenta de la bondad del modelo para explicar la variable respuesta, mediante algún indicador.<br>
+Llegados a este punto puede verse conveniente cambiar el modelo (en este caso considerar otra variable explicativa, o aplicar alguna transformación) para intentar obtener un modelo que explique mejor la respuesta, con mayor bondad, por lo que se volvería al paso 1.</p></li>
+<li><p>Predicción: se obtendrán las predicciones necesarias u oportunas a partir del modelo considerado, teniendo cuidado con la extrapolación (y en algunos casos, también con la interpolación).</p></li>
+</ol>
+<section id="estimación-de-los-parámetros-del-modelo" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo"><span class="header-section-number">1.2.1</span> Estimación de los parámetros del modelo</h3>
+<p>En el caso más habitual de regresión simple: <span class="math display">\[Y = \beta_0 + \beta_1X + \epsilon,\]</span> se estimarán los dos parámetros del modelo: <span class="math inline">\(\beta_0\)</span>, la ordenada en el origen y <span class="math inline">\(\beta_1\)</span>, la pendiente de la recta. Intuitivamente, se buscan las estimaciones <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> que “expliquen” de la mejor manera posible la relación entre las dos variables, aquellas que generen las mejores predicciones posibles: <span class="math display">\[\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1X\]</span></p>
+</section>
+<section id="método-de-mínimos-cuadrados" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="método-de-mínimos-cuadrados"><span class="header-section-number">1.2.2</span> Método de mínimos cuadrados</h3>
+<p>El método por excelencia para obtener tales estimaciones es el <strong>método de mínimos cuadrados</strong> (1805 Gauss y Legendre). Consiste en minimizar los cuadrados de los denominados residuos, diferencia entre los valores observados y la predicción: <span class="math inline">\(u_i = y_i - \hat{y}_i = y_i - \hat{\beta}_0 + \hat{\beta}_1 x_i\)</span>.</p>
+<p>Es decir, <span class="math display">\[\min_{\hat{\beta}_0, \hat{\beta}_1} \sum u_i^2 =
+\min_{\hat{\beta}_0, \hat{\beta}_1} \sum(y_i-\hat{y_i})^2 =
+\min_{\hat{\beta}_0, \hat{\beta}_1} \sum(y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2.\]</span></p>
+<p>Derivando, e igualando a cero se tiene un sistema lineal de 2 ecuaciones con 2 incógnitas, denominado ecuaciones normales: <span class="math display">\[\left.\begin{align*}
+\dfrac{\partial \sum u_i^2}{\partial \beta_0} &amp;= 0 \Rightarrow \sum_{i} u_i = 0 \\
+\dfrac{\partial \sum u_i^2}{\partial \beta_1} &amp;= 0 \Rightarrow \sum_{i} u_i x_i = 0
+\end{align*}
+\right\rbrace\]</span></p>
+<p>cuya solución es:</p>
+<p><span class="math display">\[\begin{align*}
+\hat{\beta}_1^{MC} &amp;= \rho \frac{S_Y}{S_X}, \\
+\hat{\beta}_0^{MC} &amp;= \bar{y} - \hat{\beta}_1^{MC} \bar{x},
+\end{align*} \]</span> donde <span class="math inline">\(\rho\)</span> es el coeficiente de correlación lineal de Pearson y <span class="math inline">\(S_Y\)</span> y <span class="math inline">\(S_X\)</span> son las desviaciones típicas muestrales de las variables <span class="math inline">\(Y\)</span> y <span class="math inline">\(X\)</span>.</p>
+<p><strong>Correlación</strong><br>
+En la regresión lineal simple se espera que ambas variables estén correlacionadas, así, el modelo tendrá sentido práctico. El coeficiente de correlación lineal de Pearson mide la fuerza de la relación <strong>lineal</strong> entre las dos variables. Se puede expresar en función de las medias y las desviaciones típicas de las variables:</p>
+<p><span class="math display">\[\rho=\frac{1}{n-1}\sum(\frac{x_i-\bar{x}}{s_x})(\frac{y_i-\bar{y}}{s_y})=\frac{1}{n-1}\sum z_x \cdot z_y=\frac{s_{xy}}{s_x s_y}=\frac{SP_{xy}}{\sqrt{SC_x\cdot SC_y}}\]</span></p>
+<p>Los valores de este coeficiente se extienden de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>, indicando ausencia de correlación cuanto más cercano a <span class="math inline">\(0\)</span>.</p>
+<blockquote class="blockquote">
+<p>Hay que destacar el ejemplo ilustrativo del <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">cuarteto de Anscombe</a>, en el que 4 conjuntos de datos presentan el mismo valor del coeficiente de correlación lineal, pero su interpretación es muy distinta en cada uno de los 4 casos.</p>
+</blockquote>
+</section>
+<section id="interpretación-geométrica" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="interpretación-geométrica"><span class="header-section-number">1.2.3</span> Interpretación geométrica</h3>
+<p>Los estimadores de mínimos cuadrados (MC) tienen una interpretación geométrica sencilla y gráficamente elocuente. Son aquellos que hacen que la recta de regresión simple minimice las distancias verticales (residuos) de toda la <em>nube de puntos</em> (Véase la Figura 5.7 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, apartado 5.4.4).</p>
+<p>Ahora bien, también se puede representar el problema de MC en el espacio de las <span class="math inline">\(n\)</span> observaciones (en lugar del espacio de 2 variables), lo que proporciona una interpretación geométrica interesante (véase <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> apartado 2.3). La proyección ortogonal del vector <span class="math inline">\(\mathbf{Y}^\top=(y_1, y_2, \ldots, y_n)\)</span> sobre el plano definido por los vectores <span class="math inline">\(\mathbf{1}\)</span> y <span class="math inline">\(\mathbf{X}\)</span> genera el vector de residuos <span class="math inline">\(\mathbf{u}\)</span> perpendicular a ellos y a todos los vectores del plano. Además, aplicando el teorema de Pitágoras al triangulo rectángulo resultante de la proyección (Figuras 5.11 de <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> y … de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>) proporciona una forma alternativa de obtener la fórmula de la suma de cuadrados que veremos más adelante.</p>
+</section>
+<section id="método-de-máxima-verosimilitud" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="método-de-máxima-verosimilitud"><span class="header-section-number">1.2.4</span> Método de máxima verosimilitud</h3>
+<p>También se pueden estimar los parámetros del modelo mediante el <strong>método de máxima verosimilitud</strong> (MV), que consiste en maximizar la función de verosimilitud <span class="math inline">\(L(\beta)\)</span>. Suponiendo normalidad: <span class="math display">\[L(\beta) = \log (2\pi)^{-n/2} \sigma^{-n} \exp\left[-\frac{\sum_{i=1}^{n} u_i^2}{2\sigma^2}\right]\]</span></p>
+<p>Bajo dicho supuesto de normalidad, los estimadores MC coinciden con los MV. Por lo que los estimadores que minimizan la suma de cuadrados de los residuos, también maximizan la probabilidad de los datos observados.</p>
+<p>En <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, apartado 5.4.1, se puede ver el detalle de la obtención de la estimación de los parámetros del modelo de regresión simple utilizando el método de máxima verosimilitud.</p>
+</section>
+<section id="estimación-de-la-varianza-del-modelo" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="estimación-de-la-varianza-del-modelo"><span class="header-section-number">1.2.5</span> Estimación de la varianza del modelo</h3>
+<p>(5.4.3 Peña: varianza residual)</p>
+<p>En 5.4.1 se obtiene también el estimador por MV de <span class="math inline">\(\sigma^2\)</span> que resulta ser la varianza de los residuos: <span class="math display">\[\hat{\sigma}^2=\dfrac{\sum e_i^2 }{n}.\]</span> En 5.4.3 se habla de la varianza residual, argumentando que los <span class="math inline">\(n\)</span> residuos no son independientes, dadas las dos ecuaciones de restricción entre los residuos. Así los grados de libertad en este caso son <span class="math inline">\(n-2\)</span> y por ello se define la varianza residual como <span class="math display">\[\hat{S}_R^2=\dfrac{\sum e_i^2 }{n-2},\]</span> que …(propiedades en 5.5.4)</p>
+</section>
+<section id="propiedades-de-los-estimadores" class="level3" data-number="1.2.6">
+<h3 data-number="1.2.6" class="anchored" data-anchor-id="propiedades-de-los-estimadores"><span class="header-section-number">1.2.6</span> Propiedades de los estimadores</h3>
+<p>(5.5 de Peña, véase Tabla 5.3 página 264, aunque no aclara mucho.<br>
+La que sí que parece interesante la figura 5.15 que tiene 3 muestras al azar de la población y sus estadísticos asociados)</p>
+<p>Propiedades sobre <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> y <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>(JUAN) 1. La ecuación de la recta de regresión también se suele expresar en la forma punto-pendiente: <span class="math display">\[(y - \bar{y}) = \hat{\beta}_1 (x - \bar{x}) \]</span> 1. Del punto anterior se deduce inmediatamente que el punto <span class="math inline">\((\bar{x}, \bar{y})\)</span> pertenece a la recta estimada. 1. Los puntos con valores de <span class="math inline">\(x\)</span> más alejados a la media tienen más influencia sobre la estimación de <span class="math inline">\(\beta_1\)</span>, más cuanto menos puntos sean. 1. $_1 (_1, ) $ 1. $_0 (_0, (1 + ) ) $ 1. <span class="math inline">\(Cov(\hat{\beta}_0, \hat{\beta}_1) = -\dfrac{\bar{x}\sigma^2}{nS_x^2}\)</span><br>
+Por lo tanto, cuando <span class="math inline">\(\bar{x}&gt;0\)</span>, <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> estarán negativamente correlados.</p>
+</section>
+<section id="contrastes-de-hipótesis" class="level3" data-number="1.2.7">
+<h3 data-number="1.2.7" class="anchored" data-anchor-id="contrastes-de-hipótesis"><span class="header-section-number">1.2.7</span> Contrastes de hipótesis</h3>
+<p>En una regresión lineal simple, realizar un contraste de hipótesis sobre el parámetro <span class="math inline">\(\beta_1\)</span> asociado a la variable explicativa, es equivalente al contraste de hipótesis sobre el coeficiente de correlación lineal de Pearson entre dicha variable y la respuesta, <span class="math inline">\(\rho\)</span>: <span class="math display">\[\left. \begin{array}{ll}
+H_0: \beta_1 = 0 \\
+H_1: \beta_1 \neq 0
+\end{array} \right\rbrace
+\qquad \equiv  \qquad
+\left. \begin{array}{ll}
+H_0: \rho = 0 \\
+H_1: \rho \neq 0
+\end{array} \right\rbrace\]</span></p>
+<p>Podemos determinar la significación del coeficiente <span class="math inline">\(\beta_1\)</span> (de una correlación). El p-valor nos dará la fuerza de dicha significación. Para parejas de variables normales e incorreladas se cumple que: <span class="math display">\[\rho\sqrt{\frac{n-2}{1-\rho^2}} \sim t_{n-2}.\]</span> Esto también se cumple de forma aproximada si las variables son no normales y si los tamaños de muestra son “grandes” (o no demasiado pequeños).</p>
+<p>(Apartado 5.6 de Peña, Inferencia parámetros) Habla de que la pdf de los estimadores obtenida en 5.5 se utiliza para construir estadísticos “t” que proporcionen IC y HT sobre los parámetros del modelo de regresión.</p>
+<p>(5.6.1 Fundamentos) Interesante!!! … Proporciona la expresión general (5.20) del IC para cualquier parámetro beta de centralización a partir de su estimador (si sigue una distribución normal)… Y en la tabla 5.4 aparecen los estadísticos (“pivote”) para IC y para HT, que son distintos para beta0 y beta1 !!!</p>
+<p>(5.6.2 El contraste de regresión)<br>
+Aunque “presentado” en 5.6.1 aquí lo relacionan con el ANOVA… Se trata de comparar la variabilidad/varianza residual (para cada <span class="math inline">\(x_i\)</span> fijo) con la variabilidad/varianza de <span class="math inline">\(y\)</span>… Si ambas son próximas concluiremos que <span class="math inline">\(\beta_1\)</span> puede ser 0!! Mientras que si la residual es mucho que menor que la de <span class="math inline">\(y\)</span> concluiremos que <span class="math inline">\(\beta_1\)</span> es significativamente distinto de 0.</p>
+<p>En la expresión (5.23) descompone las desviaciones de los datos (notación matricial) en dos componentes <em>ortogonales</em>. Por el teorema de Pitágoras se llega a la descomposición de la variabilidad (que aquí vemos en el siguiente apartado). Hace referencia a que ya salen estos resultados en el capítulo 2 (DoE) Introduce VT, VNE y VE como “variación” Total, no explicada y explicada… y en el apéndice 5B demuestra la distribución que siguen. (Interpretación página 271) Dice que es importante resaltar el supuesto de linealidad… Concluyendo que “aceptar H0” (recta horizontal) no implica que <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> sean independientes y lo ilustra con la figura 5.17 (típica de relación cuadrática entre x e y… -NO son independientes-, con recta de regresión estimada horizontal, x e y son linealmente independientes!!!)</p>
+<p>(Último párrafo pagina 272) “Estrictamente sólo podemos concluir a partir del contraste de regresión que las variable son independientes cuando tienen conjuntamente una distribución normal, ya que entre variables conjuntamente normales sólo son posibles relaciones lineales”.</p>
+<p>(Peña *5.7.2 Inferencias acerca del coeficiente de correlación (lineal),</p>
+<p>“La distribución en el muestreo de <span class="math inline">\(r\)</span> es complicada. Para CH o IC… transformación de Fisher…” )</p>
+</section>
+<section id="suma-de-cuadrados-en-la-regresión" class="level3" data-number="1.2.8">
+<h3 data-number="1.2.8" class="anchored" data-anchor-id="suma-de-cuadrados-en-la-regresión"><span class="header-section-number">1.2.8</span> Suma de Cuadrados en la regresión</h3>
+<p>Los residuos, distancias verticales entre cada uno de los puntos, <span class="math inline">\((x_i,y_i)\)</span>, y la recta de regresión, <span class="math inline">\(\hat{y_i} = \hat{\beta}_0 + \hat{\beta}_1x_i\)</span>, expresan el error aleatorio del modelo. ¿Hasta qué punto es más importante el efecto de la variable <span class="math inline">\(X\)</span> sobre la variable <span class="math inline">\(Y\)</span> que el error de los residuos?</p>
+<p>La recta de regresión siempre pasa por el centro de los datos <span class="math inline">\((\bar{X},\bar{Y})\)</span>, ese punto se conoce como <em>centroide</em>. Es el centro de gravedad de la nube de puntos.</p>
+<p>Si las variables <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> no estuviesen relacionadas, no aportaría información sobre <span class="math inline">\(Y\)</span> conocer los valores de <span class="math inline">\(X\)</span>. La mejor predicción que podríamos hacer sería predecir <span class="math inline">\(Y\)</span> con su media, <span class="math inline">\(\bar{Y}\)</span>, sin tener en cuenta el valor de <span class="math inline">\(X\)</span>. Este modelo, el mas sencillo, es el que vamos a intentar falsar.</p>
+<p><span class="math display">\[\begin{align*}
+H_0\!:&amp;\ \beta_1 = 0 \\
+H_1\!:&amp;\ \beta_1 \neq 0
+\end{align*}\]</span></p>
+<p>El estudio de la <em>variabilidad</em> (<em>información</em>) de la variable respuesta nos aportará evidencias que nos permitan rechazar <span class="math inline">\(H_0\)</span> (falsarla).</p>
+<p><span class="math display">\[SC_{total}=SC_y=\sum (y_i-\bar{y})^2\]</span></p>
+<p><span class="math inline">\(SC_{total}\)</span> es el numerador de la habitual varianza muestral. Se puede calcular multiplicando dicha varianza por los grados de libertad <span class="math inline">\(n-1\)</span>.</p>
+<p>Matemáticamente se puede descomponerse en <span class="math inline">\(SC_{regresion}\)</span> y <span class="math inline">\(SC_{residual\)</span>.</p>
+<p><span class="math display">\[SC_{total}=SC_{regresion}+SC_{residual}\]</span> <span class="math display">\[\sum (y-\bar{y})^2={\sum (\hat{y}-\bar{y})^2}+\sum (y-\hat{y})^2\]</span></p>
+<p>Estudiamos los grados de libertad (gl) al calcular cada uno de los términos. Para <span class="math inline">\(SC_{total}\)</span> “gastamos” <span class="math inline">\(1\)</span> gl al dar la media, <span class="math inline">\(\bar{y}\)</span>, por lo que tiene <span class="math inline">\(n-1\)</span> gl. Los gl de los residuos son <span class="math inline">\(n-2\)</span>, necesitamos <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> para calcular <span class="math inline">\(SC_{residuos}\)</span>.<br>
+Con lo que nos queda <span class="math inline">\(1\)</span> gl para la suma de cuadrados de la regresión <span class="math inline">\(SC_{regresion}\)</span>. “Gastamos” <span class="math inline">\(1\)</span> gl con el parámetro extra que hemos estimado <span class="math inline">\(\hat{\beta}_1\)</span>, la pendiente.</p>
+<p>Por último, se promedia cada suma de cuadrados por sus respectivos grados de libertad (SCM: Suma de Cuadrados Media), en definitiva, calculamos varianzas.</p>
+<p>Nunca seremos capaces de realizar predicciones perfectas, <em>todos los modelos son falsos</em>, pero estamos interesados en comparar el <strong>Efecto de <span class="math inline">\(X\)</span> sobre <span class="math inline">\(Y\)</span></strong> con el <strong>Error Aleatorio</strong> (residual):</p>
+<p><span class="math display">\[\frac{\text{Efecto de X sobre Y}}{\text{Error Aleatorio}}=\frac{\text{Varianza de la Regresión}}{\text{Varianza Error}}=\frac{SCM_{regresion}}{SCM_{error}}=F\]</span></p>
+<p>Esto se conoce en estadística como un <strong>Análisis de la Varianza</strong>,<strong>ANOVA</strong>.</p>
+<p>Nuestro modelo sencillo que intentamos falsar es <span class="math inline">\(H_0:\beta_1=0\)</span>. Para que podamos falsar dicha hipótesis la Varianza de la Regresión debe ser mayor que la Varianza del Error, cuanto más grande mejor.</p>
+<p>Comparamos entonces el estadístico F obtenido de dividir las dos varianzas con una distribución F con los grados de libertad correspondientes, <span class="math inline">\(1\)</span> en el numerador y <span class="math inline">\(n-2\)</span> en el denominador. Calculando el p-valor correspondiente se podrá rechazar (o no) la hipótesis nula.</p>
+<p>En <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, Apéndice 5B, se dan detalles sobre la “Deducción de las distribuciones de sumas de cuadrados”.</p>
+</section>
+<section id="bondad-de-ajuste-coeficiente-de-determinación-r2" class="level3" data-number="1.2.9">
+<h3 data-number="1.2.9" class="anchored" data-anchor-id="bondad-de-ajuste-coeficiente-de-determinación-r2"><span class="header-section-number">1.2.9</span> Bondad de ajuste: Coeficiente de Determinación, <span class="math inline">\(R^2\)</span></h3>
+<p>(Faraway 2.7 “regresión simple”,<br>
+Peña 5.7 El coef de corr en regresión,<br>
+5.7.1 Coeficiente de determinación y coeficiente de correlación lineal)</p>
+<p>Por la descomposición mencionada anteriormente, <span class="math inline">\(SC_{total}=SC_{regresion}+SC_{residual}\)</span>, la proporción de variabilidad explicada por la regresión, respecto al total es un indicador de la bondad de la regresión:</p>
+<p><span class="math display">\[\frac{SC_{regresion}}{SC_{total}} = R^2\]</span></p>
+<p>Esto es lo que se conoce como coeficiente de determinación, <span class="math inline">\(R^2\)</span>. Como proporción, puede tomar valores entre <span class="math inline">\(0\)</span> y <span class="math inline">\(1\)</span>, evitando así la dependencia de las unidades de medida, y suele expresarse en porcentaje.</p>
+<p>La siguiente Figura permite ilustrar el concepto de bondad de ajuste.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En la gráfica de la izquierda se tiene un buen ajuste de la recta de regresión, que produce un <span class="math inline">\(R^2\)</span> elevado. Mientras que en la gráfica de la izquierda el <span class="math inline">\(R^2\)</span> es próximo a cero, indicando que el conocimiento de los valores de <span class="math inline">\(X\)</span> aporta casi nula información sobre los valores de variable <span class="math inline">\(Y\)</span>. Para más énfasis en la imagen de la izquierda se muestra la variabilidad total de <span class="math inline">\(Y\)</span> frente a la variabilidad que tiene <span class="math inline">\(Y\)</span> para casi cualquier valor de <span class="math inline">\(X\)</span>.</p>
+<p><strong>Obtención del coeficiente</strong><br>
+En el caso de la regresión lineal <em>simple</em> coincide con el cuadrado del coeficiente de correlación, <span class="math inline">\(\rho\)</span> (véase <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, apartado 5.7.1, donde se dan detalles de cómo llegar al coeficiente de correlación a partir del de determinación, o a partir de la varianza residual).</p>
+</section>
+<section id="error-estándar-de-la-pendiente-y-la-ordenada-en-el-origen" class="level3" data-number="1.2.10">
+<h3 data-number="1.2.10" class="anchored" data-anchor-id="error-estándar-de-la-pendiente-y-la-ordenada-en-el-origen"><span class="header-section-number">1.2.10</span> Error estándar de la pendiente y la ordenada en el origen</h3>
+<p>(véase Apéndice 5A Peña: Deducción de los IC para los parámetros)</p>
+<p>Además del test F (ANOVA), es importante la varianza residual, <span class="math inline">\(SC_{residuos}/n-2\)</span>. La varianza residual cumple un papel importante para calcular el error estándar de la pendiente, <span class="math inline">\(\beta_1\)</span>:</p>
+<p><span class="math display">\[EE_b=\sqrt{\frac{SC_{residuos}/n-2}{SC_x}}\]</span></p>
+<p>Con este error estándar podemos calcular un intervalo de confianza para la pendiente.</p>
+<p><span class="math display">\[\beta_1\pm t_{\alpha/2,n-2}\cdot EE_{\beta_1}\]</span></p>
+<p>También la varianza residual es importante para calcular el error estándar de la ordenada en el origen, <span class="math inline">\(\beta_0\)</span>:</p>
+<p><span class="math display">\[EE_{\beta_0}=\sqrt{\frac{SC_{residuos}/n-2 \cdot \sum x_i^2}{n \cdot SC_x}}\]</span></p>
+<p>Pudiendo de la misma manera calcular intervalos de confianza para la ordenada en el origen.</p>
+<p>Lo más interesante de esto es poder calcular el error estándar de una predicción y poder obtener intervalos de confianza para las predicciones.</p>
+<p><span class="math display">\[EE_{\hat{y}}=\sqrt{\frac{SC_{residuos}}{n-2}(\frac{1}{n}+\frac{(x_i-\bar{x})^2}{SC_x})}\]</span></p>
+<p><span class="math display">\[(\beta_0+\beta_1\cdot x_i) \pm t_{\alpha/2,n-2}\cdot EE_{\hat{y}}\]</span></p>
+<p>Con R podremos obtener intervalos de confianza para predicciones del modelo. Otras herramientas son las bandas de confianza que algunos paquetes pueden dar a nuestros gráficos de regresión. Estas son bandas de confianza para la respuesta media, <span class="math inline">\(\bar{Y}\)</span> para cada valor individual de la <span class="math inline">\(X\)</span>. Esto significa que tenemos una confianza, habitualmente del 95%, en que la verdadera recta de regresión cae en la región marcada.</p>
+<p>Los intervalos de confianza para las predicciones son más amplios que para los intervalos de confianza de la recta.</p>
+</section>
+<section id="interpretación-de-la-recta-de-regresión" class="level3" data-number="1.2.11">
+<h3 data-number="1.2.11" class="anchored" data-anchor-id="interpretación-de-la-recta-de-regresión"><span class="header-section-number">1.2.11</span> Interpretación de la recta de regresión</h3>
+<p>(véase 5.9 Peña, tb cap 15 de FDCR)</p>
+<p>Una vez estimada la recta de regresión, si es significativa estadísticamente hablando, se puede pasar a interpretar los coeficientes/parámetros, si tienen un sentido práctico (y el análisis de residuos que veremos más adelante no invalida los supuestos en los que se basa).</p>
+<p>La interpretación generalmente más importante es la del coeficiente <span class="math inline">\(\beta_1\)</span> dado que recoge el efecto sobre la variable <span class="math inline">\(y\)</span> de la variación de una unidad de la variable explicativa <span class="math inline">\(x\)</span>. Su interpretación debe hacerse acorde a las unidades en la que esté recogida la variable (no es lo mismo que, si es una medida de temperatura, se haya medido en ºC que en ºK, o si es de tiempo que se mida en segundos o en días). Así el impacto sobre la respuesta del cambio de <span class="math inline">\(1\)</span> ºC o de <span class="math inline">\(1\)</span> s será de una magnitud muy distinta al cambio de 100ºC o <span class="math inline">\(1\)</span> hora. Es más, el valor del coeficiente <span class="math inline">\(\beta_1\)</span> se podría aumentar o disminuir haciendo cambios de escala en las variables <span class="math inline">\(y\)</span> y <span class="math inline">\(x\)</span>. Por último, ¿y qué pasa si en lugar de tener sólo una variable tenemos más variables? Veremos en el apartado siguiente de regresión múltiple, el cambio que supone, en la interpretación de los coeficientes, el tener varias variables explicativas.</p>
+<p>La interpretación del parámetro <span class="math inline">\(\beta_0\)</span> es el del valor medio en ausencia del valor de la <span class="math inline">\(x\)</span>, que en ciertas ocasiones no pertenece al rango de variación de la variable <span class="math inline">\(x\)</span> o puede no tener sentido (piense por ejemplo que la variable <span class="math inline">\(x\)</span> recoge la edad de los individuos, ¿tiene sentido la media a <span class="math inline">\(0\)</span> años?).</p>
+<p>Si la recta no fuese significativa, no significa que no haya relación entre <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, quizá la relación es no lineal (como veremos en el siguiente subapartado) o quizá el rango escogido para la <span class="math inline">\(x\)</span> no es el idóneo para observar su influencia sobre la <span class="math inline">\(y\)</span> (quizá es demasiado estrecho). Pero, como señala Peña, para encontrar relaciones causales hay que acudir a datos experimentales (como veremos en un tema posterior), porque en un experimento se puede intentar controlar los valores de la variable <span class="math inline">\(x\)</span> que se cree que influyen sobre la <span class="math inline">\(y\)</span> y aleatorizar el resto de variables para “repartir” su impacto sobre la respuesta. Mientras que si los datos son observacionales sólo se puede deducir covariación, pero no causalidad, como que haya más criminalidad en las ciudades con más policías. Aquí la causa es una tercera variable, el tamaño de la ciudad. Reducir el número de policías no causaría una reducción de la criminalidad!!</p>
+<p>Además se puede ver Peña Apéndice 5C: modelo con regresor aleatorio</p>
+</section>
+<section id="sec-diagnosis" class="level3" data-number="1.2.12">
+<h3 data-number="1.2.12" class="anchored" data-anchor-id="sec-diagnosis"><span class="header-section-number">1.2.12</span> Diagnosis</h3>
+<p>(Peña Capítulo 6 Diagnosis (y predicción))</p>
+<p>(Sección 3.3.3 del libro “Statlearning”. )</p>
+<p>El diagnóstico de los residuos permite comprobar las hipótesis sobre las que se sustenta el modelo de regresión lineal, a saber:</p>
+<ul>
+<li>linealidad</li>
+<li>homocedasticidad</li>
+<li>normalidad</li>
+<li>independencia</li>
+</ul>
+<p>Con la ayuda de R será bastante sencillo obtener los denominados gráficos de diagnóstico. Pero ¿qué se pretende observar en dichos gráficos? En líneas generales, se pretende observar aleatoriedad en los residuos, que la “nube de puntos” que generen no se aprecie ningún patrón sistemático. Salvo en el gráfico Q-Q en el que se mira la normalidad de los residuos, que se desea que se ajusten a la diagonal que aparece en el gráfico. Concretamente:</p>
+<ul>
+<li>linealidad: a partir del gráfico de residuos fente a valores ajustados con el modelo para cada valor observado, se deseará observar aleatoriedad, valores dispersos entorno al 0 (verticalmente), sin tendencias ni otros patrones marcados. ## POR AQUÍ (JUAN)</li>
+<li>homocedasticidad: a partir de un gráfico de residuos studentizados (en valor absoluto?) frente a valores observados de la variable <span class="math inline">\(x\)</span>. De nuevo se desea observar aleatoriedad, ausencia de patrones. Si para unos valores de <span class="math inline">\(s\)</span> se aprecia mucha más dispersión que para otros, los datos podrían presentar heterocedasticidad</li>
+<li>normalidad: se visualizará mediante el gráfico Q-Q (de cuantiles teóricos, frente a cuantiles observados de los residuos), cuando más alineados a la diagonal que aparece, más cercanos a la normalidad teórica estarán los datos. Se incumple la normalidad generalmente por las colas, con puntos que se alejan ostensiblemente de la recta “guía”.</li>
+<li>independencia: se visualizará mediante el gráfico…</li>
+</ul>
+<p>(Faraway CAP 4)</p>
+<p>A diferencia de la clasificación anterior, Faraway (hablando de regresión múltiple) divide los problemas potenciales de la regresión obtenida en 3 categorías:</p>
+<ul>
+<li>error: se asume que los errores son independientes, tienen varianza constante y son normalmente distribuidos.</li>
+<li>modelo: se asume que la parte estructural del modelo es correcta, es decir, que relación entre las variables es lineal.</li>
+<li>observaciones inusuales: en ocasiones unas pocas observaciones no se ajustan al modelo, o cambian/influyen demasiado en el modelo.</li>
+</ul>
+<p>Además indica que las técnicas gráficas de diagnóstico son más flexibles, pero mucho más difíciles de interpretar, que las de contrastes que son sencillas pero directas, no requieren de intuición, pero no permiten una visualización general del problema.</p>
+<p>La diagnosis de los residuos puede dar pistas para solucionar los problemas de la regresión, lo que implica que la modelización es un proceso iterativo, con cierto aire artesanal.</p>
+<p>(Faraway 4.1 Checking error assumptions)</p>
+<p>Deja clara la diferencia entre error y residuo… “the errors may have equal variance and be uncorrelated, the residuals do not.”</p>
+</section>
+<section id="homocedasticidad" class="level3" data-number="1.2.13">
+<h3 data-number="1.2.13" class="anchored" data-anchor-id="homocedasticidad"><span class="header-section-number">1.2.13</span> Homocedasticidad</h3>
+<p>Los residuos deben tener varianza constante, homocedasticidad, con respecto a los valores de la variable <span class="math inline">\(x\)</span>, en el caso de regresión simple. El gráfico de residuos apropiado para apreciarlo es el de residuos frente a valores ajustados (que es también válido para el caso de regresión múltiple).</p>
+<p>En el siguiente gráfico se pueden ver ejemplos simulados de distintas situaciones, que se interpretan de una forma clara. Pero la realidad supera la ficción… Se necesita cierta experiencia con casos reales para no cometer equivocaciones al interpretar gráficos de residuos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lo deseable en este gráfico es encontrar una nube de puntos dispersos (y simétricos, mirando verticalmente) alrededor de 0, sin ningún patrón aparente (como en el primer gráfico). Si se observa un patrón, como la forma cónica (como en el segundo gráfico) o una tendencia (como la no lineal que aparece en el tercer gráfico), puede indicar problemas de heterocedasticidad (varianza no constante) o no linealidad en el modelo. Estas dos últimas situaciones dan pistas de las posibles acciones a tomar sobre los datos, como transformar la variable <span class="math inline">\(x\)</span> o <span class="math inline">\(y\)</span> para conseguir homocedasticidad, o incluir algún término no lineal en la variable <span class="math inline">\(x\)</span> (manteniendo el modelo lineal en los parámetros). Por su parte, el primer gráfico permitiría validar gráficamente el supuesto de homocedasticidad.</p>
+<p>(Faraway habla de plotear los residuos frente a cada uno de los <span class="math inline">\(x_i\)</span> -regresión múltiple- tanto los <span class="math inline">\(x_i\)</span> incluidos en el modelo, como los no incluidos, mirando en estos últimos si existe alguna relación que indique la necesidad de incluirlo en el modelo)</p>
+<p>(Faraway tb se explaya con el plot del valor absoluto de los residuos frente a los valores ajustados, me suena que es uno de los gráficos de diagnóstico de R. Dice que está diseñado especialmente para comprobar la varianza no constante, “doblando” la mitad inferior sobre la superior para aumentar la resolución para detectar varianza no constante. Pero que el primer plot indicado es necesario para comprobar la nolinealidad.</p>
+<p>También calcula una regresión (lm) del valor absoluto de los residuos frente a los fitted, observando un p-valor &gt; 0.05, por lo que se puede asumir varianza constante, pero habla de que no es totalmente correcto)</p>
+<p>(Faraway) Existen test formales para detectar heterocedasticidad, como hacer una regresión sobre los residuos, pero dependen de la hipótesis alternativa especificada (la hipótesis nula es clara: varianza constante). Así, el contraste puede detectar bien un tipo específico de heterocedasticidad, pero no tener <em>potencia</em> suficiente para otros.</p>
+<p>Los contrastes formales pueden parecer más precisos, pero los gráficos de residuos son más versátiles: permiten detectar problemas, revelar estructuras ocultas, que no se vislumbraban con los contrastes formales. Sin embargo, como se ha mencionado, a veces los gráficos pueden ser ambiguos, pero al menos permiten verificar que no hay grandes desviaciones de los supuestos del modelo.</p>
+<p>Por todo ello, predomina un enfoque gráfico para el diagnóstico, acudiendo a los contrastes formales como complemento para confirmar lo observado en los gráficos. (fin)</p>
+</section>
+<section id="normalidad" class="level3" data-number="1.2.14">
+<h3 data-number="1.2.14" class="anchored" data-anchor-id="normalidad"><span class="header-section-number">1.2.14</span> Normalidad</h3>
+<p>Los residuos deben seguir una distribución normal. El gráfico apropiado para evaluarlo es el denominado Q-Q plot (gráfico Cuantil-Cuantil): un diagrama de dispersión de los cuantiles de los residuos frente a los cuantiles de la distribución normal (con la misma media y desviación típica de los residuos). La interpretación, como diagrama de dispersión, es bien sencilla, los residuos siguen una distribución normal cuanto más se alineen los puntos del diagrama sobre una linea recta (diagonal)). Desviaciones de la “linealidad” sugerirán otros casos, por ejemplo, es típico observar curvatura en forma de S, indicando que los residuos tiene colas más ligeras que la distribución normal, o curvatura en forma de U indicando que siguen otra distribución.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="observaciones-influyentes" class="level3" data-number="1.2.15">
+<h3 data-number="1.2.15" class="anchored" data-anchor-id="observaciones-influyentes"><span class="header-section-number">1.2.15</span> Observaciones influyentes</h3>
+<p>(Peña 6.3 Observaciones atípicas e influyentes<br>
+6.3.1 puntos palanca ¡¡¡!!!<br>
+6.3.2 Residuos estandarizados<br>
+6.3.3 Observaciones influyentes 6.3.4 Tratamiento de los atípicos)</p>
+</section>
+</section>
+<section id="modelo-lineal-de-regresión-múltiple" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="modelo-lineal-de-regresión-múltiple"><span class="header-section-number">1.3</span> Modelo lineal de regresión múltiple</h2>
+<p>Cuando disponemos de más de una variable explicativa o independiente (continuas), entonces nuestro modelo pasa a ser un modelo con múltiples variables. ¿Cuáles? ¿En qué relación?</p>
+<p>La regresión múltiple tiene los siguientes retos:</p>
+<ul>
+<li>La mayor parte de los estudios son observacionales, no experimentales.</li>
+<li>Es muy habitual tener demasiadas variables explicativas.</li>
+<li>Es muy habitual tener pocas observaciones, valores de la variable respuesta.</li>
+<li>No disponer de todas las combinaciones posibles de las variables explicativas.</li>
+</ul>
+<p>Desde el punto de vista estadístico:</p>
+<ul>
+<li>Cuidado con las variables explicativas correlacionadas o cordelaras (apartan información redundante).</li>
+<li>¿Qué variables incluir en el modelo?</li>
+<li>¿Hay curvatura en la respuesta? Modelo lineal de regresión no lineal.</li>
+<li>Las variables explicativas ¿interaccionan entre sí?</li>
+<li>Todo esto hace que el número de parámetros se dispare Vs pocas observaciones.</li>
+</ul>
+<p>Recordemos:</p>
+<ul>
+<li>Todos los modelos son falsos.</li>
+<li>Algunos modelos son mejores que otros.</li>
+<li>El modelo perfecto y exacto no existe.</li>
+<li>En un modelo, la sencillez es un acierto.</li>
+</ul>
+<p>Tipos de modelos:</p>
+<ul>
+<li><strong>Saturado:</strong> Un parámetro para cada observación. Ajuste perfecto. Grados de libertad 0.</li>
+<li><strong>Maximal:</strong> Contiene p variables y sus interacciones. Muchos de estos términos son despreciables. Grados de libertad <span class="math inline">\(n-p-1\)</span>.</li>
+<li><strong>Minimal y Adecuado</strong>: Contiene las variables e interacciones significativas. Grados de libertad <span class="math inline">\(n-p'-1\)</span>.</li>
+<li><strong>Modelo ‘Nulo’</strong>:Único parámetro, <span class="math inline">\(\bar{y}\)</span>. Grados de libertad <span class="math inline">\(n-1\)</span>.</li>
+</ul>
+<p><strong>Correlación</strong><br>
+En la regresión múltiple, hay que tener claro que la correlación se desea entre cada variable explicativa y la respuesta, y no entre ellas. De haber correlación entre variables explicativas se presenta el problema denominado multicolinealidad. Para resolverlo se puede acudir a la <em>selección de variables</em> (Cap 2), teniendo en cuenta el <em>factor de inflación de la varianza</em> (VIF). Ahora bien, conviene recordar que <strong>correlación no implica causalidad</strong> (ejemplos: delitos vs policías, limones vs accidentes,…).</p>
+<section id="estimación-mc" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="estimación-mc"><span class="header-section-number">1.3.1</span> Estimación MC</h3>
+<p>En 2.4 de Faraway se puede ver la obtención del estimador MC para los parámetros del modelo de regresión lineal múltiple: <span class="math display">\[\hat{\beta}=(X^\top X)^{-1}X^\top\]</span> siempre que <span class="math inline">\(X^\top X\)</span> sea invertible.</p>
+<p>Y se habla de la matriz <span class="math inline">\(H=X(X^\top X)^{-1}X^\top\)</span>, denominada the hat-matrix, the orthogonal projection of y onto the space spanned by X.</p>
+<p>Con esta matriz, se pueden expresar:</p>
+<ul>
+<li>los valores predichos o ajustados: <span class="math inline">\(\hat{Y}=HY=X\hat{\beta}\)</span></li>
+<li>los residuos: <span class="math inline">\(\hat{\epsilon}=Y-X\hat{\beta}=(I-H)Y\)</span></li>
+<li>la suma de cuadrados residual (RSS por sus siglas en inglés): <span class="math inline">\(\hat{\epsilon}^\top\hat{\epsilon}=Y^\top((I-H)Y\)</span></li>
+</ul>
+<p>(Traído de la INTERP GEO) En Faraway (2.3) se dice que el propósito conceptual del modelo es representar, de la mejor manera posible, la complejidad de la respuesta, dada en el espacio n-dimensional, en un espacio más pequeño, el k-dimensional de las variables. Si el modelo se ajusta bien, la estructura de los datos queda capturada en esas k dimensiones, dejando la variación aleatoria en los residuos que pertenecen a un espacio de dimensión n-k.</p>
+</section>
+<section id="bondad-de-ajuste" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="bondad-de-ajuste"><span class="header-section-number">1.3.2</span> Bondad de ajuste</h3>
+<p>En el caso de regresión lineal <em>múltiple</em> con el cuadrado del coeficiente de correlación múltiple. El <span class="math inline">\(R^2\)</span> ajustado es una corrección para suavizar el comportamiento del <span class="math inline">\(R^2\)</span> que aumenta al incluir en el modelo más variables explicativas.</p>
+<p>¿Fórmula del R2 ajustado?</p>
+</section>
+<section id="teorema-de-gauss-markov" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="teorema-de-gauss-markov"><span class="header-section-number">1.3.3</span> Teorema de Gauss-Markov</h3>
+<p>(véase 2.6 de Faraway) Faltan detalles en las fórmulas MTM, recortar!!</p>
+<p>Hay varias razones para usar el estimador MC de <span class="math inline">\(\beta\)</span>.</p>
+<ul>
+<li>es el resultado de una <strong>proyección ortogonal</strong> sobre el espacio del modelo (interpretación geométrica).</li>
+<li>es también el <strong>estimador de máxima verosimilitud</strong> si los errores son independientes e idénticamente distribuidos siguiendo una normal.</li>
+<li>es el <strong>mejor estimador lineal insesgado (BLUE)</strong> según el teorema de Gauss-Markov.</li>
+</ul>
+<p>El teorema de Gauss-Markov se basa en el concepto de <em>función estimable</em>. Una combinación lineal de los parámetros, <span class="math inline">\(\psi = c^\top\beta\)</span>, es estimable si, y solo si, existe una combinación lineal <span class="math inline">\(\mathbf{a}^\top \mathbf{y}\)</span> tal que:</p>
+<p><span class="math display">\[
+\mathbb{E}[\mathbf{a}^\top \mathbf{y}] = \mathbf{c}^\top \boldsymbol{\beta}
+\]</span></p>
+<p>Las funciones estimables incluyen predicciones de observaciones futuras, lo que explica por qué vale la pena considerarlas. Si la matriz <span class="math inline">\(\mathbf{X}\)</span> tiene rango completo, entonces todas las combinaciones lineales son estimables.</p>
+<p><strong>Supuestos del modelo</strong></p>
+<p>Supongamos que <span class="math inline">\(\mathbb{E}[\boldsymbol{\varepsilon}] = 0\)</span> y <span class="math inline">\(\text{Var}(\boldsymbol{\varepsilon}) = \sigma^2 \mathbf{I}\)</span>. Supongamos también que la parte estructural del modelo, <span class="math inline">\(\mathbb{E}[\mathbf{y}] = \mathbf{X} \boldsymbol{\beta}\)</span>, es correcta. Sea <span class="math inline">\(\mathbf{c}^\top \boldsymbol{\beta}\)</span> una función estimable; entonces el teorema de Gauss-Markov establece que, dentro de la clase de todos los estimadores lineales insesgados de <span class="math inline">\(\mathbf{c}^\top \boldsymbol{\beta}\)</span>, el estimador de mínimos cuadrados tiene la <strong>varianza mínima</strong> y es <strong>único</strong>.</p>
+<p><strong>Demostración</strong></p>
+<p>Supongamos que <span class="math inline">\(\mathbf{a}^\top \mathbf{y}\)</span> es un estimador insesgado de <span class="math inline">\(\mathbf{c}^\top \boldsymbol{\beta}\)</span>, lo que implica que:</p>
+<p><span class="math display">\[
+\mathbf{a}^\top \mathbf{X} = \mathbf{c}^\top
+\]</span></p>
+<p>Esto implica que <span class="math inline">\(\mathbf{c}\)</span> está en el espacio imagen de <span class="math inline">\(\mathbf{X}^\top\)</span>, y por tanto también en el espacio imagen de <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span>, lo que significa que existe un vector <span class="math inline">\(\boldsymbol{\lambda}\)</span> tal que <span class="math inline">\(\mathbf{c} = \mathbf{X}^\top \mathbf{X} \boldsymbol{\lambda}\)</span>. Entonces:</p>
+<p><span class="math display">\[
+\text{Var}(\mathbf{a}^\top \mathbf{y}) = \sigma^2 \mathbf{a}^\top \mathbf{a}
+\]</span></p>
+<p>y</p>
+<p><span class="math display">\[
+\text{Var}(\mathbf{c}^\top \hat{\boldsymbol{\beta}}) = \sigma^2 \mathbf{c}^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{c}
+\]</span></p>
+<p>Como las varianzas no pueden ser negativas, se concluye que:</p>
+<p><span class="math display">\[
+\text{Var}(\mathbf{a}^\top \mathbf{y}) \geq \text{Var}(\mathbf{c}^\top \hat{\boldsymbol{\beta}})
+\]</span></p>
+<p>Es decir, el estimador de mínimos cuadrados tiene varianza mínima. Para demostrar que es único, debe cumplirse que:</p>
+<p><span class="math display">\[
+\text{Var}(\mathbf{a}^\top \mathbf{y} - \mathbf{c}^\top \hat{\boldsymbol{\beta}}) = 0
+\]</span></p>
+<p>lo que implica que <span class="math inline">\(\mathbf{a}^\top - \mathbf{c}^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top = 0\)</span>, es decir, <span class="math inline">\(\mathbf{a}^\top = \mathbf{c}^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top\)</span>, por lo tanto el estimador es único. Esto completa la demostración.</p>
+<p><strong>Consideraciones adicionales</strong></p>
+<p>El teorema de Gauss-Markov muestra que el estimador de mínimos cuadrados es una buena elección, pero requiere que los errores sean no correlacionados y con varianza constante. Incluso si los errores son no normales pero se comportan bien, estimadores no lineales o sesgados pueden funcionar mejor. Por tanto, el teorema no obliga a usar mínimos cuadrados siempre, pero lo recomienda fuertemente salvo que haya una buena razón para no hacerlo.</p>
+<p><strong>Situaciones donde considerar otros estimadores</strong></p>
+<ul>
+<li>Cuando los errores están correlacionados o tienen varianza desigual, se deben usar mínimos cuadrados generalizados (ver Sección 6.1).</li>
+<li>Cuando la distribución de errores tiene colas largas, se pueden usar estimadores robustos, que típicamente no son lineales en <span class="math inline">\(\mathbf{y}\)</span> (ver Sección 6.4).</li>
+<li>Cuando los predictores están altamente correlacionados (colinealidad), se pueden preferir estimadores sesgados como la regresión ridge (ver Capítulo 9).</li>
+</ul>
+</section>
+<section id="identificabilidad" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="identificabilidad"><span class="header-section-number">1.3.4</span> (Identificabilidad)</h3>
+<p>La identificabilidad es un concepto clave en modelos estadísticos, especialmente en regresión. Un modelo es <strong>identificable</strong> si los parámetros del modelo pueden ser estimados de manera única a partir de los datos observados. En otras palabras, para cada conjunto de datos, hay una única solución para los parámetros del modelo. Un modelo es <strong>no identificable</strong> si hay múltiples conjuntos de parámetros que pueden generar los mismos datos observados. Esto puede ocurrir por varias razones, como la presencia de variables redundantes o la falta de información suficiente en los datos para distinguir entre diferentes configuraciones de parámetros.</p>
+<p>En el contexto de la regresión lineal, la identificabilidad se refiere a la capacidad de estimar los parámetros del modelo de manera única a partir de los datos. Si el modelo es identificable, entonces cada conjunto de datos conducirá a una única estimación de los parámetros <span class="math inline">\(\boldsymbol{\beta}\)</span> .</p>
+<p>El estimador de mínimos cuadrados es la solución de las <strong>ecuaciones normales</strong>:</p>
+<p><span class="math display">\[
+\mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} = \mathbf{X}^\top \mathbf{y}
+\]</span></p>
+<p>donde <span class="math inline">\(\mathbf{X}\)</span> es una matriz de dimensión <span class="math inline">\(n \times p\)</span> . Si <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span> es <strong>singular</strong> y no puede invertirse, entonces habrá <strong>infinitas soluciones</strong> para las ecuaciones normales y el modelo será, al menos en parte, <strong>no identificable</strong>.</p>
+<p>La <strong>no identificabilidad</strong> ocurre cuando <span class="math inline">\(\mathbf{X}\)</span> no tiene rango completo, es decir, cuando sus columnas son <strong>linealmente dependientes</strong>. En datos observacionales, esto suele deberse a algún descuido. Algunos ejemplos:</p>
+<ol type="1">
+<li>Se mide el peso de una persona tanto en libras como en kilos, y ambas variables se incluyen en el modelo.</li>
+<li>Para cada individuo se registran los años de educación preuniversitaria, los años de educación universitaria y también el total de años de educación, y se incluyen las tres variables en el modelo.</li>
+<li>Hay más variables que casos, es decir, <span class="math inline">\(p &gt; n\)</span> . Cuando <span class="math inline">\(p = n\)</span> , tal vez se puedan estimar todos los parámetros, pero no quedarán grados de libertad para estimar errores estándar ni realizar pruebas. A este modelo se le llama <strong>saturado</strong>. Cuando <span class="math inline">\(p &gt; n\)</span> , se le llama <strong>supersaturado</strong>. Curiosamente, estos modelos se consideran en experimentos de cribado a gran escala usados en diseño y fabricación de productos, pero no hay esperanza de estimar de forma única todos los parámetros en tales modelos.</li>
+</ol>
+<p>Estos problemas pueden evitarse prestando atención. La identificabilidad es un tema más relevante en <strong>experimentos diseñados</strong>. Considera un experimento simple con dos grupos, donde las observaciones del tratamiento son <span class="math inline">\(y_1, \dots, y_n\)</span> y las del grupo control son <span class="math inline">\(y_{n+1}, \dots, y_{m+n}\)</span> . Supongamos que intentamos modelar la respuesta con una media general <span class="math inline">\(\mu\)</span> y efectos de grupo <span class="math inline">\(\tau_1\)</span> y <span class="math inline">\(\tau_2\)</span> :</p>
+<p>Aunque <span class="math inline">\(\mathbf{X}\)</span> tiene tres columnas, su rango es solo 2: los parámetros <span class="math inline">\((\mu, \tau_1, \tau_2)\)</span> no son identificables y las ecuaciones normales tienen infinitas soluciones. Podemos resolver este problema imponiendo restricciones, como <span class="math inline">\(\mu = 0\)</span> o <span class="math inline">\(\tau_1 + \tau_2 = 0\)</span> , por ejemplo.</p>
+<p>Los paquetes estadísticos manejan la no identificabilidad de distintas formas. En el caso de regresión anterior, algunos pueden devolver mensajes de error, y otros pueden ajustar el modelo porque los errores de redondeo eliminan la no identificabilidad exacta. En otros casos, se aplican restricciones, pero estas pueden ser diferentes de las que uno espera. Por defecto, <strong>R ajusta el modelo identificable más grande</strong> eliminando variables en orden inverso al que aparecen en la fórmula del modelo.</p>
+</section>
+<section id="transformaciones" class="level3" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="transformaciones"><span class="header-section-number">1.3.5</span> Transformaciones</h3>
+<p>Familia de transformaciones Box-Cox para la variable respuesta ¿no?</p>
+<p>Indicaciones de Faraway (en 4.1): En la práctica, el gráfico de residuos frente a valores ajustados puede dar pistas sobre la transformación a realizar. Obviamente se pueden intentar varias transformaciones, porque, de nuevo, es un arte encontrar la transformación más adecuada, la intuición y la experiencia pueden ayudar. Un pequeño detalle/truco es tener en cuenta que transformaciones como la raíz cuadrada o el logaritmo no funcionarán si la variable respuesta <span class="math inline">\(y\)</span> toma valores negativos, pero se puede subsanar considerando <span class="math inline">\(y+\delta\)</span> para evitarlo (aunque se pierde la interpretación directa de los resultados).</p>
+</section>
+<section id="otros-casos-de-regresión-lineal" class="level3" data-number="1.3.6">
+<h3 data-number="1.3.6" class="anchored" data-anchor-id="otros-casos-de-regresión-lineal"><span class="header-section-number">1.3.6</span> Otros casos de regresión lineal</h3>
+<p>Existen otros modelos de regresión que pueden ajustarse con la técnica de modelos lineales mediante transformaciones. Por ejemplo si hay una relación exponencial entre las variables <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span>, se pueden tomar logaritmos en ambas variables linealizando así el modelo. O si la relación es potencial, considerar una potencia de la variable <span class="math inline">\(X\)</span>: un modelo lineal de regresión no lineal. El tomar un modelo más complejo sólo tiene sentido si produce resultados significativos a la hora de explicar la relación.</p>
+<p>Ahora bien, hay que tener en cuenta que estas transformaciones pueden alterar la interpretación de los coeficientes.</p>
+</section>
+</section>
+<section id="sec-pract-airquality" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-pract-airquality"><span class="header-section-number">1.4</span> Caso práctico: <code>airquality</code></h2>
+<p>El primero de los casos prácticos de modelización lineal que se va a tratar en profundidad se basa en los datos <code>airquality</code> que contienen 153 medidas (de 6 variables) de calidad del aire en Nueva York. Entre otros, se estudia en <span class="citation" data-cites="CDRlm">Casero-Alonso y Durbán (<a href="#ref-CDRlm" role="doc-biblioref">2024</a>)</span>, concretamente en: <a href="https://cdr-book.github.io/cap-lm.html#Casos" class="uri">https://cdr-book.github.io/cap-lm.html#Casos</a>. Aquí se presentarán ejemplos ligeramente distintos y con algo más de profundidad.</p>
+<section id="exploración-de-los-datos" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="exploración-de-los-datos"><span class="header-section-number">1.4.1</span> Exploración de los datos</h3>
+<p>Antes de comenzar el proceso de modelización lineal, es muy recomendable explorar los datos. El conjunto de datos <code>airquality</code> está disponible en la distribución base de R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>?airquality <span class="co">#Para obtener más información sobre las variables, unidades, etc. </span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Primeras filas del data frame</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6</code></pre>
+</div>
+</div>
+<p>Como se observa hay varios valores faltantes (<code>NA</code>) entre los datos, lo que puede afectar a los resultados de la regresión. Su impacto debe estudiarse, pero sobrepasa el nivel de este curso.</p>
+<p>Además, al observar detenidamente los valores de la variable <code>Day</code> se puede inferir que los datos son temporales, lo que requiere un análisis específico (de <em>Series Temporales</em>, que también sobrepasa el alcance de este curso). El tener datos temporales hace que se incumpla, de partida, desde el plano teórico/conceptual, el supuesto de independencia de las observaciones para la modelización lineal. Este detalle implica que algunas hipótesis se pueden comprobar de antemano, nacen del planteamiento del problema, de la recogida de datos, etc. sin necesidad de llegar al análisis de residuos, en el que incluso podría no quedar reflejado el incumplimiento.</p>
+<p>Aun con esta situación (valores faltantes, datos temporalmente dependientes) analizaremos diversos modelos lineales. Eso sí, no tiene sentido intentar explicar la influencia lineal de la variable <code>Day</code> en el resto de variables, por ejemplo, por el hecho de que los días <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, etc. de meses distintos no son “homogéneos”, etc.</p>
+<p>Procedemos a obtener resúmenes numéricos y gráficos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Resúmenes numéricos de las variables</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(airquality)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Ozone           Solar.R           Wind             Temp      
+ Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+ 1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+ Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+ Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+ 3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+ Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+ NA's   :37       NA's   :7                                       
+     Month            Day      
+ Min.   :5.000   Min.   : 1.0  
+ 1st Qu.:6.000   1st Qu.: 8.0  
+ Median :7.000   Median :16.0  
+ Mean   :6.993   Mean   :15.8  
+ 3rd Qu.:8.000   3rd Qu.:23.0  
+ Max.   :9.000   Max.   :31.0  
+                               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Estructura (formato) del data frame</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(airquality)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   153 obs. of  6 variables:
+ $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
+ $ Solar.R: int  190 118 149 313 NA NA 299 99 19 194 ...
+ $ Wind   : num  7.4 8 12.6 11.5 14.3 14.9 8.6 13.8 20.1 8.6 ...
+ $ Temp   : int  67 72 74 62 56 66 65 59 61 69 ...
+ $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
+ $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Resumen gráfico de relaciones pareadas</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(airquality, <span class="at">upper.panel =</span> panel.smooth)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Del resumen numérico se obtiene que hay 2 variables <code>Ozone</code> y <code>Solar.R</code> que contienen <code>NA</code>s, principalmente la primera con 37 valores no disponibles. Estos resúmenes, junto con la visualización de la estructura (y la consulta de las unidades en las que están medidas) permiten determinar que las variables <code>Ozone</code>, <code>Solar.R</code>, <code>Wind</code> y <code>Temp</code> se pueden considerar cuantitativas continuas (obsérvense sus rangos) a los efectos de modelización lineal, aunque sólo <code>Wind</code> esté definida como <code>num</code> (y el resto como <code>int</code>). Sobre <code>Temp</code>, viendo el rango de sus valores (de 56 a 97), no parece que estén en ºC. ¿Y cómo considerar a la variable <code>Month</code>? El tratamiento más adecuado es como variable cualitativa, dado que, aunque vemos valores numéricos, de 5 a 9, no puede interpretarse como una variable continua en la que tenga sentido incrementar 1 unidad. Además, otorgarle valores 5 a 9 es un convenio para tratarlas por ordenador de una manera más cómoda, pero realmente sus valores son <code>mayo</code>, <code>junio</code>… Queda así más claro que no tiene sentido aumentar 1 unidad, por ejemplo, cuando estamos en el mes 12.</p>
+<p>De los diagramas de dispersión, al incluir el <code>panel.smooth</code> se pueden observar líneas de tendencias suavizadas de los datos. Se aprecia que casi ninguna de las relaciones entre las variables numéricas es lineal, sólo lo parece <code>Wind</code> frente a <code>Temp</code>. Los gráficos que involucran a la variable <code>Month</code> se aprecian distintos al resto, por los pocos valores de dicha variable, mientras que los que involucran a <code>Day</code> no reflejan lo mismo.</p>
+<blockquote class="blockquote">
+<p>Alternativas: Existen distintas funciones/paquetes más o menos sofisticados que realizan este <em>análisis exploratorio</em> de distintas maneras. El lector interesado puede explorar: - El paquete <code>skimr</code> y su función <code>skim</code>. -</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Por ejemplo, con las siguientes funciones se pueden obtener gráficos complementarios al gráfico obtenido anteriormente con <code>pairs()</code>.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Es necesario tener los paquetes instalados previamente</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot) </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(airquality, <span class="at">use =</span> <span class="st">"pairwise"</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(airquality)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Para que aparezca los diagramas de dispersión "arriba"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(airquality,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"points"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)),  </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"cor"</span>, <span class="at">size =</span> <span class="dv">4</span>)),  </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">diag =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"densityDiag"</span>)))  </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lm-simple" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="lm-simple"><span class="header-section-number">1.4.2</span> lm() simple</h3>
+<p>Para ilustrar toda la teoría de las secciones anteriores se va a realizar una regresión lineal simple. La función <code>lm()</code> de R proporciona, a partir de los datos disponibles, la estimación de los parámetros del modelo que se especifique. También se pueden obtener, aplicando distintas funciones, la significación de dichas estimaciones, sus intervalos de confianza, predicciones, etc. Así como los gráficos de diagnóstico.</p>
+<p><strong>Modelización</strong><br>
+Consideramos para empezar un modelo de regresión simple, a diferencia del libro CDR. De entre los posibles modelos nos decantamos por intentar explicar la concentración de Ozono en función de la radiación solar: <span class="math display">\[Ozone = \beta_0 + \beta_1 Solar.R + \epsilon\]</span></p>
+<blockquote class="blockquote">
+<p>El lector tiene aquí una buena tarea conceptual, la de ejercitarse en plantear modelizaciones lineales, que ¡tengan sentido práctico!<br>
+¿Tiene sentido explicar/predecir <code>Ozone</code> en función de los valores de <code>Solar.R</code> observados? ¿Y al revés? ¿O explicar/predecir <code>Day</code> en función de <code>Ozone</code>? …</p>
+</blockquote>
+<p>En <code>R</code> definiríamos así el modelo anterior:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> Ozone <span class="sc">~</span> Solar.R</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>La sintaxis básica (regresión simple) es <code>respuesta ~ explicativa</code>.<br>
+La extensión a regresión múltiple es directa: <code>resp ~ explica1 + explica2</code> indicaría un modelo con predictores <code>explica1</code> y <code>explica2</code>, y así sucesivamente.<br>
+En la sección de regresión múltiple se indican algunos “trucos”.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo obtener la regresión de proporcionalidad directa con <code>R</code>?</p>
+</blockquote>
+<p><strong>Estimación</strong><br>
+En <code>R</code> pueden obtenerse de varias maneras utilizando la función <code>lm()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Opción 1: aprovechando la definición anterior del modelo</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#lm(modelo, data = airquality) </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Opción 2: directa -&gt; lectura más clara</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(Ozone <span class="sc">~</span> Solar.R, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> airquality)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ Solar.R, data = airquality)
+
+Coefficients:
+(Intercept)      Solar.R  
+    18.5987       0.1272  </code></pre>
+</div>
+</div>
+<p>Aquí se pueden ver las estimaciones para los dos parámetros obtenidas a partir de los datos (omitiendo las observaciones con valores <code>NA</code>).</p>
+<blockquote class="blockquote">
+<p>La función lm() aplicada a un modelo simple <code>y ~ x</code> (o múltiple, como veremos) requiere que los datos de las variables <code>y</code> y <code>x</code> estén en el <code>Environment</code>, o se especifique en <code>data</code> el conjunto de datos en el que están las dos variables.</p>
+</blockquote>
+<p><strong>Diagrama de dispersión y recta estimada</strong></p>
+<p>Dado que se está analizando la relación entre dos variables, esta se puede visualizar fácilmente en un diagrama de dispersión, al que se puede añadir la recta estimada a partir de los datos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">pty =</span> <span class="st">"s"</span>) <span class="do">## "p"lot "ty"pe "s"quare (recomendado para gráficos de dispersión)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(airquality<span class="sc">$</span>Solar.R, airquality<span class="sc">$</span>Ozone)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="fl">18.5987</span>, <span class="at">b=</span><span class="fl">0.1272</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="do">## a = intercept, b = slope</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En problemas de regresión múltiple con dos variables explicativas se puede obtener un diagrama de dispersión en 3 dimensiones y añadirle el plano de regresión, pero suele ser compleja su visualización. Con más variables es imposible obtener tales visualizaciones, diagramas de dispersión en <span class="math inline">\(k\)</span> dimensiones e hiperplanos de regresión, lo que conduce a abordar el problema de regresión lineal múltiple mediante un proceso de abstracción.</p>
+<p><strong>Análisis de residuos</strong><br>
+Valoremos la adecuación del modelo examinando los residuos. Primero guardamos el ajuste/estimación basado en los datos en un objeto, que denominamos <code>rls</code>, para su uso posterior:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rls <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Solar.R, <span class="at">data =</span> airquality)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="co">#presenta los gráficos en formato 2x2</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">pty =</span> <span class="st">"s"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mex =</span> <span class="fl">0.66</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.75</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rls)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>El primero de los 4 gráficos de diagnóstico (Residuals vs Fitted) refleja heterocedasticidad (varianza no constante, forma de embudo), tal y como ya se podía apreciar en el diagrama de dispersión de <code>Solar.R</code> frente a <code>Ozone</code> que se obtuvo anteriormente. En este gráfico de aquí, conforme aumenta el valor de los valores ajustados (fitted), la dispersión de los residuos se hace más grande, salvo en la parte final.</p>
+<blockquote class="blockquote">
+<p>Alternativamente, se pueden dibujar los residuos <em>studentizados</em>, obtenibles a través de la función <code>rstudent()</code>, frente a los valores ajustados:<br>
+<code>plot(fitted(rls), rstudent(rls))</code></p>
+</blockquote></li>
+<li><p>El gráfico que mejor refleja esa heterocedasticidad es el tercero (Scale-Location), donde la línea roja de tendencia dista de la horizontalidad (que reflejaría homocedasticidad) teniendo una pendiente positiva (ligera, pero apreciable).</p></li>
+<li><p>Respecto a la normalidad, a la vista del segundo gráfico (Q-Q Residuals), se observa una clara desviación de la linea recta punteada (que marcaría el ajuste perfecto a la distribución normal), sobre todo en la parte superior derecha. Para reforzar la impresión de este gráfico se puede acudir a otra visualización y a un contraste. Lo más apropiado es un histograma y el contraste de Shapiro-Wilk:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">residuals</span>(rls))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(rls))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  residuals(rls)
+W = 0.91418, p-value = 2.516e-06</code></pre>
+</div>
+</div>
+<p>El histograma refleja una clara asimetría, que dista de la simetría de la distribución normal. Y el p-valor del contraste lleva claramente a rechazar la normalidad.</p>
+<ul>
+<li><p>El último de los 4 gráficos de residuos (Residuals vs Leverage) señala las observaciones 117 y 62 como los valores con más influencia en los resultados de la regresión. Pero en este último gráfico no presentan un valor grande de la distancia de Cook, que sirve para medir esa influencia. De hecho, no aparecen en el gráfico ni las lineas discontinuas que marcan los límites para considerar un valor grande de la distancia y por lo tanto una posible observación influyente.</p>
+<blockquote class="blockquote">
+<p>Los valores de palanca o apalancamiento (Leverage) se pueden calcular usando la función <code>hatvalues()</code>.</p>
+</blockquote></li>
+</ul>
+<p>En <strong>resumen</strong>, es claro que hay dos observaciones que pueden influir en los resultados de la regresión, pero también es claro que los problemas observados (heterocedasticidad, falta de normalidad…) no provienen sólo de esos dos datos.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+Repita el análisis manteniendo <code>Ozone</code> como variable respuesta/dependiente, cambiando la variable explicativa <code>Solar.R</code> por <code>Wind</code> o <code>Temp</code>. ¿Aprecia algún cambio?</p>
+</blockquote>
+</section>
+</section>
+<section id="por-aquí" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="por-aquí"><span class="header-section-number">1.5</span> POR AQUÍ</h2>
+<blockquote class="blockquote">
+<p>Alternativas: Existen distintas funciones/paquetes más o menos sofisticados que realizan este <em>análisis de residuos</em> de distintas maneras. El lector interesado puede explorar: - El paquete <code>ggfortify</code> y su función <code>autoplot</code>. - El paquete <code>performance</code> y su función <code>check_model</code>. - …</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Es necesario tener los paquetes instalados previamente</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggfortify"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(rls) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance) </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(see)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(rls)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Interpretación e Inferencia</strong><br>
+Supongamos que fuese todo correcto. El siguiente paso sería el de averiguar la significación de los parámetros, interpretarlos y obtener alguna predicción de interés. Aplicamos la función <code>summary()</code> aplicada a nuestro objeto <code>rls</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rls)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ Solar.R, data = airquality)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-48.292 -21.361  -8.864  16.373 119.136 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 18.59873    6.74790   2.756 0.006856 ** 
+Solar.R      0.12717    0.03278   3.880 0.000179 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 31.33 on 109 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.1213,    Adjusted R-squared:  0.1133 
+F-statistic: 15.05 on 1 and 109 DF,  p-value: 0.0001793</code></pre>
+</div>
+</div>
+<p>Con la salida de <code>summary()</code> obtenemos, además de los coeficientes <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> (columna <code>Estimate</code>), mucha información para su interpretación. En la columna <code>Pr(&gt;|t|)</code> se pueden ver los p-valores de cada parámetro. El del parámetro asociado a la variable <code>Solar.R</code> es muy pequeño, pudiéndose concluir, en caso de que el modelo fuese válido, que la variable <code>Solar.R</code> influye significativamente en la variable <code>Ozone</code>. De la misma manera, el parámetro <span class="math inline">\(\beta_0\)</span> (Intercept, intersección con el origen) es significativo, lo que indica que el modelo no pasa por el origen. Los valores obtenidos provienen, como se ha visto en la parte teórica, de la estimación del estadístico <span class="math inline">\(t\)</span> que se encuentra en la columna <code>t value</code>, que a su vez se basa en la mencionada estimación de cada parámetro (columna <code>Estimate</code>) y el error de estimación (columna <code>Std. Error</code>). A partir de estos dos valores y la distribución <span class="math inline">\(t\)</span> correspondiente, se pueden obtener los intervalos de confianza “a mano” (paso a paso con <code>R</code>), pero se dispone de la función <code>confint()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(rls)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %     97.5 %
+(Intercept) 5.22460110 31.9728544
+Solar.R     0.06220373  0.1921268</code></pre>
+</div>
+</div>
+<p>Si el modelo fuese válido se pasaría a la interpretación de estos parámetros… Primero, el signo de <span class="math inline">\(\hat{\beta}_1\)</span>, al ser positivo, indica que conforme aumenta <code>Solar.R</code> también aumenta <code>Ozone</code>. Esta conclusión es clara aunque el modelo no sea válido. Ahora bien, no sólo se obtiene numéricamente esa relación positiva, sino la magnitud de dicha relación. Así, el cambio de una unidad en <code>Solar.R</code> implicaría un cambio medio de aproximadamente 0.1272 unidades en <code>Ozone</code>, con un valor medio de 18.5987 unidades de <code>Ozone</code> en ausencia de radiación solar (¡Ojo! Con los datos disponibles, el mínimo valor de <code>Solar.R</code> es NA, según la tabla del resumen numérico, por lo que estamos hablando de una <em>extrapolación</em> que necesitaría del conocimiento de un experto en la materia para dilucidar su apropiada y/o oportuna interpretación).</p>
+<p><strong>Bondad de ajuste</strong><br>
+En la salida anterior de la función <code>summary()</code> también se pueden observar resultados que ayudan a proporcionar la bondad de ajuste de la regresión simple planteada. El valor que resume la bondad de ajuste es el <code>Multiple R-squared</code>, aunque, como se ha mencionado en la parte teórica, para comparar entre modelos conviene hacerlo con el <code>Adjusted R-squared</code> que arroja un valor de</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>rls.summ <span class="ot">&lt;-</span> <span class="fu">summary</span>(rls)  <span class="co">#guardamos el objeto generado con summary()</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#con names() listamos distintos componentes generados con summary() </span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rls.summ)           <span class="co">#también se puede consultar con ?summary.lm </span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "call"          "terms"         "residuals"     "coefficients" 
+ [5] "aliased"       "sigma"         "df"            "r.squared"    
+ [9] "adj.r.squared" "fstatistic"    "cov.unscaled"  "na.action"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rls)<span class="sc">$</span>adj.r.squared</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1132809</code></pre>
+</div>
+</div>
+<p>Este 11.3% se puede considerar “pobre”. La variable <code>Solar.R</code> explica “pobremente” el <code>Ozone</code>. No obstante, el p-valor global del modelo que se muestra en la última linea de la salida de <code>summary()</code> es significativo, indicando que la recta de regresión es significativa, esto es, que es mejor que proporcionar sólo la media de <code>Ozone</code> para cualquier valor de <code>Solar.R</code> que sería el modelo “básico”.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Sabe decir porqué el p-valor de la recta de regresión coincide con el del parámetro asociado a <code>Solar.R</code>?</p>
+</blockquote>
+<p>También se puede observar el valor del <code>Residual standard error</code> y sus grados de libertad que se ha mencionado en la parte teórica.</p>
+<p>Un último apunte, en la salida también aparece el mensaje <code>42 observations deleted due to missingness</code> que indica que no se han considerado aquellas observaciones en las que cualquier variable tiene un <code>NA</code>.</p>
+<p><strong>Predicción</strong><br>
+A pesar de que el modelo no es idóneo, puede que la regresión lineal sirva para el propósito de explicar a grandes rasgos el fenómeno. Pasamos a ilustrar como se obtendrían con <code>R</code> predicciones a partir de la recta estimada:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(rls, <span class="fu">data.frame</span>(<span class="at">Solar.R =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">300</span>)),</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit       lwr      upr
+1 19.87038  7.076164 32.66460
+2 31.31525 23.247138 39.38337
+3 56.74831 47.222078 66.27454</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(rls, <span class="fu">data.frame</span>(<span class="at">Solar.R =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">300</span>)),</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit        lwr       upr
+1 19.87038 -43.537910  83.27867
+2 31.31525 -31.310729  93.94124
+3 56.74831  -6.082164 119.57878</code></pre>
+</div>
+</div>
+<p>Con el argumento <code>interval = "confidence"</code> obtenemos <em>intervalos de confianza</em> (para valores medios), con <code>interval = "prediction"</code> obtenemos <em>intervalos de predicción</em> (para valores individuales) para la predicción de <code>Ozone</code> dados valores de <code>Solar.R</code>. Concretamente para 3 valores: 10, 100 y 300, todos ellos en el rango de valores observados de la variable. La estimación media (<code>fit</code>) coincide en ambos casos, diferenciándose en la <em>amplitud</em> de los intervalos, mucho mayores para los intervalos de predicción, dado que una observación individual puede alejarse mucho más de la media, que una media de varias observaciones para el mismo valor de <code>Solar.R</code>.</p>
+<section id="lm-múltiple" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="lm-múltiple"><span class="header-section-number">1.5.1</span> lm() múltiple</h3>
+<p><strong>Modelización</strong><br>
+La regresión lineal múltiple que se va a abordar aquí, ligeramente distinta a la del libro CDR, directamente en formato de <code>R</code> es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Solar.R <span class="sc">+</span> Wind <span class="sc">+</span> Temp <span class="sc">+</span> Month, <span class="at">data =</span> airquality) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Equivalentemente</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#rlm &lt;- lm(Ozone ~ . - Day, data = airquality)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>Para no tener que escribir todas las variables, se puede hacer uso de <code>.</code>: <code>lm(y ~ ., data)</code> indica una regresión con <code>y</code> como variable respuesta, y el resto de variables de <code>data</code> como predictores lineales.<br>
+En el código de arriba además se ha usado el “truco” de quitar una variable con <code>-</code>.</p>
+</blockquote>
+<p><strong>Análisis de residuos</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="co">#presenta los gráficos en formato 2x2</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">pty =</span> <span class="st">"s"</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mex =</span> <span class="fl">0.66</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.75</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rlm)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Se ha mejorado respecto a la regresión simple?</p>
+</blockquote>
+<p>Nótese que ahora, en el 4º gráfico (Residuals vs Leverage) sí que aparece la línea punteada del valor 0.5 de la distancia de Cook, que no llega a alcanzar ningundo de los datos.</p>
+<p><strong>Estimación e interpretación</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ Solar.R + Wind + Temp + Month, data = airquality)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-35.870 -13.968  -2.671   9.553  97.918 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -58.05384   22.97114  -2.527   0.0130 *  
+Solar.R       0.04960    0.02346   2.114   0.0368 *  
+Wind         -3.31651    0.64579  -5.136 1.29e-06 ***
+Temp          1.87087    0.27363   6.837 5.34e-10 ***
+Month        -2.99163    1.51592  -1.973   0.0510 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 20.9 on 106 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.6199,    Adjusted R-squared:  0.6055 
+F-statistic: 43.21 on 4 and 106 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>De la salida de la función <code>summary()</code> se desprende que de las 4 variables consideradas, la más significativa es <code>Temp</code>, seguida de <code>Wind</code> (ambas con 3 asteriscos), y también es significativa <code>Solar.R</code>, pero a otro nivel (sólo un asterisco, por un valor inferior al 5% pero superior al 1%, cuando en la regresión simple tenía un p-valor más pequeño/significativo, 2 asteriscos). Por último, <code>Month</code> es significativa pero a un nivel del 10% de significación. También el término independiente es significativo.</p>
+<p>Sobre la interpretación de los parámetros, se debe tener en cuenta las unidades en las que están recogidas cada una de las variables. Como se ha mencionado, cualquier cambio de escala influirá en dichas estimaciones, y generalmente en sus <code>Std. Error</code> (salvo <em>traslaciones</em> de las variables).</p>
+<p>Además, la interpretación de las estimaciones (magnitud) como cambios en la variable respuesta tiene ahora un cambio sustancial. El cambio en la variable respuesta de 1 unidad de una de las variables explicativas está condicionado a que el resto de variables explicativas no cambien, lo que en el contexto de la Economía se denomina <strong><em>ceteris paribus</em></strong>, y que puede que sea imposible de cumplirse. Por ejemplo, el parámetro asociado a <code>Solar.R</code> es, para este modelo de regresión lineal múltiple, 0.0496 menos de la mitad de magnitud que en el caso de regresión simple. Ese sería el cambio medio en las unidades de <code>Ozone</code> para cambios de 1 unidad en <code>Solar.R</code> siempre que <code>Wind</code>, <code>Temp</code> y <code>Month</code> tengan los mismos valores, o, dicho de otro modo, para otro día qu tuviese los mismos valores de <code>Wind</code>, <code>Temp</code> y <code>Month</code>, y cambiase 1 unidad <code>Solar.R</code>. Si es que es factible el cambio de <code>Solar.R</code> con los mismo valores del resto de variables.</p>
+<p>Otra lectura que se debe hacer sobre la interpretación de la magnitud del coeficiente es que, al ser independiente del resto de valores de las variables, es, a su vez, para cualquier combinación de dichos valores. Por ejemplo, para valores de <code>Wind</code> altos, medios o bajos, combinado con valores de <code>Temp</code> altos, medios o bajos, o para cualquier <code>Month</code> (entre 5 y 9, que es el rango observado).</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo interpretaría el valor negativo del término independiente si se trata de la concentración de ozono en partes por billón?</p>
+</blockquote>
+<p><strong>Bondad de ajuste</strong><br>
+La bondad del ajuste de este modelo, ha mejorado mucho comparada con la regresión simple anterior, pasando ahora a un <code>Adjusted R-squared</code> de 0.606.</p>
+<p>Si nuestro interés sólo fuese predecir valores de <code>Ozone</code>, este modelo podría servirnos.</p>
+<p><strong>Predicción</strong><br>
+¿Cómo se pueden obtener predicciones con un modelo de regresión múltiple? Se deben proporcionar valores a cada una de las variables del modelo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>nuevas.observ <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Solar.R =</span> <span class="fu">c</span>(<span class="dv">110</span>, <span class="dv">110</span>),</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Wind    =</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">20</span>), </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Temp    =</span> <span class="fu">c</span>(<span class="dv">72</span>, <span class="dv">85</span>), </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Month   =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(rlm, <span class="at">newdata =</span> nuevas.observ,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">interval =</span> <span class="st">"confidence"</span> )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit       lwr      upr
+1 37.62288 30.382618 44.86315
+2 22.14613  4.912182 39.38008</code></pre>
+</div>
+</div>
+<section id="predictores-cualitativos" class="level4" data-number="1.5.1.1">
+<h4 data-number="1.5.1.1" class="anchored" data-anchor-id="predictores-cualitativos"><span class="header-section-number">1.5.1.1</span> Predictores cualitativos</h4>
+<p>El uso de predictores cualitativos debe tratarse de forma diferencial en <code>R</code>. Deben definirse como <em>factor</em>, (<code>factor()</code>). Así, al estimar <code>R</code> los parámetros del modelo donde se incluya dicha variable, generará automáticamente variables ficticias, variables <em>dummys</em>. La función <code>contrasts()</code> permite conocer la codificación que por defecto usa <code>R</code> para dichas variables ficticias (aunque se puede modificar). Para ilustrarlo, redefinimos la variable <code>Month</code> en el conjunto de datos <code>airquality</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>airquality<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">factor</span> (airquality<span class="sc">$</span>Month) </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(airquality<span class="sc">$</span>Month)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  6 7 8 9
+5 0 0 0 0
+6 1 0 0 0
+7 0 1 0 0
+8 0 0 1 0
+9 0 0 0 1</code></pre>
+</div>
+</div>
+<p>La salida indica que el valor 5 de <code>Month</code> se toma como valor de referencia (en su fila aparecen todo ceros), y se generan 4 variables <em>dummy</em>, una para cada uno de los meses restantes (del 6 al 9).</p>
+<blockquote class="blockquote">
+<p>En <code>R</code> las variables definidas como <code>factor</code> toma como referencia la primera categoría al ordenar los valores de la variable, bien alfabéticamente (a, b, c…) o bien numéricamente de menor a mayor, si no se ha especificado otro orden.</p>
+</blockquote>
+<p>Ajustamos de nuevo el modelo de regresión múltiple.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>rlm.cualit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> . <span class="sc">-</span> Day, </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> airquality)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm.cualit)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ . - Day, data = airquality)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-40.344 -13.495  -3.165  10.399  92.689 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -74.23481   26.10184  -2.844  0.00537 ** 
+Solar.R       0.05222    0.02367   2.206  0.02957 *  
+Wind         -3.10872    0.66009  -4.710 7.78e-06 ***
+Temp          1.87511    0.34073   5.503 2.74e-07 ***
+Month6      -14.75895    9.12269  -1.618  0.10876    
+Month7       -8.74861    7.82906  -1.117  0.26640    
+Month8       -4.19654    8.14693  -0.515  0.60758    
+Month9      -15.96728    6.65561  -2.399  0.01823 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 20.72 on 103 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.6369,    Adjusted R-squared:  0.6122 
+F-statistic: 25.81 on 7 and 103 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Se puede observar que se muestran parámetros para las 4 variables <em>dummy</em> de los 5 valores de <code>Month</code>. Como se ha indicado, el primer valor de la variable (el 5) lo toma como referencia (se podría cambiar si se quiere otro mes de referencia) y genera 4 variables dicotómicas que reflejan el cambio de la categoría de referencia a cada una de ellas. Matemáticamente el modelo que se estima es: <span class="math display">\[\begin{align*}
+Ozone = &amp;\beta_0 + \beta_1 Solar.R + \beta_2 Wind + \beta_3 Temp + \\
+&amp;\beta_6 Month6 +  \beta_7 Month7 +  \beta_8 Month8 +  \beta_9 Month9 + \epsilon  
+\end{align*}\]</span> Así, se entiende ahora mejor la visualización de <code>contrasts()</code> obtenida anteriormente. Cuando <code>Month6</code>, <code>Month7</code>… toman todos el valor 0 la estimación que se obtiene es del mes de mayo. Si la variable dummy <code>Month6</code> toma el valor 1, y las otras 3 toman el valor 0, se obtiene la diferencia media de <code>Ozone</code> respecto al mes de mayo, <em>ceteris paribus</em>. Por lo tanto, que el parámetro asociado a <code>Month6</code> sea negativo implica que, para cualquier combinación fija de valores del resto de variables, en junio disminuye la media de <code>Ozone</code> respecto a mayo (aunque justo este parámetro/cambio no es significativo!), etc.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Como se interpreta ahora el valor del <code>Intercept</code>?<br>
+¿Y cómo se explica el valor negativo de <code>Month6</code> a la vista del resumen gráfico que se obtuvo con <code>pairs()</code>?</p>
+</blockquote>
+</section>
+</section>
+<section id="sec-pract-Boston" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="sec-pract-Boston"><span class="header-section-number">1.5.2</span> Caso práctico: <code>Boston</code></h3>
+<p>El segundo de los casos prácticos de modelización lineal que se va a tratar en profundidad utiliza los datos <code>Boston</code>, recogidos en varios paquetes, por ejemplo, en <code>ISLR2</code> asociado con el libro: <a href="https://www.statlearning.com" class="uri">https://www.statlearning.com</a>. Los datos recogen valores relacionados con viviendas para <code>506</code> distritos censales de Boston. El estudio de la modelización lineal se puede encontrar en: <a href="https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch3-linreg-lab.html" class="uri">https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch3-linreg-lab.html</a> y el Rscript asociado en: <a href="https://hastie.su.domains/ISLR2/Labs/R_Labs/Ch3-linreg-lab.R" class="uri">https://hastie.su.domains/ISLR2/Labs/R_Labs/Ch3-linreg-lab.R</a>. De nuevo, aquí se presentarán ejemplos ligeramente distintos y con algo más de profundidad.</p>
+<section id="exploración-de-los-datos-1" class="level4" data-number="1.5.2.1">
+<h4 data-number="1.5.2.1" class="anchored" data-anchor-id="exploración-de-los-datos-1"><span class="header-section-number">1.5.2.1</span> Exploración de los datos</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co">#?Boston #Para obtener más información sobre las variables, unidades, etc. </span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     crim zn indus chas   nox    rm  age    dis rad tax ptratio lstat medv
+1 0.00632 18  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3  4.98 24.0
+2 0.02731  0  7.07    0 0.469 6.421 78.9 4.9671   2 242    17.8  9.14 21.6
+3 0.02729  0  7.07    0 0.469 7.185 61.1 4.9671   2 242    17.8  4.03 34.7
+4 0.03237  0  2.18    0 0.458 6.998 45.8 6.0622   3 222    18.7  2.94 33.4
+5 0.06905  0  2.18    0 0.458 7.147 54.2 6.0622   3 222    18.7  5.33 36.2
+6 0.02985  0  2.18    0 0.458 6.430 58.7 6.0622   3 222    18.7  5.21 28.7</code></pre>
+</div>
+</div>
+<p>Ahora no parece haber <code>NA</code>s. En el resumen numérico veremos que no hay. No obstante, se puede comprobar con:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(Boston))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p><strong>Estructura y resúmenes</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   506 obs. of  13 variables:
+ $ crim   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
+ $ zn     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
+ $ indus  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
+ $ chas   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ nox    : num  0.538 0.469 0.469 0.458 0.458 0.458 0.524 0.524 0.524 0.524 ...
+ $ rm     : num  6.58 6.42 7.18 7 7.15 ...
+ $ age    : num  65.2 78.9 61.1 45.8 54.2 58.7 66.6 96.1 100 85.9 ...
+ $ dis    : num  4.09 4.97 4.97 6.06 6.06 ...
+ $ rad    : int  1 2 2 3 3 3 5 5 5 5 ...
+ $ tax    : num  296 242 242 222 222 222 311 311 311 311 ...
+ $ ptratio: num  15.3 17.8 17.8 18.7 18.7 18.7 15.2 15.2 15.2 15.2 ...
+ $ lstat  : num  4.98 9.14 4.03 2.94 5.33 ...
+ $ medv   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      crim                zn             indus            chas        
+ Min.   : 0.00632   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000  
+ 1st Qu.: 0.08205   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000  
+ Median : 0.25651   Median :  0.00   Median : 9.69   Median :0.00000  
+ Mean   : 3.61352   Mean   : 11.36   Mean   :11.14   Mean   :0.06917  
+ 3rd Qu.: 3.67708   3rd Qu.: 12.50   3rd Qu.:18.10   3rd Qu.:0.00000  
+ Max.   :88.97620   Max.   :100.00   Max.   :27.74   Max.   :1.00000  
+      nox               rm             age              dis        
+ Min.   :0.3850   Min.   :3.561   Min.   :  2.90   Min.   : 1.130  
+ 1st Qu.:0.4490   1st Qu.:5.886   1st Qu.: 45.02   1st Qu.: 2.100  
+ Median :0.5380   Median :6.208   Median : 77.50   Median : 3.207  
+ Mean   :0.5547   Mean   :6.285   Mean   : 68.57   Mean   : 3.795  
+ 3rd Qu.:0.6240   3rd Qu.:6.623   3rd Qu.: 94.08   3rd Qu.: 5.188  
+ Max.   :0.8710   Max.   :8.780   Max.   :100.00   Max.   :12.127  
+      rad              tax           ptratio          lstat      
+ Min.   : 1.000   Min.   :187.0   Min.   :12.60   Min.   : 1.73  
+ 1st Qu.: 4.000   1st Qu.:279.0   1st Qu.:17.40   1st Qu.: 6.95  
+ Median : 5.000   Median :330.0   Median :19.05   Median :11.36  
+ Mean   : 9.549   Mean   :408.2   Mean   :18.46   Mean   :12.65  
+ 3rd Qu.:24.000   3rd Qu.:666.0   3rd Qu.:20.20   3rd Qu.:16.95  
+ Max.   :24.000   Max.   :711.0   Max.   :22.00   Max.   :37.97  
+      medv      
+ Min.   : 5.00  
+ 1st Qu.:17.02  
+ Median :21.20  
+ Mean   :22.53  
+ 3rd Qu.:25.00  
+ Max.   :50.00  </code></pre>
+</div>
+</div>
+<p>A la vista de la estructura y el resumen numérico, se pueden considerar continuas casi todas las variables (internamente están definidas en <code>R</code> como <code>double</code> o <code>int</code>, para manejar números reales con formato de coma flotante de <em>doble</em> precisión que requieren más espacio en memoria o enteros, respectivamente). Llama la atención el resumen de las variables <code>zn</code>, <code>chas</code> y <code>rad</code>. La variable <code>zn</code> está definida internamente como <code>double</code> porque contiene algunos valores con decimales (y mirando su definición es una proporción). Ahora bien, su mediana es 0, por lo que al menos la mitad de los 506 valores son 0, de hecho el 0 aparece 372 veces. Esto, sin duda tendrá un impacto al considerarlo en los modelos. Por su parte las variables <code>chas</code> y <code>rad</code> tienen formato <code>int</code>, pero acudiendo a su definición, <code>chas</code> es dicotómica (lo que también da sentido que su mediana sea 0 y su media se 0.0692), mientras que <code>rad</code> es un índice, que toma valores entre 1 y 24. Dejaremos <code>zn</code> y <code>rad</code> con valores numéricos, pero, para su apropiado manejo en los modelos, es oportuno convertir <code>chas</code> en variable <code>factor</code> de <code>R</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>Boston<span class="sc">$</span>chas <span class="ot">&lt;-</span> <span class="fu">factor</span>(Boston<span class="sc">$</span>chas)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(Boston<span class="sc">$</span>chas)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  1
+0 0
+1 1</code></pre>
+</div>
+</div>
+<p>Como se puede ver con la función <code>contrasts()</code> en los casos de variable dicotómica sólo se genera una variable <em>dummy</em>, quedando por defecto el valor 0 como valor de referencia. Rizando el rizo, vamos a cambiar la definición del valor de referencia para luego observar su impacto en la modelización.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>Boston<span class="sc">$</span>chas <span class="ot">&lt;-</span> <span class="fu">factor</span>(Boston<span class="sc">$</span>chas, </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(Boston<span class="sc">$</span>chas)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0
+1 0
+0 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(Boston, <span class="at">upper.panel =</span> <span class="cn">NULL</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">lower.panel =</span> panel.smooth)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A la vista del resumen gráfico, diagramas de dispersión de pares de variables, casi todas las relaciones entre pares de variables parecen no lineales. Como se puede apreciar, la dicotomía de la variable <code>chas</code> genera diagramas de dispersión muy distintos al resto. Y las variables <code>rad</code> y <code>tax</code> llaman la atención por presentar dos grupos de valores alejados, especialmente <code>rad</code>. También, la variable <code>nox</code> presenta dos grupos de valores pero con menor separación entre grupos.</p>
+</section>
+<section id="lm-múltiple-1" class="level4" data-number="1.5.2.2">
+<h4 data-number="1.5.2.2" class="anchored" data-anchor-id="lm-múltiple-1"><span class="header-section-number">1.5.2.2</span> lm() múltiple</h4>
+<p><strong>Modelización y estimación</strong><br>
+La variable de interés a modelizar es <code>medv</code> (“median value”: valor mediano de las casas ocupadas por sus propietarios, en $1000s). En el libro ISLR2 utilizan las otras 12 variables explicativas como predictores. Aquí consideraremos sólo unas cuantas (ojo con lo que recogen cada una de las variables… ¿<code>age</code>?):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rlm.Boston <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">+</span> rm <span class="sc">+</span> age <span class="sc">+</span> tax <span class="sc">+</span> chas, <span class="co">#chas definida como factor</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> Boston)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm.Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ lstat + rm + age + tax + chas, data = Boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.358  -3.345  -1.124   1.930  30.073 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4.323355   3.270507   1.322    0.187    
+lstat       -0.588092   0.055117 -10.670  &lt; 2e-16 ***
+rm           4.954530   0.440829  11.239  &lt; 2e-16 ***
+age          0.014624   0.011379   1.285    0.199    
+tax         -0.007009   0.001756  -3.990 7.58e-05 ***
+chas0       -3.898106   0.955381  -4.080 5.24e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.372 on 500 degrees of freedom
+Multiple R-squared:  0.6622,    Adjusted R-squared:  0.6588 
+F-statistic:   196 on 5 and 500 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Se han unificado la modelización y estimación, como se hace generalmente. Posteriormente se realizará el análisis de residuos que permitirá dar validez al modelo considerado.</p>
+<p>En este caso, los parámetros asociados a las variables salen significativos, excepto uno. Este hecho, conduce a eliminar dicha variable del modelo, para obtener uno con sólo variables influyentes sobre <code>medv</code>.</p>
+<p>El impacto de que algunos parámetros no sean significativos también se puede apreciar en sus intervalos de confianza… Los no significativos incluyen el 0.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(rlm.Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   2.5 %       97.5 %
+(Intercept) -2.102274869 10.748985289
+lstat       -0.696380539 -0.479802930
+rm           4.088424014  5.820635797
+age         -0.007732991  0.036981489
+tax         -0.010459310 -0.003557925
+chas0       -5.775162051 -2.021050701</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Interpretación de los coeficientes?… Recuerda: <em>ceteris paribus</em>.</p>
+</blockquote>
+</section>
+<section id="quitando-predictores" class="level4" data-number="1.5.2.3">
+<h4 data-number="1.5.2.3" class="anchored" data-anchor-id="quitando-predictores"><span class="header-section-number">1.5.2.3</span> Quitando predictores</h4>
+<p>Como ilustración del proceso iterativo (manual) de modelización, pasamos a estimar un nuevo modelo en el que eliminamos la variable no significativa que se obtuvo en el modelo anterior <code>rlm.Boston</code>, esto es quitando <code>age</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>rlm.BostonModif <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">+</span> rm <span class="sc">+</span> tax <span class="sc">+</span> chas, <span class="at">data =</span> Boston)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Alternativamente, usando la función `update()`.</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co">#rlm.BostonModif &lt;- update(rlm.Boston, ~ . - age)</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm.BostonModif)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ lstat + rm + tax + chas, data = Boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.484  -3.400  -1.158   1.909  30.849 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4.154797   3.270001   1.271 0.204468    
+lstat       -0.554277   0.048462 -11.437  &lt; 2e-16 ***
+rm           5.060589   0.433317  11.679  &lt; 2e-16 ***
+tax         -0.006412   0.001695  -3.783 0.000174 ***
+chas0       -4.076908   0.945811  -4.310 1.96e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.376 on 501 degrees of freedom
+Multiple R-squared:  0.6611,    Adjusted R-squared:  0.6584 
+F-statistic: 244.3 on 4 and 501 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Ahora el modelo sale con todos los parámetros significativos, con un <code>Adjusted R-squared</code> ligeramente peor. No obstante el <span class="math inline">\(R^2\)</span> ajustado es razonablemente bueno si el objetivo es predecir valores de <code>Ozone</code>.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo quitar varios predictores simultáneamente?<br>
+¿Cómo hacer este proceso automáticamente? Véase el siguiente capítulo…</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+Obtenga este último modelo con la variable <code>chas</code> original (sin convertirla en factor) ¿Qué diferencias observa en la estimación del parámetro asociado a dicha variable?</p>
+</blockquote>
+<p><strong>Análisis de residuos</strong><br>
+Valoremos la adecuación del último modelo examinando sus residuos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="co">#presenta los gráficos en formato 2x2</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">pty =</span> <span class="st">"s"</span>,</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mex =</span> <span class="fl">0.66</span>,</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.75</span>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rlm.BostonModif)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Los gráficos 1 y 3 (Residuals vs Fitted y Scale-Location) reflejan heterocedasticidad y no linealidad.</p></li>
+<li><p>En el segundo gráfico (Q-Q Residuals), se observa una clara desviación de la normalidad (marcada por la linea de puntos). Veamos el histograma:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">residuals</span>(rlm.BostonModif))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El histograma refleja asimetría por lo que claramente rechazamos la normalidad.</p>
+<ul>
+<li>Por último en los 4 gráficos de residuos quedan señaladas las observaciones 369 y 373, junto con la 372 que aparece en 3 de los gráficos. Habría que considerar el modelo sin ellas para comprobar su influencia, pero, de nuevo, parece claro que los problemas comentados (heterocedasticidad, falta de normalidad…) no provienen sólo de esas observaciones.</li>
+</ul>
+</section>
+<section id="extensiones-de-la-regresión-múltiple" class="level4" data-number="1.5.2.4">
+<h4 data-number="1.5.2.4" class="anchored" data-anchor-id="extensiones-de-la-regresión-múltiple"><span class="header-section-number">1.5.2.4</span> Extensiones de la regresión múltiple</h4>
+<p>El modelo lineal de regresión lineal múltiple permite considerar “constructos” de variables, es decir, considerar “productos” de dos variables, términos no lineales, etc. El tratamiento de esos casos con <code>R</code> es similar a lo visto hasta ahora, con el inconveniente de enfrentarse a su interpretación. Así, entre los “constructos” más habituales se encuentran:</p>
+<ul>
+<li><em>Términos de interacción</em>: La sintaxis <code>lstat:age</code> le dice a <code>R</code> que incluya un término de interacción entre <code>lstat</code> y <code>age</code>. La sintaxis <code>lstat * age</code> incluye como predictores simultáneamente <code>lstat</code>, <code>age</code> y la interacción <code>lstat:age</code>, es una abreviatura de <code>lstat + age + lstat:age</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">*</span> age, <span class="at">data =</span> Boston))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ lstat * age, data = Boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.806  -4.045  -1.333   2.085  27.552 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 36.0885359  1.4698355  24.553  &lt; 2e-16 ***
+lstat       -1.3921168  0.1674555  -8.313 8.78e-16 ***
+age         -0.0007209  0.0198792  -0.036   0.9711    
+lstat:age    0.0041560  0.0018518   2.244   0.0252 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.149 on 502 degrees of freedom
+Multiple R-squared:  0.5557,    Adjusted R-squared:  0.5531 
+F-statistic: 209.3 on 3 and 502 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo se interpeta que la interacción salga significativa?</p>
+</blockquote>
+<ul>
+<li><em>Transformaciones polinómicas de los predictores</em>: La sintaxis <code>I(lstat^2)</code> introduce en el modelo el predictor cuadrático de <code>lstat</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>rlm.Boston2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">+</span> <span class="fu">I</span>(lstat<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> Boston)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm.Boston2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ lstat + I(lstat^2), data = Boston)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15.2834  -3.8313  -0.5295   2.3095  25.4148 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 42.862007   0.872084   49.15   &lt;2e-16 ***
+lstat       -2.332821   0.123803  -18.84   &lt;2e-16 ***
+I(lstat^2)   0.043547   0.003745   11.63   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.524 on 503 degrees of freedom
+Multiple R-squared:  0.6407,    Adjusted R-squared:  0.6393 
+F-statistic: 448.5 on 2 and 503 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: carData</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(rlm.Boston2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     lstat I(lstat^2) 
+  12.93657   12.93657 </code></pre>
+</div>
+</div>
+<p>El p-valor cercano a cero asociado con el término cuadrático sugiere que, su inclusión, conduce a un modelo mejorado. Pero, obviamente, introduce un problema claro de colinealidad, que se puede obviar si el interés en el modelo es por su valor predictivo en lugar de explicativo.</p>
+<p>Obviamente se pueden incluir términos cúbicos, etc.: <code>I(variable^3)</code>…, varios a la vez, etc. Pero para un ajuste polinómico, conviene acudir a la función <code>poly()</code>, que, por defecto, ortogonaliza los predictores.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>rlm.Boston6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> <span class="fu">poly</span>(lstat, <span class="dv">6</span>), <span class="at">data =</span> Boston)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rlm.Boston6)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ poly(lstat, 6), data = Boston)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.7317  -3.1571  -0.6941   2.0756  26.8994 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       22.5328     0.2317  97.252  &lt; 2e-16 ***
+poly(lstat, 6)1 -152.4595     5.2119 -29.252  &lt; 2e-16 ***
+poly(lstat, 6)2   64.2272     5.2119  12.323  &lt; 2e-16 ***
+poly(lstat, 6)3  -27.0511     5.2119  -5.190 3.06e-07 ***
+poly(lstat, 6)4   25.4517     5.2119   4.883 1.41e-06 ***
+poly(lstat, 6)5  -19.2524     5.2119  -3.694 0.000245 ***
+poly(lstat, 6)6    6.5088     5.2119   1.249 0.212313    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.212 on 499 degrees of freedom
+Multiple R-squared:  0.6827,    Adjusted R-squared:  0.6789 
+F-statistic: 178.9 on 6 and 499 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>La interpretación de esta salida sugiere que el modelo polinómico de orden 5 conduce al mejor ajuste del modelo con un polinomio de la variable <code>lstat</code>.</p>
+<ul>
+<li><em>Transformaciones logarítmicas</em>: también se pueden aplicar otro tipo de transformaciones sobre los predictores, siempre que sean apropiadas y oportunas.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(medv <span class="sc">~</span> <span class="fu">log</span>(rm), <span class="at">data =</span> Boston))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = medv ~ log(rm), data = Boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.487  -2.875  -0.104   2.837  39.816 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -76.488      5.028  -15.21   &lt;2e-16 ***
+log(rm)       54.055      2.739   19.73   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.915 on 504 degrees of freedom
+Multiple R-squared:  0.4358,    Adjusted R-squared:  0.4347 
+F-statistic: 389.3 on 1 and 504 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="comparación-de-modelos-mediante-anova" class="level4" data-number="1.5.2.5">
+<h4 data-number="1.5.2.5" class="anchored" data-anchor-id="comparación-de-modelos-mediante-anova"><span class="header-section-number">1.5.2.5</span> Comparación de modelos mediante <code>anova()</code></h4>
+<p>Con la función <code>anova()</code> se pueden comparar modelos “jerárquicos”. En los casos expuestos anteriormente, se puede cuantificar hasta qué punto el ajuste cuadrático es superior al ajuste lineal, o que el ajuste de orden 6 no es superior al de orden 5.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>rlm.Boston1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat, <span class="at">data =</span> Boston)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(rlm.Boston1, rlm.Boston2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: medv ~ lstat
+Model 2: medv ~ lstat + I(lstat^2)
+  Res.Df   RSS Df Sum of Sq     F    Pr(&gt;F)    
+1    504 19472                                 
+2    503 15347  1    4125.1 135.2 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>rlm.Boston5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> <span class="fu">poly</span>(lstat, <span class="dv">5</span>), <span class="at">data =</span> Boston)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(rlm.Boston5, rlm.Boston6)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: medv ~ poly(lstat, 5)
+Model 2: medv ~ poly(lstat, 6)
+  Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+1    500 13597                           
+2    499 13555  1    42.364 1.5596 0.2123</code></pre>
+</div>
+</div>
+<p>En la primera tabla ANOVA se puede ver, en la etiquetada como línea 2, el estadístico F, que recoge el ratio de variabilidad explicada por el Model 2 frente al Model 1. Su elevado valor, junto con un p-valor prácticamente nulo, llevan a considerar el modelo cuadrático muy superior al simple. Al lector observador no le debe sorprender este resultado a la vista del diagrama de dispersión entre <code>medv</code> y <code>lstat</code>, que presenta una clara no linealidad.</p>
+<p>Por su parte, la segunda tabla ANOVA muestra un resultado bien distinto, con un discreto valor del estadístico F que conduce a rechazar que el polinomio de orden 6 explique mejor la respuesta que el de orden 5. Además se puede comprobar que este p-valor coincide con el p-valor asociado al término de orden 6 estimado por la regresión.</p>
+<blockquote class="blockquote">
+<p><strong>Preguna</strong> ¿Qué conclusiones obtiene al comparar los modelos <code>rlm.Boston</code> y <code>rlm.BostonModif</code>?</p>
+</blockquote>
+</section>
+<section id="colinealidad-vif" class="level4" data-number="1.5.2.6">
+<h4 data-number="1.5.2.6" class="anchored" data-anchor-id="colinealidad-vif"><span class="header-section-number">1.5.2.6</span> Colinealidad: <code>vif()</code></h4>
+<p>La colinealidad es un problema que puede aparecer en regresión múltiple, cuando una variable explicativa pueda estar altamente correlacionada con otra u otras explicativa(s). Aquellas variables que presentan colinealidad producen una inflación en la estimación de la varianza, y, con ello, una peor precisión para detectar significatividad. El cálculo del <em>factor de inflación de la varianza (VIF)</em> de cada parámetro se puede obtener con la función <code>vif()</code>, del paquete <code>car</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(rlm.Boston)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   lstat       rm      age      tax     chas 
+2.710812 1.678750 1.795414 1.533240 1.030405 </code></pre>
+</div>
+</div>
+<p>Para estos datos, la mayoría de los VIF son bajos o moderados.</p>
+<blockquote class="blockquote">
+<p><strong>Regla de decisión práctica</strong>: No preocuparse de la multicolinealidad si <code>vif &lt; 5</code>, incluso <code>vif &lt; 10</code>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo salen los VIF de la regresión múltiple con los datos <code>airquality</code>?</p>
+</blockquote>
+<p>Veamos un ejemplo claro de colinealidad:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(rlm.Boston2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     lstat I(lstat^2) 
+  12.93657   12.93657 </code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Qué interpretación tiene que los VIF sean iguales?</p>
+</blockquote>
+<p>Vamos a generar un caso con alta colinealidad:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>Boston<span class="sc">$</span>sum <span class="ot">&lt;-</span> Boston<span class="sc">$</span>lstat<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> Boston<span class="sc">$</span>rm <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(Boston<span class="sc">$</span>lstat))</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>rlm.BostonColine <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> lstat <span class="sc">+</span> rm <span class="sc">+</span> tax <span class="sc">+</span> chas <span class="sc">+</span> sum, </span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> Boston)</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(rlm.BostonColine)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    lstat        rm       tax      chas       sum 
+13.189150  1.988231  1.430875  1.008564 10.209699 </code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Qué interpretación tienen ahora los VIF?</p>
+</blockquote>
+</section>
+<section id="bibliografía" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="bibliografía">Bibliografía</h4>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-CDRlm" class="csl-entry" role="listitem">
+Casero-Alonso, Víctor, y María Durbán. 2024. <span>«Modelización lineal»</span>. En <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/cap-lm.html">https://cdr-book.github.io/cap-lm.html</a>.
+</div>
+<div id="ref-Faraway" class="csl-entry" role="listitem">
+Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.
+</div>
+<div id="ref-CDR" class="csl-entry" role="listitem">
+Fernández-Avilés, Gema, y José-María Montero. 2024. <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/index.html">https://cdr-book.github.io/index.html</a>.
+</div>
+<div id="ref-Pena2002" class="csl-entry" role="listitem">
+Peña, Daniel. 2002. <em>Regresión y diseño de experimentos</em>. Alianza Editorial.
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Prefacio">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Prefacio</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Cap2-DoE.html" class="pagination-link" aria-label="Diseño de experimentos">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño de experimentos</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

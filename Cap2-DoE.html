@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Diseño de experimentos – Estadística II: modelos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Cap3-GLM.html" rel="next">
+<link href="./Cap1-LM.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-77205cbbef6a5b90ba72edc25dea2156.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Cap2-DoE.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño de experimentos</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Estadística II: modelos</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefacio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap1-LM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelos lineales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap2-DoE.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño de experimentos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap3-GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelos lineales generalizados</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap4-Superv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Análisis de supervivencia o fiabilidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap5-Seleccion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Selección de variables</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#nociones-básicas" id="toc-nociones-básicas" class="nav-link active" data-scroll-target="#nociones-básicas"><span class="header-section-number">2.1</span> Nociones básicas</a></li>
+  <li><a href="#principios-básicos-del-doe" id="toc-principios-básicos-del-doe" class="nav-link" data-scroll-target="#principios-básicos-del-doe"><span class="header-section-number">2.2</span> Principios básicos del DoE</a>
+  <ul class="collapse">
+  <li><a href="#aleatorización" id="toc-aleatorización" class="nav-link" data-scroll-target="#aleatorización"><span class="header-section-number">2.2.1</span> Aleatorización</a></li>
+  <li><a href="#réplicas" id="toc-réplicas" class="nav-link" data-scroll-target="#réplicas"><span class="header-section-number">2.2.2</span> Réplicas</a></li>
+  <li><a href="#bloqueo" id="toc-bloqueo" class="nav-link" data-scroll-target="#bloqueo"><span class="header-section-number">2.2.3</span> Bloqueo</a></li>
+  </ul></li>
+  <li><a href="#procedimiento-estadístico-de-un-experimento" id="toc-procedimiento-estadístico-de-un-experimento" class="nav-link" data-scroll-target="#procedimiento-estadístico-de-un-experimento"><span class="header-section-number">2.3</span> Procedimiento estadístico de un experimento</a></li>
+  <li><a href="#modelo-anova" id="toc-modelo-anova" class="nav-link" data-scroll-target="#modelo-anova"><span class="header-section-number">2.4</span> Modelo ANOVA</a>
+  <ul class="collapse">
+  <li><a href="#estimación-de-sigma2" id="toc-estimación-de-sigma2" class="nav-link" data-scroll-target="#estimación-de-sigma2"><span class="header-section-number">2.4.1</span> Estimación de <span class="math inline">\(\sigma^2\)</span></a></li>
+  <li><a href="#contraste-de-hipótesis-anova" id="toc-contraste-de-hipótesis-anova" class="nav-link" data-scroll-target="#contraste-de-hipótesis-anova"><span class="header-section-number">2.4.2</span> Contraste de hipótesis ANOVA</a></li>
+  <li><a href="#comprobación-de-los-supuestos" id="toc-comprobación-de-los-supuestos" class="nav-link" data-scroll-target="#comprobación-de-los-supuestos"><span class="header-section-number">2.4.3</span> Comprobación de los supuestos</a></li>
+  <li><a href="#comparaciones-múltiples" id="toc-comparaciones-múltiples" class="nav-link" data-scroll-target="#comparaciones-múltiples"><span class="header-section-number">2.4.4</span> Comparaciones múltiples</a></li>
+  <li><a href="#qué-método-de-comparación-por-pares-debe-usarse" id="toc-qué-método-de-comparación-por-pares-debe-usarse" class="nav-link" data-scroll-target="#qué-método-de-comparación-por-pares-debe-usarse"><span class="header-section-number">2.4.5</span> ¿Qué método de comparación por pares debe usarse?</a></li>
+  </ul></li>
+  <li><a href="#diseños-bifactoriales-diseño-por-bloques" id="toc-diseños-bifactoriales-diseño-por-bloques" class="nav-link" data-scroll-target="#diseños-bifactoriales-diseño-por-bloques"><span class="header-section-number">2.5</span> Diseños bifactoriales: diseño por bloques</a></li>
+  <li><a href="#diseños-bifactoriales-con-interacción" id="toc-diseños-bifactoriales-con-interacción" class="nav-link" data-scroll-target="#diseños-bifactoriales-con-interacción"><span class="header-section-number">2.6</span> Diseños bifactoriales con interacción</a>
+  <ul class="collapse">
+  <li><a href="#una-sola-réplica" id="toc-una-sola-réplica" class="nav-link" data-scroll-target="#una-sola-réplica"><span class="header-section-number">2.6.1</span> Una sola réplica</a></li>
+  </ul></li>
+  <li><a href="#diseños-de-más-de-dos-factores." id="toc-diseños-de-más-de-dos-factores." class="nav-link" data-scroll-target="#diseños-de-más-de-dos-factores."><span class="header-section-number">2.7</span> Diseños de más de dos factores.</a></li>
+  <li><a href="#diseños-factoriales-a-dos-niveles-2k" id="toc-diseños-factoriales-a-dos-niveles-2k" class="nav-link" data-scroll-target="#diseños-factoriales-a-dos-niveles-2k"><span class="header-section-number">2.8</span> Diseños factoriales a dos niveles (2^k)</a></li>
+  <li><a href="#lm" id="toc-lm" class="nav-link" data-scroll-target="#lm"><span class="header-section-number">2.9</span> Modelo lineal de regresión</a>
+  <ul class="collapse">
+  <li><a href="#suma-de-cuadrados-en-la-regresión." id="toc-suma-de-cuadrados-en-la-regresión." class="nav-link" data-scroll-target="#suma-de-cuadrados-en-la-regresión."><span class="header-section-number">2.9.1</span> Suma de Cuadrados en la regresión.</a></li>
+  </ul></li>
+  <li><a href="#diseño-de-experimentos" id="toc-diseño-de-experimentos" class="nav-link" data-scroll-target="#diseño-de-experimentos"><span class="header-section-number">2.10</span> Diseño de experimentos</a></li>
+  <li><a href="#casos-práctico-helicóptero-de-box" id="toc-casos-práctico-helicóptero-de-box" class="nav-link" data-scroll-target="#casos-práctico-helicóptero-de-box"><span class="header-section-number">2.11</span> Casos práctico: Helicóptero de Box</a>
+  <ul class="collapse">
+  <li><a href="#diseño-unifactorial" id="toc-diseño-unifactorial" class="nav-link" data-scroll-target="#diseño-unifactorial"><span class="header-section-number">2.11.1</span> Diseño unifactorial</a></li>
+  <li><a href="#diseños-bifactoriales" id="toc-diseños-bifactoriales" class="nav-link" data-scroll-target="#diseños-bifactoriales"><span class="header-section-number">2.11.2</span> Diseños bifactoriales</a></li>
+  <li><a href="#diseño-trifactorial" id="toc-diseño-trifactorial" class="nav-link" data-scroll-target="#diseño-trifactorial"><span class="header-section-number">2.11.3</span> Diseño trifactorial</a></li>
+  </ul></li>
+  <li><a href="#por-aquí" id="toc-por-aquí" class="nav-link" data-scroll-target="#por-aquí"><span class="header-section-number">2.12</span> POR AQUí</a>
+  <ul class="collapse">
+  <li><a href="#extras" id="toc-extras" class="nav-link" data-scroll-target="#extras"><span class="header-section-number">2.12.1</span> Extras</a></li>
+  </ul></li>
+  <li><a href="#licesio-diseños-de-medidas-repetidas" id="toc-licesio-diseños-de-medidas-repetidas" class="nav-link" data-scroll-target="#licesio-diseños-de-medidas-repetidas"><span class="header-section-number">2.13</span> (LICESIO) Diseños de medidas repetidas</a></li>
+  <li><a href="#modelo-lineal-de-regresión-múltiple" id="toc-modelo-lineal-de-regresión-múltiple" class="nav-link" data-scroll-target="#modelo-lineal-de-regresión-múltiple"><span class="header-section-number">2.14</span> Modelo lineal de regresión múltiple</a></li>
+  <li><a href="#bibliografía" id="toc-bibliografía" class="nav-link" data-scroll-target="#bibliografía"><span class="header-section-number">2.15</span> Bibliografía</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-DoE" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño de experimentos</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+body {text-align: justify}
+</style>
+<p>En este tema se estudian los denominados modelos de diseño de experimentos, que se incluyen entre los modelos lineales. En ellos, como ya se ha indicado, la denominada variable respuesta debe ser cuantitativa/numérica continua. Por el contrario, la(s) variable(s) explicativa(s) debe(n) ser categórica(s), y en este contexto se denomina(n) <em>factor</em>(es), y se supone que influye(n) sobre la variable respuesta.</p>
+<p>Una muy buena referencia para este tema es el libro “Regresión y diseño de experimentos” de Daniel Peña, <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, concretamente los capítulos 2 a 4. Otro libro de referencia “clásico” es “Design and Analysis of Experiments” de Douglas Montgomery, <span class="citation" data-cites="MontgomeryDoE">Montgomery (<a href="#ref-MontgomeryDoE" role="doc-biblioref">2008</a>)</span> capítulos …. Otro libro de referencia con un buen contenido matemático y práctico es “Linear Models with R” de Julian Faraway, <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> capítulos ….</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: En este tema se trata el diseño de experimentos habitualmente denominado “clásico”, por contraposición al <em>diseño óptimo de experimentos</em> (mi línea de investigación) en el que se considera el enfoque experimental en modelos de regresión.</p>
+</blockquote>
+<p>Como en el capítulo de modelos lineales de regresión, cabe distinguir entre modelos de un sólo factor, los más sencillos, y dos o más factores, en los que no sólo se tiene en cuenta el <em>efecto</em> de cada factor sobre la respuesta, sino las posibles <em>interacciones</em> entre los mismos. Citamos algunos casos, que desarrollaremos: - Diseños unifactoriales, con un único factor con dos o más niveles (tratamientos). - Diseños bifactoriales: - con o sin réplicas, y con o sin interacción (diseños por bloques). - Diseños de más de dos factores. - Diseños factoriales a 2 niveles (2^k).</p>
+<p>Por extensión, no entraremos en diseños “con nombre propio” como los cuadrados latinos y los grecolatinos, los diseños Plackett-Burman, los Box-Behnken, ni con los modelos con efectos aleatorios, que se desarrollan en el Capítulo 3 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> ¿también los diseños PB y BB?. Tampoco describiremos los diseños factoriales fraccionados (<span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, Capítulo 4), ni los diseños de superficie de respuesta (<span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, Capítulo 5).</p>
+<section id="nociones-básicas" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="nociones-básicas"><span class="header-section-number">2.1</span> Nociones básicas</h2>
+<p><strong>¿Qué es un experimento?</strong><br>
+Acudiendo a la definición de la RAE, es una “operación destinada a descubrir, comprobar o demostrar determinados fenómenos o principios científicos. <em>Mendel realizó importantes experimentos genéticos con guisantes.</em>”.</p>
+<p>Enlazándolo con la frase inicial del Capítulo, un experimento consiste en observar/medir el valor de la variable respuesta (cuantitativa), para distintos valores (categorías) del factor o factores. Por ejemplo, - medir el peso de jamones (kg), para distintos valores del factor “genética”, y/o del factor “estación”, etc. - medir las emisiones directas de CO2 de un motor (g CO2/s), para distintos valores del factor “presión de admisión”, la “temperatura de admisión”, el “% de mezcla de metanol”, etc. - medir el tiempo de vuelo de helicópteros de papel (segundos), para distintos valores del factor “longitud de las alas”, “anchura de las alas”, “gramaje del papel”, “clip”, etc.</p>
+<p><strong>¿Qué significa diseñar un experimento?</strong><br>
+Diseñar un experimento es determinar las condiciones experimentales (valores de las variables controlables) para las que se obtendrán las observaciones de la variable respuesta (que se espera que presenten cambios según las condiciones experimentales), y que proporcionarán información relevante (o no) sobre el fenómeno estudiado para indentificar las razones del cambio. Hay que tener en cuenta que, durante el experimento pueden afectar otras variables no controlables por el experimentador (véanse más adelante los principios básicos del DoE).</p>
+<p>Siguiendo con el ejemplo,</p>
+<ul>
+<li>determinar varias genéticas (<em>Duroc</em>, <em>Traxx</em>, <em>Magnus</em> … ) para comparar el peso del jamón entre ellas, o la combinación genéticas con las estaciones (<em>invierno</em>, <em>primavera</em>, <em>verano</em>, <em>otoño</em>), etc. para encontrar las razones del cambio en el peso del jamón.</li>
+<li>determinar los niveles de presión de admisión (1 bar, 1.5 bares…), temperatura de admisión (35ºC, 65ºC …), % de mezcla de metanol (0%, 10%, 20% … de sustitución -energía-), etc. que se van combinar para estudiar su efecto directo y/o conjunto sobre las emisiones directas de CO2 del motor.</li>
+<li>determinar la longitud de las alas (10, 15, 20 cm …), la anchura de las alas (4, 6, 8 cm …), el gramaje del papel (80 g/m2, 120 g/m2 …), el uso de clip (con clip, sin clip) para estudiar su efecto sobre el tiempo de vuelo de los helicópteros de papel.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: En el caso del <em>diseño óptimo de experimentos</em>, se determinarán los mejores valores de la variable (o variables) explicativa(s) <span class="math inline">\(X\)</span> donde observar el valor de la respuesta <span class="math inline">\(Y\)</span>. Por ejemplo, en el caso de la regresión lineal simple o recta de regresión, los mejores “lugares” donde observar son los dos valores extremos donde esté definida la variable <span class="math inline">\(X\)</span>, dado que una recta queda determinada por 2 “puntos”.</p>
+</blockquote>
+<p><strong>¿Por qué es importante diseñar un experimento?</strong><br>
+Muy resumidamente, por “costes”… un buen diseño de experimento permite ahorrar tiempo, recursos y riesgos (…costes en el sentido amplio de la palabra), y conduce a un análisis adecuado/correcto. Además, responde al principio de “pensar antes de actuar”.</p>
+</section>
+<section id="principios-básicos-del-doe" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="principios-básicos-del-doe"><span class="header-section-number">2.2</span> Principios básicos del DoE</h2>
+<section id="aleatorización" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="aleatorización"><span class="header-section-number">2.2.1</span> Aleatorización</h3>
+<p>La aletorización es la piedra angular de los métodos estadísticos. Por aleatorización se entiende tanto la asignación del material experimental como el orden en que se realizan los experimentos. Uno de los requisitos estadísticos es que las observaciones (o los errores) sean variables <em>aleatorias</em> con distribuciones independientes.</p>
+<p>La aleatorización también ayuda a <em>promediar</em> los efectos de los factores que no conocemos o que no están bajo control.</p>
+</section>
+<section id="réplicas" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="réplicas"><span class="header-section-number">2.2.2</span> Réplicas</h3>
+<p>Una réplica es la repetición de un experimento bajo las mismas condiciones. Permite estimar la variabilidad de los resultados y proporciona una medida de la precisión del experimento.</p>
+</section>
+<section id="bloqueo" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="bloqueo"><span class="header-section-number">2.2.3</span> Bloqueo</h3>
+<p>El bloqueo se utiliza para controlar la variabilidad de las respuestas producida por factores que no son de interés, pero se pueden controlar. Consiste en dividir el experimento en bloques homogéneos, de forma que las diferencias entre los bloques sean menores que las diferencias entre los tratamientos. Esto permite reducir la variabilidad residual y aumentar la precisión del experimento.</p>
+</section>
+</section>
+<section id="procedimiento-estadístico-de-un-experimento" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="procedimiento-estadístico-de-un-experimento"><span class="header-section-number">2.3</span> Procedimiento estadístico de un experimento</h2>
+<p>Siguiendo el apartado “Directrices para el diseño de experimentos” de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, el procedimiento estadístico de un experimento se puede resumir en los siguientes pasos:</p>
+<ol type="1">
+<li>Planteamiento del problema</li>
+</ol>
+<ol type="a">
+<li>Definicion de las variables involucradas. Variable respuesta y factores controlables/explicativos, no controlables, ruido (niveles, rangos)</li>
+<li>Selección del modelo</li>
+</ol>
+<ol start="2" type="1">
+<li>Elección del diseño experimental</li>
+<li>Realización del experimento, toma de observaciones de la variable respuesta</li>
+<li>Análisis estadístico de los datos obtenidos</li>
+<li>Conclusiones y recomendaciones.</li>
+</ol>
+</section>
+<section id="modelo-anova" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="modelo-anova"><span class="header-section-number">2.4</span> Modelo ANOVA</h2>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: Libro de Peña y muchos otros: ANOVA como “ampliación” de comparación de dos muestras de ¿Estadística 1?</p>
+</blockquote>
+<p>La herramienta principal para el análisis de los modelos de diseño de experimentos es el <strong>modelo de ANálisis de la VArianza, modelo ANOVA</strong>. Es un modelo lineal que permite modelizar (de nuevo de forma aproximada) el comportamiento de una variable respuesta cuantitativa, <span class="math inline">\(Y\)</span>, mediante un función lineal de una o varias variables explicativas <em>categóricas</em>/<em>factores</em>, <span class="math inline">\(X_1, \ldots, X_k\)</span>.$.</p>
+<p>El caso más simple es el de un único <em>factor</em> con 2 o más categorías/niveles distintos, que se denomina ANOVA de un factor (ANOVA univariante, ANOVA de una vía o One-way ANOVA). En este caso la formulación del modelo lineal es ligeramente distinta (pero equivalente) al del modelo de regresión lineal: <span class="math display">\[Y_{ij} = \mu + \tau_i +\epsilon_{ij}, \qquad i=1, \ldots, l \text{ (niveles); } j=1,\ldots, n_i \text{ (réplicas)}\]</span> donde <span class="math inline">\(Y_{ij}\)</span> son las observaciones/respuestas/mediciones obtenidas como resultado del experimento (variable respuesta), <span class="math inline">\(\mu\)</span> es la media global de dichas observaciones, común a todos los niveles, <span class="math inline">\(\tau_i\)</span> es el <em>efecto</em> del nivel <span class="math inline">\(i\)</span> del factor (efecto del tratamiento i-ésimo: parámetro que mide su influencia en la respuesta) y <span class="math inline">\(\epsilon_{ij}\)</span> es el error aleatorio asociado a la observación <span class="math inline">\(j\)</span> del nivel <span class="math inline">\(i\)</span> del factor.</p>
+<blockquote class="blockquote">
+<p>La analogía con el modelo de regresión es directa, <span class="math inline">\(\mu\)</span> es el equivalente a <span class="math inline">\(\beta_0\)</span>, y <span class="math inline">\(\tau_i\)</span> es el equivalente a <span class="math inline">\(\beta_i\)</span> de una variable categórica <em>dummy</em>.</p>
+</blockquote>
+<p>Los supuestos habituales sobre el error son los mismos que en el modelo de regresión: media cero, <span class="math inline">\(E[\epsilon]=0\)</span> , varianza constante, <span class="math inline">\(var(\epsilon)=\sigma^2I\)</span>, y seguir una distribución normal.</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: 1. Cuando hay un único <em>factor</em>, con dos niveles distintos, el ANOVA coincide exactamente con la prueba t-de Student.<br>
+2. La generalización a varias variables categóricas (factores) es directa, y se denomina ANOVA de dos o más factores.</p>
+</blockquote>
+<p>El ANOVA compara la respuesta media de los distintos <em>niveles</em> que conforman los factores, pero lo realiza con la información proporcionada por la variabilidad, de ahí su nombre. Dicho análisis se deriva de la partición de la variabilidad total en los dos componentes ya mencionados en el capítulo de regresión y que aquí son: la variabilidad debida a los efectos de los factores (tratamiento) y la variabilidad debida a los residuos. <span class="math display">\[SC_{total} = SC_{factor} + SC_{residual},\]</span></p>
+<p>donde <span class="math display">\[SC_{total}=\sum_{i=1}^l \sum_{j=1}^{n_i} (y_{ij}-\bar{y})^2\]</span> es la suma de cuadradados entre las observaciones y el gran promedio,</p>
+<p><span class="math display">\[SC_{factor}= \sum_{i=1}^l n_i(\bar{y}_{i.}-\bar{y})^2\]</span> es la suma de cuadrados entre los promedios de los tratamientos y el gran promedio, y</p>
+<p><span class="math display">\[SC_{residual}=\sum_{i=1}^l \sum_{j=1}^{n_i} (y_{ij}-\bar{y}_{i.})^2\]</span></p>
+<p>es la suma de cuadrados de las diferencias de las observaciones dentro de los tratamientos y el promedio de los tratamientos.</p>
+<p>Estas sumas de cuadrados tienen <span class="math inline">\(N-1\)</span>, <span class="math inline">\(l-1\)</span> y <span class="math inline">\(N-l\)</span> grados de libertad, respectivamente, siendo <span class="math inline">\(N\)</span> el número total de observaciones y <span class="math inline">\(n_i\)</span> el número de observaciones en el tratamiento i-ésimo. Y por tanto:</p>
+<p><span class="math display">\[SCM_{Total}=\frac{SC_{Total}}{N-1}, \quad
+SCM_{factor}=\frac{SC_{factor}}{l-1} \quad \text{  y  } \quad
+SCM_{residual}=\frac{SC_{residual}}{N-l}\]</span></p>
+<section id="estimación-de-sigma2" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="estimación-de-sigma2"><span class="header-section-number">2.4.1</span> Estimación de <span class="math inline">\(\sigma^2\)</span></h3>
+<p>Un tratamiento matemático de las sumas de cuadrados medios nos da que los valores medios/esperados de las sumas de cuadrados medios son: <span class="math display">\[E(SCM_{residual})=\sigma^2\]</span></p>
+<p><span class="math display">\[E(SCM_{factor})=\sigma^2 + \frac{n\sum^l \tau_i^2}{l-1}\]</span></p>
+<p>Y podemos decir que <span class="math inline">\(SCM_{residual}\)</span> estima <span class="math inline">\(\sigma^2\)</span> y, si no hay diferencias en las medias de los <span class="math inline">\(l\)</span> tratamientos (<span class="math inline">\(\tau_i=0\)</span>), <span class="math inline">\(SCM_{factor}\)</span> también.</p>
+<p>En cambio, si hay diferencias, <span class="math inline">\(SCM_{factor}&gt;SCM_{residual}\)</span>.</p>
+</section>
+<section id="contraste-de-hipótesis-anova" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="contraste-de-hipótesis-anova"><span class="header-section-number">2.4.2</span> Contraste de hipótesis ANOVA</h3>
+<p>En este caso, el contraste de hipótesis que estamos realizando se enuncia así:</p>
+<p><span class="math display">\[\begin{eqnarray}
+H_0 &amp;:&amp; \tau_1 = \tau_2 = \tau_3 = \tau_4 = \tau_5 = 0 \\
+H_1 &amp;:&amp; \text{Al menos uno de los } \tau_i \text{ es distinto de cero.}
+\end{eqnarray}\]</span></p>
+<p>O lo que es equivalente:</p>
+<p><span class="math display">\[\begin{eqnarray}
+H_0 &amp;:&amp; \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5 \\
+H_1 &amp;:&amp; \text{Al menos una de las } \mu_i \text{ es distinta.}
+\end{eqnarray}\]</span></p>
+</section>
+<section id="comprobación-de-los-supuestos" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="comprobación-de-los-supuestos"><span class="header-section-number">2.4.3</span> Comprobación de los supuestos</h3>
+<p>Como en regresión, los supuestos se comprueban a través de los residuos. En el caso práctico con <code>R</code> se comprobarán visualmente mediante la función <code>plot()</code>, o través de contrastes: - Shapiro-Wilk (normalidad), - <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm">Barlett</a> o <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm">Levene</a> (homogeneidad de varianzas): <span class="math display">\[\begin{eqnarray}
+H_0 &amp;:&amp; \sigma_1 = \ldots = \sigma_l \\
+H_1 &amp;:&amp; \text{Al menos una de las } \sigma_i \text{ es distinta de las demás,}
+\end{eqnarray}\]</span> - Durbin-Watson (independencia de los residuos).</p>
+</section>
+<section id="comparaciones-múltiples" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="comparaciones-múltiples"><span class="header-section-number">2.4.4</span> Comparaciones múltiples</h3>
+<p>Los contrastes de comparaciones múltiples, <em>post-hoc</em> o <em>a posteriori</em> son contrastes que se muestran relevantes una vez que hemos ajustado nuestro modelo. Se usan para comparar medias de observaciones pertenecientes al mismo nivel, con otras medias de observaciones pertenecientes a otro nivel.</p>
+<p>La hipótesis nula en estos casos es siempre la igualdad de las medias. <span class="math display">\[\begin{eqnarray}
+H_0 &amp;:&amp; \mu_i = \mu_j \\
+H_1 &amp;:&amp; \mu_i \neq \mu_j
+\end{eqnarray}\]</span></p>
+<p>Hay que ser muy precavidos porque las comparaciones múltiples inflan el <em>error de tipo I</em> (Falsar <span class="math inline">\(H_0\)</span> cuando en realidad es cierta), porque es probable que en un porcentaje elevado de las comparaciones, las diferencias serán el resultado del error aleatorio. Por ello, es necesario realizar una corrección del nivel de significación <span class="math inline">\(\alpha\)</span> para que el error tipo I global no sea demasiado grande.</p>
+<ul>
+<li><a href="https://dle.rae.es/?id=HYpXyKp" target="_blank">Falsar (RAE)</a>: En la ciencia, desmentir una hipótesis o una teoría mediante pruebas o experimentos.</li>
+</ul>
+<p>De entre los distintos métodos de comparaciones múltiples, los más utilizados son:</p>
+<ul>
+<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc473.htm"><strong>Bonferroni</strong></a><strong>:</strong> Un enfoque para asegurarse que el nivel de confianza simultáneo no sea demasiado pequeño es sustituir la significación <span class="math inline">\(\alpha\)</span> por <span class="math inline">\(\alpha/r\)</span> donde <span class="math inline">\(r\)</span> es el número de comparaciones. Este método está pensado para realizar un número de comparaciones fijado a priori.</p></li>
+<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc472.htm"><strong>Scheffé</strong></a><strong>:</strong> En el método de Scheffé el error tipo I (rechazar <span class="math inline">\(H_0\)</span> cuando es cierta), es a lo sumo <span class="math inline">\(\alpha\)</span> para cualquiera de las comparaciones posibles. Esto es útil cuando queremos realizar todas y cada una de las posibles comparaciones.</p></li>
+<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc471.htm"><strong>Tukey</strong></a><strong>:</strong> Tukey propuso un procedimiento para probar hipótesis para las que el nivel de significación global es exactamente <span class="math inline">\(\alpha\)</span> cuando los tamaños de las muestras son iguales y es a lo sumo <span class="math inline">\(\alpha\)</span> cuando los tamaños de las muestras no son iguales. Este procedimiento está pensado cuando resulta de interés realizar todas las comparaciones posibles.</p></li>
+<li><p><strong>Diferencia Significativa Mínima de Fisher (LSD):</strong> Basado en el estadístico F, en definitiva consiste en realizar todas las pruebas t posibles pero realizando una corrección en el cálculo de la desviación típica. Este método calcula una desviación típica combinada <span class="math inline">\(\sqrt{SCM_{residual}(\frac{1}{n_i}+\frac{1}{n_j})}\)</span> en lugar de usar la de los dos grupos que se comparan. Esto aumenta la potencia del contraste pero no realiza una corrección por comparaciones múltiples.<br>
+La Least Significative Difference LSD consiste en: <span class="math display">\[LSD=t_{\alpha/2,N-a}\sqrt{SCM_{residual}(\frac{1}{n_i}+\frac{1}{n_j})}.\]</span> Y el estadístico de contraste: <span class="math display">\[t_0=\frac{{\bar{y}_{i.}-\bar{y}_{j.}}}{\sqrt{SCM_{residual}(\frac{1}{n_i}+\frac{1}{n_j})}}.\]</span></p></li>
+<li><p><a href="https://dx.doi.org/10.2307%2F3001478"><strong>Rango Múltiple Duncan</strong></a><strong>:</strong> El test de Duncan parece ser especialmente conservador respecto al error de Tipo II con el riesgo de aumentar el error de Tipo I:</p></li>
+</ul>
+</section>
+<section id="qué-método-de-comparación-por-pares-debe-usarse" class="level3" data-number="2.4.5">
+<h3 data-number="2.4.5" class="anchored" data-anchor-id="qué-método-de-comparación-por-pares-debe-usarse"><span class="header-section-number">2.4.5</span> ¿Qué método de comparación por pares debe usarse?</h3>
+<p>Desafortunadamente, no hay una respuesta precisa para esa pregunta. Existen estudios de simulación que dan como el más eficaz al método LSD de Fisher y el de Rango Múltiple de Duncan. Cada método tiene sus ventajas e inconvenientes, se puede consultar una <a href="https://pdfs.semanticscholar.org/aac2/f5a11d84acb8a8cec58e15143dd6bd233c0b.pdf">comparativa</a>.</p>
+<p>Además hay <a href="http://www.crcpress.com/product/isbn/9781584885740">otros métodos de comparaciones múltiples</a> y sus correspondientes <a href="https://cran.r-project.org/web/packages/multcomp/multcomp.pdf">paquetes en R</a>.</p>
+<p>Un caso particular son las comparaciones con un <strong>control</strong>: En muchos experimentos, uno de los tratamientos es un control o referencia. Solo interesa realizar <span class="math inline">\(a-1\)</span> comparaciones de cada grupo con el control. El test de <a href="http://sciences.ucf.edu/biology/pascencio/wp-content/uploads/sites/139/2016/11/Dunnetts-table.pdf">Dunnett</a> es una modificación de la prueba t.</p>
+</section>
+</section>
+<section id="diseños-bifactoriales-diseño-por-bloques" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="diseños-bifactoriales-diseño-por-bloques"><span class="header-section-number">2.5</span> Diseños bifactoriales: diseño por bloques</h2>
+<p>El caso más sencillo de diseño de experimentos con 2 factores es el diseño por bloques, de aplicación cuando de los 2 factores, uno es un factor perturbador (sobre el que no existe un interés específico pero su variabilidad puede afectar a la respuesta).</p>
+<p>En ocasiones, el factor perturbador es desconocido y no controlable. En estos casos la mejor solución es aplicar el principio de <em>aleatorización</em>. Sin embargo, si la fuente de variabilidad es conocida y controlable podemos utilizar la formación de <strong>Bloques</strong>.</p>
+<p>El diseño por bloques es una técnica que permite controlar la variabilidad de los resultados debida a factores no controlados, <em>bloques</em>. Se trata de dividir el experimento en bloques homogéneos, de forma que las diferencias entre los bloques sean menores que las diferencias entre los tratamientos. Otra opción posible es manteer fijo el factor perturbador y variar el factor de interés (volviendo al caso del diseño unifactorial).</p>
+<p>Si disponemos en general de <span class="math inline">\(a\)</span> tratamientos (niveles del factor de interés) y <span class="math inline">\(b\)</span> bloques (niveles del factor perturbador), el modelo estadístico será:</p>
+<p><span class="math display">\[y_{ij}=\mu+\tau_i+\beta_j+\epsilon_{ij}, \qquad i=1, \ldots, a; j=1, \ldots, b\]</span></p>
+<p>Estamos interesados solo en el contraste de hipótesis sobre los efectos <span class="math inline">\(\tau_i\)</span>.</p>
+<p>Descomponiendo ahora la variabilidad de las observaciones teniendo en cuenta los dos factores tenemos:</p>
+<p><span class="math display">\[SC_{Total}=SC_{tratamiento}+SC_{bloque}+SC_{residual}\]</span></p>
+<p><span class="math display">\[\sum^a \sum^b (y_{ij}-\bar{y})^2=b \sum^a (\bar{y}_{i.}-\bar{y})^2+a \sum^b (\bar{y}_{.j}-\bar{y})^2+\sum^a \sum^b (y_{ij}-\bar{y}_{.j}-\bar{y}_{i.}+\bar{y})^2\]</span></p>
+<p>Siendo <span class="math inline">\((a-1)\)</span> los grados de libertad para Tratamiento, <span class="math inline">\((b-1)\)</span> para el factor Bloque y <span class="math inline">\(ab-1-(a-1)-(b-1)=(a-1)(b-1)\)</span> para los residuales.</p>
+</section>
+<section id="diseños-bifactoriales-con-interacción" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="diseños-bifactoriales-con-interacción"><span class="header-section-number">2.6</span> Diseños bifactoriales con interacción</h2>
+<p>Consideramos ahora el caso de 2 factores de interés que podrían tener un efecto sobre la respuesta, y que, además, podrían interactuar entre ellos, lo que añadiría otro efecto sobre la misma.</p>
+<p>Si tenemos el factor A (con a niveles) y el factor B (con b niveles), el diseño bifactorial básico consiste en la combinación de todos los niveles de ambos factores, es decir una cantidad <span class="math inline">\(a\cdot b\)</span> de experimentos.</p>
+<p>Disponer de <em>réplicas</em> significa obtener combinaciones completas de <span class="math inline">\(a\cdot b\)</span> experimentos. Así, el diseño bifactorial tendrá <span class="math inline">\(a\cdot b\)</span> experimentos (sin réplica) o <span class="math inline">\(2 a\cdot b\)</span>, <span class="math inline">\(3 a\cdot b\)</span>, etc. experimentos (con réplica). Las réplicas permiten estimar la variabilidad de las observaciones en cada combinación experimental y realizar contrastes de hipótesis sobre los efectos de los factores y sus interacciones.</p>
+<p>Con este tipo de diseños se intenta responder a dos tipos de preguntas:</p>
+<ul>
+<li>¿Qué efectos tienen el factor A y el factor B sobre la respuesta?</li>
+<li>¿Existe algún tratamiento del factor A que produzca de manera regular una mejor respuesta independientemente del factor B?</li>
+</ul>
+<p>El modelo de los efectos en este caso viene dado por:</p>
+<p><span class="math display">\[y_{ijk}=\mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}, \quad i=1,\dots,a;  j=1,\dots,b; k=1,\dots,n\]</span></p>
+<p>La suma de cuadrados en este caso puede escribirse como:</p>
+<p><span class="math display">\[SC_{Total}=SC_A+SC_B+SC_{AB}+SC_{residual}\]</span></p>
+<p><span class="math display">\[\sum^a \sum^b \sum^n (y_{ijk}-\bar{y})^2=
+bn\sum^a (\bar{y_{i..}}-\bar{y})^2+
+an\sum^b (\bar{y_{.j.}}-\bar{y})^2+\]</span> <span class="math display">\[n\sum^a\sum^b (\bar{y_{ij.}}-\bar{y_{i..}}-\bar{y_{.j.}}+\bar{y})^2+
+\sum^a \sum^b \sum^n (y_{ijk}-\bar{y_{ij.}})^2\]</span></p>
+<p>Por el último componente se observa que debe haber por lo menos dos réplicas (<span class="math inline">\(n\geq 2\)</span>) para poder obtener una suma de cuadrados del error.</p>
+<p>Siendo los grados de libertad:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Efecto</th>
+<th>G.L.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>a-1</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>b-1</td>
+</tr>
+<tr class="odd">
+<td>AB</td>
+<td>(a-1)(b-1)</td>
+</tr>
+<tr class="even">
+<td>Error</td>
+<td>ab(n-1)</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>abn-1</td>
+</tr>
+</tbody>
+</table>
+<section id="una-sola-réplica" class="level3" data-number="2.6.1">
+<h3 data-number="2.6.1" class="anchored" data-anchor-id="una-sola-réplica"><span class="header-section-number">2.6.1</span> Una sola réplica</h3>
+<p>En este caso, la varianza del error, <span class="math inline">\(\sigma^2\)</span> no es estimable.</p>
+<p><span class="math display">\[SC_{residual}=\sum^a \sum^b \sum^n (y_{ijk}-\bar{y_{ij.}})^2\]</span></p>
+<p>Esto implica que el efecto de la interacción de los dos factores <span class="math inline">\((\tau\beta)_{ij}\)</span> y el error experimental no pueden separarse de alguna manera obvia.</p>
+<p><span class="math display">\[SC_{Total}=SC_A+SC_B+SC_{AB+Residual}\]</span></p>
+<p><span class="math display">\[SC_{AB+Residual}=SC_{Total}-SC_A-SC_B\]</span></p>
+<p>Si no hay interacción entre ambos factores <span class="math inline">\((\tau\beta)_{ij}=0\)</span>, existe un modelo posible:</p>
+<p><span class="math display">\[y_{ij}=\mu+\tau_i+\beta_j\]</span></p>
+</section>
+</section>
+<section id="diseños-de-más-de-dos-factores." class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="diseños-de-más-de-dos-factores."><span class="header-section-number">2.7</span> Diseños de más de dos factores.</h2>
+</section>
+<section id="diseños-factoriales-a-dos-niveles-2k" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="diseños-factoriales-a-dos-niveles-2k"><span class="header-section-number">2.8</span> Diseños factoriales a dos niveles (2^k)</h2>
+</section>
+<section id="lm" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="lm"><span class="header-section-number">2.9</span> Modelo lineal de regresión</h2>
+<section id="suma-de-cuadrados-en-la-regresión." class="level3" data-number="2.9.1">
+<h3 data-number="2.9.1" class="anchored" data-anchor-id="suma-de-cuadrados-en-la-regresión."><span class="header-section-number">2.9.1</span> Suma de Cuadrados en la regresión.</h3>
+<p>Las distancias verticales entre cada uno de los puntos, <span class="math inline">\((x_i,y_i)\)</span>, y la recta de regresión, <span class="math inline">\(\hat{y_i}=\beta_0 + \beta_1x_i\)</span>, son los residuos, <span class="math inline">\(\epsilon_i\)</span>. Estas distancias expresan el error aleatorio del modelo. ¿Hasta qué punto es más importante el efecto de la variable <span class="math inline">\(X\)</span> sobre la variable <span class="math inline">\(Y\)</span> que el error de los residuos?</p>
+<p>La recta de regresión siempre pasa por el centro de los datos <span class="math inline">\((\bar{X},\bar{Y})\)</span>, ese punto se conoce como centroide. Es el centro de gravedad de la nube de puntos.</p>
+<p>Si las variables <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> no estuviesen relacionadas entonces el hecho de conocer <span class="math inline">\(X\)</span> no daría información para tener una mejor estimación de <span class="math inline">\(Y\)</span>. La mejor predicción que podríamos hacer sería predecir <span class="math inline">\(Y\)</span> con su media, <span class="math inline">\(\bar{Y}\)</span>, sin tener en cuenta el valor de <span class="math inline">\(X\)</span>. Este modelo, el mas sencillo, es el que vamos a intentar falsar.</p>
+<p><span class="math display">\[H_0: \beta_10\]</span> <span class="math display">\[H_1: \beta_1\neq 0\]</span></p>
+<p>Para obtener evidencias que nos permitan rechazar la <span class="math inline">\(H_0\)</span> vamos a estudiar la variabilidad (INFORMACIÓN) de la variable respuesta.</p>
+<p><span class="math display">\[SC_{total}=SC_y=\sum (y_i-\bar{y})^2\]</span></p>
+<p><span class="math inline">\(SC_{total}\)</span> es el numerador de la varianza y se puede calcular multiplicando la varianza por los grados de libertad n-1. Y puede descomponerse en <span class="math inline">\(SC_{regresion}\)</span> y <span class="math inline">\(SC_{residual\)</span>.</p>
+<p><span class="math display">\[SC_{total}=SC_{regresion}+SC_{residual}\]</span> <span class="math display">\[\sum (y-\bar{y})^2={\sum (\hat{y}-\bar{y})^2}+\sum (y-\hat{y})^2\]</span></p>
+<p>Los grados de libertad totales son n-1, gastamos un grado de libertad al dar la media, <span class="math inline">\(\bar{y}\)</span>, <span class="math inline">\(SC_{totales}\)</span>.</p>
+<p>Los grados de libertad de los residuos son n-2, necesitamos <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> para calcular <span class="math inline">\(SC_{residuos}\)</span>.</p>
+<p>Con lo que nos queda 1 grado de libertad para la suma de cuadrados de la regresión <span class="math inline">\(SC_{regresion}\)</span>. Es el parametro extra que hemos estimado <span class="math inline">\(\beta_1\)</span>, la pendiente.</p>
+<p>Para completar este estudio de cómo se reparte la variabilidad, promediamos las respectivas sumas de cuadrados por sus grados de libertad (Medias de Cuadrados), en definitiva eso es calcular varianzas.</p>
+<p>Nunca seremos capaces de realizar predicciones perfectas, <em>todos los modelos son falsos</em>, pero estamos interesados en comparar el <strong>Efecto de X sobre Y</strong> con el <strong>Error Aleatorio</strong>:</p>
+<p><span class="math display">\[\frac{\text{Efecto de X sobre Y}}{\text{Error Aleatorio}}=\frac{\text{Varianza de la Regresión}}{\text{Varianza Error}}=\frac{SCM_{regresion}}{SCM_{residual}}=F\]</span></p>
+<p>Esto es lo que se conoce en estadística como un Análisis de la Varianza, ANOVA. Nuestro modelo sencillo que intentamos falsar es <span class="math inline">\(H_0:\beta_1=0\)</span>. Para que podamos falsar dicha hipótesis la Varianza de la Regresión debe ser mayor, cuanto más grande mejor, que la Varianza del Error.</p>
+<p>Comparamos entonces el estadístico F obtenido de dividir las dos varianzas con una distribución F con los grados de libertad correspondientes, 1 en el numerador y n-2 en el denominador. Calculando el p-valor correspondiente se podrá rechazar (o no) la hipótesis nula.</p>
+</section>
+</section>
+<section id="diseño-de-experimentos" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="diseño-de-experimentos"><span class="header-section-number">2.10</span> Diseño de experimentos</h2>
+</section>
+<section id="casos-práctico-helicóptero-de-box" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="casos-práctico-helicóptero-de-box"><span class="header-section-number">2.11</span> Casos práctico: Helicóptero de Box</h2>
+<p>Consideramos el ejemplo del helicóptero de Box del que se puede obtener información en <a href="https://williamghunter.net/george-box-articles/teaching-engineers-experimental-design-with-a-paper-helicopter" class="uri">https://williamghunter.net/george-box-articles/teaching-engineers-experimental-design-with-a-paper-helicopter</a>.</p>
+<section id="diseño-unifactorial" class="level3" data-number="2.11.1">
+<h3 data-number="2.11.1" class="anchored" data-anchor-id="diseño-unifactorial"><span class="header-section-number">2.11.1</span> Diseño unifactorial</h3>
+<p>Nos preguntamos si la longitud del ala del helicóptero influye en su tiempo de caída/vuelo. Esta simple pregunta permite plantear un diseño de 1 sólo factor, la longitud del ala, frente a la variable respuesta, el tiempo de caída. Para ello escogemos 3 valores distintos (3 categorías) de la longitud del ala.</p>
+<blockquote class="blockquote">
+<p>El ejemplo es equivalente a preguntarse si influye en el tiempo de caía el grosor del papel (tomando 3 grosores distintos), o si influye el ponerle clip al helicóptero (en este caso sólo 2 valores, ponerselo o no, variable dicotómica), etc. Más adelante veremos cómo manejar 2 o más variables a la vez.</p>
+</blockquote>
+<p>Las mediciones realizadas del tiempo de caída (en segundos) desde una determinada altura de 12 helicópteros de papel (réplicas, no repeticiones) construidos con las mismas dimensiones excepto la longitud del ala (variable explicativa, con 3 categorías: 8, 12, y 16 cm) son:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">8 cm</th>
+<th style="text-align: center;">12 cm</th>
+<th style="text-align: center;">16 cm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">2.59</td>
+<td style="text-align: center;">2.97</td>
+<td style="text-align: center;">3.14</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2.65</td>
+<td style="text-align: center;">3.09</td>
+<td style="text-align: center;">3.17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2.76</td>
+<td style="text-align: center;">3.12</td>
+<td style="text-align: center;">3.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2.78</td>
+<td style="text-align: center;">3.23</td>
+<td style="text-align: center;">3.32</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comparación de 2 niveles</strong><br>
+Primero consideraremos sólo 2 longitudes de ala de los helicópteros: 8 cm y 16 cm. Posteriormente trabajaremos la comparación entre las 3 longitudes de ala. El ANOVA viene a responder a la pregunta técnica: ¿Las diferencias entre los dos (tres) tratamientos (longitudes de ala) se deben simplemente al azar? ¿o realmente son diferencias auténticas, significativas?</p>
+<blockquote class="blockquote">
+<p>Hay que tener en cuenta que, en este caso, el diseño es balanceado (mismo número de elementos en cada tratamiento). El lector puede <em>experimentar</em> añadiendo u omitiendo un dato y observar los cambios que se producen.</p>
+</blockquote>
+<p>Los datos en el orden aleatorio de lanzamiento/medición son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.97</span>, <span class="fl">3.23</span>, <span class="fl">3.09</span>, <span class="fl">2.65</span>, <span class="fl">2.78</span>, <span class="fl">3.21</span>, <span class="fl">2.59</span>, <span class="fl">3.14</span>, <span class="fl">3.17</span>, <span class="fl">3.12</span>, <span class="fl">3.32</span>, <span class="fl">2.76</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ala <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"12 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"8 cm"</span>, <span class="st">"8 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"8 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"8 cm"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ala <span class="ot">&lt;-</span> <span class="fu">factor</span>(ala, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"8 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"16 cm"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>heli3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tiempos, ala)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>heli2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tiempos, ala)[ala <span class="sc">!=</span> <span class="st">"12 cm"</span>, ]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Realizamos un resumen gráfico y numérico de los datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Añade los valores de los 4 experimentos</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli2, <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/descriptivo-1.png" width="500" height="500" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>medias <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli2<span class="sc">$</span>tiempos, heli2<span class="sc">$</span>ala, mean)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>varian <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli2<span class="sc">$</span>tiempos, heli2<span class="sc">$</span>ala, var)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varian)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              8 cm 12 cm  16 cm
+medias 2.695000000    NA 3.2100
+varian 0.008166667    NA 0.0062</code></pre>
+</div>
+</div>
+<p>Con el análisis descriptivo (gráfico y numérico) parece haber diferencias entre el tiempo de caída de las 2 longitudes de ala. ¿Serán significativas dichas diferencias? Entramos en el terreno inferencial, aplicando el análisis ANOVA, que como bien sabemos, compara medias considerando las varianzas. La hipótesis de partida, hipótesis nula, <span class="math inline">\(H_0\)</span>, es la de NO influencia, es decir las medias de ambos tratamientos son la misma, <span class="math inline">\(\mu_{8} = \mu_{16}\)</span>. Llegados a este punto, al ser una comparación de dos medias, surge la duda de aplicar el contraste <span class="math inline">\(t\)</span> de Student de dos muestras independientes. Vamos a ver que dicho contraste y el ANOVA son equivalentes en este caso. Empezamos con el ANOVA:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>anova.h2 <span class="ot">&lt;-</span> <span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> heli2)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+ala          1 0.5305  0.5305   73.84 0.000137 ***
+Residuals    6 0.0431  0.0072                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Como contraste t de Student</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> heli2, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="co">#Supuesto del ANOVA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  tiempos by ala
+t = -8.5933, df = 6, p-value = 0.0001365
+alternative hypothesis: true difference in means between group 8 cm and group 16 cm is not equal to 0
+95 percent confidence interval:
+ -0.6616447 -0.3683553
+sample estimates:
+ mean in group 8 cm mean in group 16 cm 
+              2.695               3.210 </code></pre>
+</div>
+</div>
+<p>En ambos casos el p-valor obtenido es pequeño, de hecho, el lector atento habrá visto que coinciden en su valor (aunque son dos estadísticos distintos)!</p>
+<blockquote class="blockquote">
+<p>Recordatorio: Hay una relación directa entre la distribución t de Student y la distribución F, concretamente: <span class="math inline">\(t^2 = F\)</span>. Puede comprobarse con los datos del ejemplo anterior.</p>
+</blockquote>
+<p>Como se sabe, el p - valor es la probabilidad de que, siendo las medias poblacionales iguales (hipótesis nula), encontrásemos por azar diferencias entre las medias muestrales mayores que las que hemos encontrado. Por lo que al ser dicha probabilidad muy pequeña, podemos <em>falsar</em> la idea de que las medias poblacionales sean iguales (por azar es muy poco probable encontrar las diferencias que se han observado). Podemos decir que la longitud del ala influye en el tiempo de caída.</p>
+<p>En la tabla ANOVA podemos ver todos los cálculos intermedios para la obtención del estadístico F, a saber, (por orden) grados de libertad, sumas de cuadrados y media de suma de cuadrados.</p>
+<p>También podemos “resolver” el problema como <em>modelo lineal</em>!!<br>
+<em>Nota técnica: De hecho la función <code>aov()</code> hace una “llamada” a la función <code>lm()</code></em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>anova.h2.ml <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> heli2)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h2.ml)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: tiempos
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+ala        1 0.53045 0.53045  73.844 0.0001365 ***
+Residuals  6 0.04310 0.00718                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2.ml)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tiempos ~ ala, data = heli2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.10500 -0.05125 -0.02000  0.07000  0.11000 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.69500    0.04238  63.595 1.02e-09 ***
+ala16 cm     0.51500    0.05993   8.593 0.000137 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.08475 on 6 degrees of freedom
+Multiple R-squared:  0.9249,    Adjusted R-squared:  0.9123 
+F-statistic: 73.84 on 1 and 6 DF,  p-value: 0.0001365</code></pre>
+</div>
+</div>
+<p>Como se puede apreciar se llega a la misma tabla ANOVA. Y el modelo estimado aporta información complementaria… Vuelve a aparecer el mismo p-valor (obviamente), por dos lados!</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Puede interpretar el valor de la estimación de “ala8 cm” obtenida?</p>
+</blockquote>
+<p><strong>Comparación de 3 niveles</strong><br>
+Consideramos ahora la comparación de las 3 longitudes de ala. Primero el análisis descriptivo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3) </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Añade los valores de los 4 experimentos</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3, <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/descriptivo3-1.png" width="500" height="500" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>medias <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, mean)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>varian <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, var)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Efecto del tratamiento i-ésimo: tau_i</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>efecto <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, mean) <span class="sc">-</span> <span class="fu">mean</span>(heli3<span class="sc">$</span>tiempos)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varian, efecto)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               8 cm    12 cm  16 cm
+medias  2.695000000 3.102500 3.2100
+varian  0.008166667 0.011425 0.0062
+efecto -0.307500000 0.100000 0.2075</code></pre>
+</div>
+</div>
+<p>Vamos a visualizar ahora los datos mostrando tanto los residuos respecto a la media (“VT”), los efectos por grupo/categoría (“VE”) y los residuos intragrupo (“VNE”):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/graf.efectos-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/graf.efectos-2.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/graf.efectos-3.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para el análisis inferencial, ahora no es posible aplicar el contraste de la t de Student para comparar los 3 niveles a la vez, se podrían realizar las comparaciones por pares, pero no quedaría resuelto el problema global.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>anova.h3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> heli3)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: tiempos
+          Df  Sum Sq  Mean Sq F value    Pr(&gt;F)    
+ala        2 0.59045 0.295225   34.34 6.134e-05 ***
+Residuals  9 0.07737 0.008597                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tiempos ~ ala, data = heli3)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.13250 -0.05125 -0.00625  0.07000  0.12750 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.69500    0.04636  58.131 6.64e-13 ***
+ala12 cm     0.40750    0.06556   6.215 0.000156 ***
+ala16 cm     0.51500    0.06556   7.855 2.56e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.09272 on 9 degrees of freedom
+Multiple R-squared:  0.8841,    Adjusted R-squared:  0.8584 
+F-statistic: 34.34 on 2 and 9 DF,  p-value: 6.134e-05</code></pre>
+</div>
+</div>
+<p>La conclusión es la misma que antes, el ala influye en el tiempo de caída. Pero, al haber 3 niveles se debe mirar si todas las medias son distintas entre sí o sólo hay algunas medias distintas. Con la salida del summary se puede apreciar que la diferencia significativa se da entre las alas de 8 y 12 cm, pero no entre las alas de 12 y 16 cm. Pero no resolvemos el problema completo. ¿Hay diferencia entre las alas de 12 y 16 cm?… Debemos acudir a los contrastes de comparaciones múltiples.</p>
+<p><strong>Análisis de residuos (Diagnosis)</strong><br>
+Antes de seguir con el análisis inferencial se deben validar las hipótesis del modelo ANOVA. Como ya hicimos con los modelos de regresión, en <code>R</code> se puede acudir a la función <code>plot()</code> aplicada al objeto de tipo <code>lm</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>No parece haber incumplimiento de ninguna de las hipótesis. Por si quedan dudas de la homogeneidad de varianzas, podemos usar el test de Barlett:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> heli3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  tiempos by ala
+Bartlett's K-squared = 0.24536, df = 2, p-value = 0.8845</code></pre>
+</div>
+</div>
+<p>No podemos rechazar la homocedasticidad de los grupos.</p>
+<p><strong>Comparaciones múltiples</strong><br>
+De entre las distintos contrastes de comparaciones múltiples, se utilizará el de Tukey que permite una visualización gráfica de las comparaciones lo que resulta muy intuitivo y didáctico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>( heli3.tukey <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(<span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data =</span> heli3)) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = tiempos ~ ala, data = heli3)
+
+$ala
+              diff         lwr       upr     p adj
+12 cm-8 cm  0.4075  0.22444552 0.5905545 0.0004097
+16 cm-8 cm  0.5150  0.33194552 0.6980545 0.0000680
+16 cm-12 cm 0.1075 -0.07555448 0.2905545 0.2792751</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(heli3.tukey)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>De la tabla, y más visualmente del gráfico, se deduce que existen diferencias significativas (controlando el nivel de significación global de todos los contrastes) entre los tiempos de caída de los helicópteros con ala 8 y 12 cm, y entre los helicópteros con ala 8 y 16 cm, dado que el intervalo de confianza de la diferencia de medias entre cada par de tiempos de caída no contiene el valor 0. Por el contrario, no podemos decir que los helicópteros con ala 12 o 16 cm tengan diferencias significativas en sus tiempos de caída. De este hecho se puede concluir que el efecto de la longitud del ala no parece lineal,</p>
+</section>
+<section id="diseños-bifactoriales" class="level3" data-number="2.11.2">
+<h3 data-number="2.11.2" class="anchored" data-anchor-id="diseños-bifactoriales"><span class="header-section-number">2.11.2</span> Diseños bifactoriales</h3>
+<p>Nos planteamos aquí realizar un diseño bifactorial para comparar el efecto de 2 variables categóricas/factores en la variable respuesta (tiempo de caída). Supongamos que interesan, tanto el efecto de la longitud de ala como el efecto de la anchura de ala, en el tiempo de caída. Considerando 2 niveles para la anchura: 4 y 6 cm, se podría definir un diseño factorial con la combinación de los 3 niveles de la longitud de ala definidos anteriormente y los 2 de la anchura. Esto llevaría a 6 (<span class="math inline">\(3 \times 2\)</span>) tratamientos distintos, de las que se podrían hacer réplicas (o no). Si realizamos 2 réplicas de cada tratamiento, tendremos 12 helicópteros de los que mediremos su tiempo de caída.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(grid)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#library(conf.design)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DoE.base)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: grid</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: conf.design</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'DoE.base':
+  method           from       
+  factorize.factor conf.design</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Adjuntando el paquete: 'DoE.base'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    aov, lm</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    plot.design</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:base':
+
+    lengths</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>( Dis.bifactorial <span class="ot">&lt;-</span> <span class="fu">fac.design</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>), </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">factor.names =</span> <span class="fu">list</span>(<span class="at">long =</span> <span class="fu">c</span>(<span class="st">"8cm"</span>, <span class="st">"12cm"</span>, <span class="st">"16cm"</span>), </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">anch =</span> <span class="fu">c</span>(<span class="st">"4cm"</span>, <span class="st">"6cm"</span>)),</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">randomize =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">replications =</span> <span class="dv">2</span>) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>creating full factorial with 6 runs ...</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.no run.no.std.rp long anch Blocks
+1       1           5.1 12cm  6cm     .1
+2       2           2.1 12cm  4cm     .1
+3       3           4.1  8cm  6cm     .1
+4       4           3.1 16cm  4cm     .1
+5       5           6.1 16cm  6cm     .1
+6       6           1.1  8cm  4cm     .1
+7       7           3.2 16cm  4cm     .2
+8       8           4.2  8cm  6cm     .2
+9       9           2.2 12cm  4cm     .2
+10     10           6.2 16cm  6cm     .2
+11     11           5.2 12cm  6cm     .2
+12     12           1.2  8cm  4cm     .2
+class=design, type= full factorial 
+NOTE: columns run.no and run.no.std.rp  are annotation, 
+ not part of the data frame</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Consideramos los mismos tiempos del diseño unifactorial</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#pero nótese que no mantenemos los valores de longitud de ala</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>tiempos2 <span class="ot">&lt;-</span> tiempos</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>( Dis.bifactorial.R <span class="ot">&lt;-</span> <span class="fu">add.response</span>(Dis.bifactorial, <span class="at">response =</span> tiempos2) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   run.no run.no.std.rp long anch Blocks tiempos2
+1       1           5.1 12cm  6cm     .1     2.97
+2       2           2.1 12cm  4cm     .1     3.23
+3       3           4.1  8cm  6cm     .1     3.09
+4       4           3.1 16cm  4cm     .1     2.65
+5       5           6.1 16cm  6cm     .1     2.78
+6       6           1.1  8cm  4cm     .1     3.21
+7       7           3.2 16cm  4cm     .2     2.59
+8       8           4.2  8cm  6cm     .2     3.14
+9       9           2.2 12cm  4cm     .2     3.17
+10     10           6.2 16cm  6cm     .2     3.12
+11     11           5.2 12cm  6cm     .2     3.32
+12     12           1.2  8cm  4cm     .2     2.76
+class=design, type= full factorial 
+NOTE: columns run.no and run.no.std.rp  are annotation, 
+ not part of the data frame</code></pre>
+</div>
+</div>
+<p>Planteamos ahora distintos modelos sobre estos datos.</p>
+<p><strong>Diseño bifactorial sin interacción</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>mod.bifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">+</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: tiempos2
+          Df   Sum Sq  Mean Sq F value  Pr(&gt;F)  
+long       2 0.313850 0.156925  4.1945 0.05678 .
+anch       1 0.054675 0.054675  1.4614 0.26122  
+Residuals  8 0.299300 0.037412                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.bifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = tiempos2 ~ long + anch, data = Dis.bifactorial.R)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.27000 -0.08625 -0.00250  0.09125  0.26750 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  3.05000    0.09671  31.537 1.11e-09 ***
+long12cm     0.12250    0.13677   0.896   0.3966    
+long16cm    -0.26500    0.13677  -1.938   0.0887 .  
+anch1        0.06750    0.05584   1.209   0.2612    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1934 on 8 degrees of freedom
+Multiple R-squared:  0.5518,    Adjusted R-squared:  0.3838 
+F-statistic: 3.283 on 3 and 8 DF,  p-value: 0.07939</code></pre>
+</div>
+</div>
+<p>Un complemento gráfico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> long, <span class="at">data =</span> Dis.bifactorial.R)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>¿Y el análisis de residuos?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.bifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Diseño bifactorial con interacción</strong> En este caso podría tener sentido que las variables longitud y anchura del ala interactuaran… A mayor/menor valor de ambas mayor/menor será la superficie del ala.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mod.bifact.interacc <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact.interacc)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: tiempos2
+          Df   Sum Sq  Mean Sq F value  Pr(&gt;F)  
+long       2 0.313850 0.156925  4.1819 0.07289 .
+anch       1 0.054675 0.054675  1.4570 0.27283  
+long:anch  2 0.074150 0.037075  0.9880 0.42569  
+Residuals  6 0.225150 0.037525                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.bifact.interacc)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = tiempos2 ~ long * anch, data = Dis.bifactorial.R)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-0.225 -0.065  0.000  0.065  0.225 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.05000    0.09686  31.490 6.81e-08 ***
+long12cm        0.12250    0.13698   0.894    0.406    
+long16cm       -0.26500    0.13698  -1.935    0.101    
+anch1           0.06500    0.09686   0.671    0.527    
+long12cm:anch1 -0.09250    0.13698  -0.675    0.525    
+long16cm:anch1  0.10000    0.13698   0.730    0.493    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1937 on 6 degrees of freedom
+Multiple R-squared:  0.6629,    Adjusted R-squared:  0.3819 
+F-statistic: 2.359 on 5 and 6 DF,  p-value: 0.1629</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.bifact.interacc)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap2-DoE_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diseño-trifactorial" class="level3" data-number="2.11.3">
+<h3 data-number="2.11.3" class="anchored" data-anchor-id="diseño-trifactorial"><span class="header-section-number">2.11.3</span> Diseño trifactorial</h3>
+<p>Si las 12 mediciones anteriores proviniesen de un diseño factorial con 3 variables, por ejemplo, añadiendo la variable “clip” a las 2 anteriores, tendríamos sólo una observación por tratamiento. Esto implicaría que no se pueden estimar todos los parámetros del modelo completo (nos quedamos sin grados de libertad), pero sí se pueden estimar modelos con inferior número de parámetros, como el modelo de efectos principales:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>( Dis.trifact <span class="ot">&lt;-</span> <span class="fu">fac.design</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">factor.names =</span> <span class="fu">list</span>(<span class="at">long =</span> <span class="fu">c</span>(<span class="st">"8cm"</span>, <span class="st">"12cm"</span>, <span class="st">"16cm"</span>),</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">anch =</span> <span class="fu">c</span>(<span class="st">"4cm"</span>, <span class="st">"6cm"</span>),</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">clip =</span> <span class="fu">c</span>(<span class="st">"Si"</span>, <span class="st">"No"</span>)),</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">randomize =</span> T ) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>creating full factorial with 12 runs ...</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   long anch clip
+1  12cm  4cm   No
+2  16cm  6cm   No
+3  12cm  6cm   Si
+4  12cm  4cm   Si
+5   8cm  6cm   No
+6   8cm  6cm   Si
+7  12cm  6cm   No
+8  16cm  6cm   Si
+9   8cm  4cm   No
+10  8cm  4cm   Si
+11 16cm  4cm   Si
+12 16cm  4cm   No
+class=design, type= full factorial </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>tiempos3 <span class="ot">&lt;-</span> tiempos</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>( Dis.trifact.R <span class="ot">&lt;-</span> <span class="fu">add.response</span>(Dis.trifact, </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">response =</span> tiempos3) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   long anch clip tiempos3
+1  12cm  4cm   No     2.97
+2  16cm  6cm   No     3.23
+3  12cm  6cm   Si     3.09
+4  12cm  4cm   Si     2.65
+5   8cm  6cm   No     2.78
+6   8cm  6cm   Si     3.21
+7  12cm  6cm   No     2.59
+8  16cm  6cm   Si     3.14
+9   8cm  4cm   No     3.17
+10  8cm  4cm   Si     3.12
+11 16cm  4cm   Si     3.32
+12 16cm  4cm   No     2.76
+class=design, type= full factorial </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>mod.trifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Dis.trifact.R)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.trifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm.default(formula = tiempos3 ~ long + anch + clip, data = Dis.trifact.R)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.262500 -0.167083  0.009167  0.178750  0.235000 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  3.070000   0.117497  26.128 3.08e-08 ***
+long12cm    -0.245000   0.166167  -1.474    0.184    
+long16cm     0.042500   0.166167   0.256    0.805    
+anch1        0.004167   0.067837   0.061    0.953    
+clip1       -0.085833   0.067837  -1.265    0.246    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.235 on 7 degrees of freedom
+Multiple R-squared:  0.4212,    Adjusted R-squared:  0.09041 
+F-statistic: 1.273 on 4 and 7 DF,  p-value: 0.365</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="por-aquí" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="por-aquí"><span class="header-section-number">2.12</span> POR AQUí</h2>
+<section id="extras" class="level3" data-number="2.12.1">
+<h3 data-number="2.12.1" class="anchored" data-anchor-id="extras"><span class="header-section-number">2.12.1</span> Extras</h3>
+<p><strong>Duda</strong>: ANOVA de Medidas repetidas ¿? NO, sólo mencionar ;-)</p>
+<section id="esquema-libro-de-peña" class="level4" data-number="2.12.1.1">
+<h4 data-number="2.12.1.1" class="anchored" data-anchor-id="esquema-libro-de-peña"><span class="header-section-number">2.12.1.1</span> Esquema libro de PEÑA</h4>
+<p>1ª parte: Diseño de Experimentos.</p>
+<ol type="1">
+<li><p>(CAP 2) ANOVA: modelo, estimación, contraste F, contrastes múltiples, diagnosis, transformaciones para homocedasticidad</p></li>
+<li><p>(CAP 3) Varios factores: principios del DOE, 2 factores, ANOVA, 2 factores + interacción (con o sin réplicas), más de 2 factores, cuadrado latino, grecolatino, modelos con efectos aleatorios</p></li>
+<li><p>(CAP 4) Diseños factoriales a 2 niveles: 2^2, 2^3, 2^k, fracciones, aplicaciones, estimación, diagnosis.</p></li>
+</ol>
+</section>
+<section id="prueba-de-kruskal-wallis-no-paramétrico" class="level4" data-number="2.12.1.2">
+<h4 data-number="2.12.1.2" class="anchored" data-anchor-id="prueba-de-kruskal-wallis-no-paramétrico"><span class="header-section-number">2.12.1.2</span> Prueba de Kruskal-Wallis (no paramétrico)</h4>
+<p>La prueba de Kruskal-Wallis es una prueba no paramétrica, basada en los rangos (orden) de las respuestas, en lugar de sus valores originales. Por lo tanto, es menos sensible a la presencia de valores atípicos y a la forma de la distribución de las respuestas. Se utiliza para comparar las (pseudo)medianas de dos o más grupos independientes. Es una extensión de la prueba de Mann-Whitney U (o Wilcoxon) para más de dos grupos. Se usa cuando los supuestos del ANOVA no se cumplen, como la normalidad de los datos o la homogeneidad de varianzas.</p>
+<p>El supuesto sobre la obtención de las muestras (muestras aleatorias simples independientes de las respectivas poblaciones) sigue siendo importante. Además, se supone que en cada una de las poblaciones consideradas, la variable respuesta tiene una distribución continua.</p>
+<p><span class="math display">\[H_0:\text{la distribución es la misma para todas las poblaciones}\]</span> <span class="math display">\[H_1:\text{la distribución es sistemáticamente distinta para alguna población}\]</span></p>
+<p>La prueba de Kruskal-Wallis de rangos se basa en ordenar las respuestas de todos los grupos, y a continuación aplicar el ANOVA de un factor a los rangos y no a los valores originales. Si en total tenemos N observaciones, los rangos son valores enteros positivos de 1 a N.</p>
+<p>Sea <span class="math inline">\(R_i\)</span> la suma de los rangos de la i-ésima muestra. El estadístico de Kruskal-Wallis es</p>
+<p><span class="math display">\[H=\frac{12}{N(N+1)}\sum\frac{R_i^2}{n_i}-3(N+1)\]</span></p>
+<p>Cuando los tamaños de las muestras <span class="math inline">\(n_i\)</span> son grandes y todas las poblaciones tienen la misma distribución continua, <span class="math inline">\(H\)</span> tiene aproximadamente una distribución <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(I - 1\)</span> grados de libertad. Así, valores “grandes” de <span class="math inline">\(H\)</span> llevan a rechazar la hipótesis nula de que todas las poblaciones tienen la misma distribución.</p>
+<p>Cuanto más distintas sean estas sumas, mayor será la evidencia de que las respuestas de unos grupos son sistemáticamente mayores que las de otros.</p>
+</section>
+</section>
+</section>
+<section id="licesio-diseños-de-medidas-repetidas" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="licesio-diseños-de-medidas-repetidas"><span class="header-section-number">2.13</span> (LICESIO) Diseños de medidas repetidas</h2>
+</section>
+<section id="modelo-lineal-de-regresión-múltiple" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="modelo-lineal-de-regresión-múltiple"><span class="header-section-number">2.14</span> Modelo lineal de regresión múltiple</h2>
+<ul>
+<li><strong>Saturado:</strong> Un parámetro para cada observación. Ajuste perfecto. Grados de libertad 0.</li>
+<li><strong>Maximal:</strong> Contiene p variables y sus interacciones. Muchos de estos términos son despreciables. Grados de libertad <span class="math inline">\(n-p-1\)</span>.</li>
+<li><strong>Minimal y Adecuado</strong>: Contiene las variables e interacciones significativas. Grados de libertad <span class="math inline">\(n-p'-1\)</span>.</li>
+<li><strong>Modelo ‘Nulo’</strong>:Único parametro, <span class="math inline">\(\bar{y}\)</span>. Grados de libertad <span class="math inline">\(n-1\)</span>.</li>
+</ul>
+</section>
+<section id="bibliografía" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="bibliografía"><span class="header-section-number">2.15</span> Bibliografía</h2>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Faraway" class="csl-entry" role="listitem">
+Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.
+</div>
+<div id="ref-MontgomeryDoE" class="csl-entry" role="listitem">
+Montgomery, Douglas C. 2008. <em>Design and Analysis of Experiments</em>. Seventh. Wiley.
+</div>
+<div id="ref-Pena2002" class="csl-entry" role="listitem">
+Peña, Daniel. 2002. <em>Regresión y diseño de experimentos</em>. Alianza Editorial.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Cap1-LM.html" class="pagination-link" aria-label="Modelos lineales">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelos lineales</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Cap3-GLM.html" class="pagination-link" aria-label="Modelos lineales generalizados">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelos lineales generalizados</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
