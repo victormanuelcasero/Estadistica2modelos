@@ -360,7 +360,7 @@ y_n
 En el modelo de regresión ¿tienen que ser todas las variables cuantitativas?<br>
 Respuesta corta: No.<br>
 Dependiendo del tipo de variables (<span class="math inline">\(\mathbf{X}\)</span> e <span class="math inline">\(\mathbf{Y}\)</span>) se tienen distintos modelos…<br>
-¿Y Si hay más de una variable <span class="math inline">\(\mathbf{Y}\)</span>? Se habla de <em>regresión múltiple multivariante</em>, que se podrá ver en otra asignatura del grado.</p>
+¿Y si hay más de una variable <span class="math inline">\(\mathbf{Y}\)</span>? Se habla de <em>regresión múltiple multivariante</em>, que se podrá ver en otra asignatura del grado.</p>
 </blockquote>
 <section id="objetivos-de-la-regresión" class="level3" data-number="1.1.1">
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="objetivos-de-la-regresión"><span class="header-section-number">1.1.1</span> Objetivos de la regresión</h3>
@@ -369,7 +369,7 @@ Dependiendo del tipo de variables (<span class="math inline">\(\mathbf{X}\)</spa
 Generalmente, este proceso es iterativo, hasta seleccionar la(s) variable(s) del mejor modelo posible (como se ve en el <a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a>).</p></li>
 <li><p>Predecir observaciones futuras.</p></li>
 </ol>
-<p>Ambos objetivos pueden ser muy distintos! Bajo el prisma del “machine learning” suele relajarse la descripción estructural y evaluación de los efectos, dando toda la importancia a la mejor predicción posible.</p>
+<p>¡Ambos objetivos pueden ser muy distintos! Bajo el prisma del “machine learning” suele relajarse la descripción estructural y evaluación de los efectos, dando toda la importancia a la mejor predicción posible.</p>
 </section>
 <section id="sec-Supuestos" class="level3" data-number="1.1.2">
 <h3 data-number="1.1.2" class="anchored" data-anchor-id="sec-Supuestos"><span class="header-section-number">1.1.2</span> Supuestos del modelo de regresión</h3>
@@ -382,12 +382,12 @@ Generalmente, este proceso es iterativo, hasta seleccionar la(s) variable(s) del
 </ul>
 <p>Los supuestos anteriores se basan en las hipótesis de los errores:</p>
 <ul>
-<li>media cero: <span class="math inline">\(E[\epsilon]=0\)</span>,</li>
-<li>varianza constante: <span class="math inline">\(\text{Var}[\epsilon]=\sigma^2I\)</span>,</li>
-<li>distribución normal <span class="math inline">\(\epsilon \sim N(0, \sigma^2 I)\)</span></li>
-<li>independencia entre errores: <span class="math inline">\(E[\epsilon_i\epsilon_j]=0\)</span></li>
+<li>Esperanza nula: <span class="math inline">\(E[\epsilon]=0\)</span>,</li>
+<li>Varianza constante: <span class="math inline">\(\text{Var}[\epsilon]=\sigma^2I\)</span>,</li>
+<li>Distribución normal <span class="math inline">\(\epsilon \sim N(0, \sigma^2 I)\)</span>,</li>
+<li>Independencia entre errores: <span class="math inline">\(E[\epsilon_i\epsilon_j]=0\)</span>.</li>
 </ul>
-<p>Se puede encontrar más información sobre las también denominadas <em>hipótesis básicas</em> en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apartados 5.2.1 y 5.2.2) y en <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> (Capítulo 4)</p>
+<p>Se puede encontrar más información sobre las también denominadas <em>hipótesis básicas</em> en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apartados 5.2.1 y 5.2.2) y en <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> (Capítulo 4).</p>
 <p><strong>Residuos</strong><br>
 Los <em>residuos</em>, <span class="math inline">\(u_i\)</span>, son los errores observados para los datos y el modelo escogido (realizaciones de la variable aleatoria error <span class="math inline">\(\epsilon\)</span>). Recogen toda la información que la estructura del modelo no ha sido capaz de asimilar. Es muy importante el estudio de los <em>residuos</em> para comprobar las hipótesis y supuestos anteriores y dar con ello validez al uso del modelo, como se ve en la <a href="#sec-Diagnosis" class="quarto-xref"><span>Sección 1.2.9</span></a> a nivel teórico y en los casos prácticos (<a href="#sec-LM-Airquality" class="quarto-xref"><span>Sección 1.4</span></a> y <a href="#sec-LM-Boston" class="quarto-xref"><span>Sección 1.5</span></a>).</p>
 </section>
@@ -412,12 +412,12 @@ En este proceso, puede verse conveniente cambiar el modelo (en el caso de regres
 </ol>
 <section id="estimación-de-los-parámetros-del-modelo" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="estimación-de-los-parámetros-del-modelo"><span class="header-section-number">1.2.1</span> Estimación de los parámetros del modelo</h3>
-<p>En el caso más habitual de regresión simple: <span class="math inline">\(E(\mathbf{Y}) = \beta_0 + \beta_1\mathbf{X},\)</span> se estiman los dos parámetros del modelo: <span class="math inline">\(\beta_0\)</span>, la ordenada en el origen y <span class="math inline">\(\beta_1\)</span>, la pendiente de la recta. Intuitivamente, se buscan las estimaciones <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> que “expliquen” la relación lineal entre las dos variables, aquellas que generen las mejores predicciones posibles: <span class="math display">\[\hat{\mathbf{Y}} = \hat{\beta}_0 + \hat{\beta}_1\mathbf{X}\]</span></p>
+<p>En el caso más habitual de regresión simple: <span class="math inline">\(E(\mathbf{Y}) = \beta_0 + \beta_1\mathbf{X},\)</span> se estiman los dos parámetros del modelo: <span class="math inline">\(\beta_0\)</span>, la ordenada en el origen y <span class="math inline">\(\beta_1\)</span>, la pendiente de la recta. Intuitivamente, se buscan las estimaciones <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> que “expliquen” la relación lineal entre las dos variables, aquellas que generen las mejores predicciones posibles: <span class="math display">\[\hat{\mathbf{Y}} = \hat{\beta}_0 + \hat{\beta}_1\mathbf{X}.\]</span></p>
 </section>
 <section id="método-de-mínimos-cuadrados" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="método-de-mínimos-cuadrados"><span class="header-section-number">1.2.2</span> Método de mínimos cuadrados</h3>
-<p>El método por excelencia para obtener tales estimaciones es el <strong>método de mínimos cuadrados</strong> (1805 Gauss y Legendre). Consiste en minimizar los cuadrados de los <em>residuos</em>, <span class="math inline">\(u_i = y_i - \hat{y}_i = y_i - \hat{\beta}_0 + \hat{\beta}_1 x_i\)</span>, diferencia entre los valores observados y la predicción. Es decir, <span class="math display">\[\min_{\hat{\beta}_0, \hat{\beta}_1} \sum u_i^2 =
-\min_{\hat{\beta}_0, \hat{\beta}_1} \sum(y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2.\]</span></p>
+<p>El método por excelencia para obtener tales estimaciones es el <strong>método de mínimos cuadrados</strong> (1805 Gauss y Legendre). Consiste en minimizar los cuadrados de los <em>residuos</em>, <span class="math inline">\(u_i = y_i - \hat{y}_i = y_i - \hat{\beta}_0 + \hat{\beta}_1 x_i\)</span>, diferencia entre los valores observados y la predicción. Es decir, <span class="math display">\[\min_{\beta_0, \beta_1} \sum u_i^2 =
+\min_{\beta_0, \beta_1} \sum(y_i - \beta_0 - \beta_1 x_i)^2.\]</span></p>
 <p>Derivando, e igualando a cero se tiene un sistema lineal de 2 ecuaciones con 2 incógnitas, denominado <strong>ecuaciones normales</strong>: <span class="math display">\[\left.\begin{align*}
 \dfrac{\partial \sum u_i^2}{\partial \beta_0} &amp;= 0 \Rightarrow \sum_{i} u_i = 0 \\
 \dfrac{\partial \sum u_i^2}{\partial \beta_1} &amp;= 0 \Rightarrow \sum_{i} u_i x_i = 0
@@ -427,11 +427,11 @@ En este proceso, puede verse conveniente cambiar el modelo (en el caso de regres
 <p><span class="math display">\[\begin{align*}
 \hat{\beta}_1^{MC} &amp;= \rho \frac{S_y}{S_x}, \\
 \hat{\beta}_0^{MC} &amp;= \bar{y} - \hat{\beta}_1^{MC} \bar{x},
-\end{align*} \]</span> donde <span class="math inline">\(S_y\)</span> y <span class="math inline">\(S_x\)</span> son las desviaciones típicas muestrales de las variables <span class="math inline">\(\mathbf{Y}\)</span> y <span class="math inline">\(\mathbf{X}\)</span> y <span class="math inline">\(\rho\)</span> es el coeficiente de correlación lineal de Pearson: <span class="math display">\[\rho=\frac{S_{xy}}{S_x S_y}=\dfrac{\sum (x_i-\bar x)(y_i-\bar y )}{\sqrt{\sum (x_i-\bar x)^2 \sum (y_i-\bar y)^2}}.\]</span></p>
+\end{align*} \]</span> donde <span class="math inline">\(S_y\)</span> y <span class="math inline">\(S_x\)</span> son las desviaciones típicas muestrales de las variables <span class="math inline">\(\mathbf{Y}\)</span> y <span class="math inline">\(\mathbf{X}\)</span>, y <span class="math inline">\(\rho\)</span> es el coeficiente de correlación lineal de Pearson: <span class="math display">\[\rho=\frac{S_{xy}}{S_x S_y}=\dfrac{\sum (x_i-\bar x)(y_i-\bar y )}{\sqrt{\sum (x_i-\bar x)^2 \sum (y_i-\bar y)^2}}.\]</span></p>
 <p><strong>Correlación</strong><br>
 En la regresión lineal simple se espera que ambas variables estén correlacionadas, así, el modelo tendrá sentido práctico. El coeficiente de correlación lineal de Pearson, <span class="math inline">\(\rho\)</span>, mide la fuerza de la relación <strong>lineal</strong> entre las dos variables. Se puede expresar en función de las medias y las desviaciones típicas de las variables:</p>
-<p><span class="math display">\[\rho=\frac{1}{n-1}\sum \left( \frac{x_i-\bar{x}}{S_x} \right) \left(\frac{y_i-\bar{y}}{S_y} \right)=\frac{1}{n-1}\sum z_x \cdot z_y\]</span></p>
-<p>Los valores de este coeficiente se extienden de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>, indicando ausencia de correlación cuanto más cercano a <span class="math inline">\(0\)</span>.</p>
+<p><span class="math display">\[\rho=\frac{1}{n-1}\sum \left( \frac{x_i-\bar{x}}{S_x} \right) \left(\frac{y_i-\bar{y}}{S_y} \right)=\frac{1}{n-1}\sum z_x \cdot z_y.\]</span></p>
+<p>Los valores de este coeficiente se extienden de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>, indicando ausencia de correlación cuanto más cercano sea a <span class="math inline">\(0\)</span>.</p>
 <blockquote class="blockquote">
 <p>Hay que destacar el ejemplo ilustrativo del <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">cuarteto de Anscombe</a>, en el que 4 conjuntos de datos presentan el mismo valor del coeficiente de correlación lineal, pero su interpretación es muy distinta en cada uno de los 4 casos.</p>
 </blockquote>
@@ -1221,7 +1221,7 @@ F-statistic: 25.81 on 7 and 103 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Se puede observar que se muestran parámetros para las 4 variables <em>dummy</em> de los 5 valores de <code>Month</code>. Como se ha indicado, el primer valor de la variable (el 5) lo toma como referencia (se podría cambiar si se quiere otro mes de referencia) y genera 4 variables dicotómicas que reflejan el cambio de la categoría de referencia a cada una de ellas. Matemáticamente el modelo que se estima es: <span class="math display">\[\begin{align*}
 Ozone = &amp;\beta_0 + \beta_1 Solar.R + \beta_2 Wind + \beta_3 Temp + \\
 &amp;\beta_6 Month6 +  \beta_7 Month7 +  \beta_8 Month8 +  \beta_9 Month9 + \epsilon  
-\end{align*}\]</span> Así, se entiende ahora mejor la visualización de <code>contrasts()</code> obtenida anteriormente. Cuando <code>Month6</code>, <code>Month7</code>… toman todos el valor 0 la estimación que se obtiene es del mes de mayo. Si la variable dummy <code>Month6</code> toma el valor 1, y las otras 3 toman el valor 0, se obtiene la diferencia media de <code>Ozone</code> respecto al mes de mayo, <em>ceteris paribus</em>. Por lo tanto, que el parámetro asociado a <code>Month6</code> sea negativo implica que, para cualquier combinación fija de valores del resto de variables, en junio disminuye la media de <code>Ozone</code> respecto a mayo (aunque justo este parámetro/cambio no es significativo!).</p>
+\end{align*}\]</span> Así, se entiende ahora mejor la visualización de <code>contrasts()</code> obtenida anteriormente. Cuando <code>Month6</code>, <code>Month7</code>… toman todos el valor 0 la estimación que se obtiene es del mes de mayo. Si la variable dummy <code>Month6</code> toma el valor 1, y las otras 3 toman el valor 0, se obtiene la diferencia media de <code>Ozone</code> respecto al mes de mayo, <em>ceteris paribus</em>. Por lo tanto, que el parámetro asociado a <code>Month6</code> sea negativo implica que, para cualquier combinación fija de valores del resto de variables, en junio disminuye la media de <code>Ozone</code> respecto a mayo (aunque justo este parámetro/cambio ¡no es significativo!).</p>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
 ¿Como se interpreta ahora el valor del <code>Intercept</code>?<br>
