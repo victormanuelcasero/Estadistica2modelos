@@ -307,7 +307,7 @@ window.Quarto = {
 </header>
 
 
-<p>(version “2025-09-16”)</p>
+<p>(version “2025-09-24”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -467,8 +467,8 @@ En la regresión lineal simple se espera que ambas variables estén correlaciona
 <h3 data-number="1.2.5" class="anchored" data-anchor-id="propiedades-de-los-estimadores"><span class="header-section-number">1.2.5</span> Propiedades de los estimadores</h3>
 <p>El estudio de las propiedades de los estimadores obtenidos resulta de interés para la posterior inferencia. Aquí se mencionan algunas propiedades. El lector interesado puede ampliar información, por ejemplo, en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (la Tabla 5.3, página 264, contiene un buen resumen)</p>
 <p>Antes de ello, la ecuación de la recta de regresión también se suele expresar en la forma punto-pendiente: <span class="math display">\[(y - \bar{y}) = \hat{\beta}_1 (x - \bar{x}), \]</span> de donde se deduce inmediatamente que el punto <span class="math inline">\((\bar x, \bar y)\)</span>, pertenece a la recta estimada. Tal punto se conoce como <em>centroide</em>, centro de gravedad de la nube de puntos.</p>
-<p>Sobre <span class="math inline">\(\hat \beta_1\)</span>, la pendiente estimada de la recta. Esta pendiente se puede obtener como una media ponderada de pendientes de las rectas que pasan por cada punto y por centroide. Tal ponderación está relacionada con el <em>leverage</em> (véase <a href="#sec-Leverage" class="quarto-xref"><span>Sección 1.2.12</span></a>) e implica que los puntos con valores de <span class="math inline">\(x\)</span> más alejados a la media tienen más influencia sobre la estimación de <span class="math inline">\(\beta_1\)</span>, más cuanto menos puntos sean. También se puede ver que el estimador sigue una distribución normal, si la variable respuesta sigue una distribución normal, concretamente, <span class="math display">\[\hat \beta_1 \sim N(\beta_1, \dfrac{\sigma^2}{nS_x^2}).\]</span> Por lo tanto, es insesgado (asumiendo la linealidad, independientemente de la normalidad) y su varianza disminuirá (aumentará la precisión de <span class="math inline">\(\hat\beta_1\)</span>), bien al aumentar el tamaño de muestra, <span class="math inline">\(n\)</span>, o al aumentar la dispersión de los valores de <span class="math inline">\(x\)</span>, <span class="math inline">\(S_x^2\)</span>. Como <span class="math inline">\(\sigma^2\)</span> es desconocida, se considera en su lugar la varianza residual <span class="math inline">\(\hat S_R^2\)</span>.</p>
-<p>Sobre <span class="math inline">\(\hat \beta_0\)</span>, mencionar que es el parámetro de la ordenada en el origen (intersección de la recta con el eje <span class="math inline">\(y\)</span>) y su importancia se encuentra en un segundo plano respecto a <span class="math inline">\(\hat \beta_1\)</span>. También se puede ver como una combinación lineal de valores de la variable respuesta, por lo que seguirá una distribución normal (como la variable respuesta), concretamente, <span class="math display">\[\hat \beta_0 \sim N \left( \beta_0, \dfrac{\sigma^2}{n} \left( 1+ \dfrac{\bar x^2}{S_x^2}\right) \right).\]</span> También es insesgado, y su varianza está multiplicada por <span class="math inline">\(\bar x^2\)</span>, lo que supone mayor impacto cuando mayor sea el valor de <span class="math inline">\(\bar x\)</span>.</p>
+<p>Sobre <span class="math inline">\(\hat \beta_1\)</span>, la pendiente estimada de la recta. Esta pendiente se puede obtener como una media ponderada de pendientes de las rectas que pasan por cada punto y por el centroide. Tal ponderación está relacionada con el <em>leverage</em> (véase <a href="#sec-Leverage" class="quarto-xref"><span>Sección 1.2.12</span></a>) e implica que los puntos con valores de <span class="math inline">\(x\)</span> más alejados a la media tienen más influencia sobre la estimación de <span class="math inline">\(\beta_1\)</span>, más cuanto menos puntos sean. También se puede ver como una combinación lineal de valores de la variable respuesta, por lo que el estimador sigue una distribución normal, bajo el supuesto de normalidad de la variable respuesta, concretamente, <span class="math display">\[\hat \beta_1 \sim N \left( \beta_1, \dfrac{\sigma^2}{nS_x^2} \right) .\]</span> Por lo tanto, es insesgado (asumiendo la linealidad, independientemente de la normalidad) y su varianza disminuirá (aumentará la precisión de <span class="math inline">\(\hat\beta_1\)</span>), bien al aumentar el tamaño de muestra, <span class="math inline">\(n\)</span>, o al aumentar la dispersión de los valores de <span class="math inline">\(x\)</span>, <span class="math inline">\(S_x^2\)</span>. Como <span class="math inline">\(\sigma^2\)</span> es desconocida, se considerará en su lugar la varianza residual <span class="math inline">\(\hat S_R^2\)</span>.</p>
+<p>Sobre <span class="math inline">\(\hat \beta_0\)</span>, mencionar que es el parámetro de la ordenada en el origen (intersección de la recta con el eje <span class="math inline">\(y\)</span>) y su importancia se encuentra en un segundo plano respecto a <span class="math inline">\(\hat \beta_1\)</span>. También se puede ver como una combinación lineal de valores de la variable respuesta, por lo que seguirá una distribución normal (como la variable respuesta), concretamente, <span class="math display">\[\hat \beta_0 \sim N \left( \beta_0, \dfrac{\sigma^2}{n} \left( 1+ \dfrac{\bar x^2}{S_x^2}\right) \right).\]</span> De nuevo, este estimador es insesgado. Su varianza está multiplicada por <span class="math inline">\(\bar x^2\)</span>, lo que supone mayor impacto cuando mayor sea el valor de <span class="math inline">\(\bar x\)</span>.</p>
 <p>Además, ambos estimadores están correlacionados: <span class="math display">\[\text{Cov}(\hat{\beta}_0, \hat{\beta}_1) = -\dfrac{\bar{x}\sigma^2}{nS_x^2}\]</span> Por lo tanto, cuando <span class="math inline">\(\bar{x}&gt;0\)</span>, <span class="math inline">\(\hat{\beta}_0\)</span> y <span class="math inline">\(\hat{\beta}_1\)</span> están negativamente correlados.</p>
 <p>Respecto a la varianza residual, se tiene que <span class="math inline">\(\hat S_R^2\)</span> es un estimador insesgado de <span class="math inline">\(\sigma^2\)</span>, dado que <span class="math display">\[\dfrac{(n-2) \hat S_R^2}{\sigma^2} \sim \chi^2_{n-2}.\]</span></p>
 </section>
@@ -495,7 +495,7 @@ H_1: \rho \neq 0
 <p><span class="math display">\[SC_{total}=SC_y=\sum (y_i-\bar{y})^2\]</span></p>
 <p><span class="math inline">\(SC_{total}\)</span> es el numerador de la habitual varianza muestral aplicada a <span class="math inline">\(y\)</span>. Se puede calcular multiplicando dicha varianza por los grados de libertad <span class="math inline">\(n-1\)</span>.</p>
 <p>Matemáticamente se puede descomponerse en <span class="math inline">\(SC_{regresion}\)</span> y <span class="math inline">\(SC_{residual}\)</span>.</p>
-<p><span class="math display">\[SC_{total}=SC_{regresion}+SC_{residual}\]</span> <span class="math display">\[\sum (y-\bar{y})^2={\sum (\hat{y}-\bar{y})^2}+\sum (y-\hat{y})^2\]</span></p>
+<p><span class="math display">\[SC_{total}=SC_{regresion}+SC_{residual}\]</span> <span class="math display">\[\sum (y_i-\bar{y})^2={\sum (\hat{y}_i-\bar{y})^2}+\sum (y_i-\hat{y}_i)^2\]</span></p>
 <p>Estudiamos los grados de libertad (gl) al calcular cada uno de los términos:</p>
 <ul>
 <li>Para <span class="math inline">\(SC_{total}\)</span> “gastamos” <span class="math inline">\(1\)</span> gl al dar la media, <span class="math inline">\(\bar{y}\)</span>, por lo que tiene <span class="math inline">\(n-1\)</span> gl.</li>
@@ -699,7 +699,7 @@ y^{(\lambda)} =
 </section>
 <section id="sec-RLM" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="sec-RLM"><span class="header-section-number">1.3</span> Modelo lineal de regresión múltiple</h2>
-<p>Cuando se dispone de más variables que podrían explicar la respuesta, entonces podemos plantear un modelo múltiples variables explicativas</p>
+<p>Cuando se dispone de más variables que podrían explicar la respuesta, entonces podemos plantear un modelo múltiples variables explicativas.</p>
 <p>Desde el punto de vista estadístico, surgen unas cuantas preguntas:</p>
 <ul>
 <li>¿Qué variables incluir en el modelo?</li>
@@ -710,7 +710,7 @@ y^{(\lambda)} =
 </ul>
 <p>Por ello, la regresión múltiple tiene más retos que la simple. Entre otros:</p>
 <ul>
-<li>Es muy habitual tener demasiadas variables explicativas. Hay que seleccionar cuidadosamente cuáles incluir (se ve en <a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a>)</li>
+<li>Es muy habitual tener demasiadas variables explicativas. Hay que seleccionar cuidadosamente cuáles incluir. El <a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a> se dedica a los métodos de selección de variables.</li>
 <li>También el tener pocas observaciones, valores de la variable respuesta, frente al número elevado de parámetros del modelo… más si hay interacciones, si no se dispone de todas las combinaciones posibles de las variables explicativas, etc. Puede hacer que el modelo sea inestimable (<a href="#sec-Identificabilidad" class="quarto-xref"><span>Sección 1.3.4</span></a>).</li>
 <li>Si hay correlación entre las variable explicativas, entonces aportan información redundante. Se puede detectar (<a href="#sec-Multicolinealidad" class="quarto-xref"><span>Sección 1.3.5</span></a>) y tratar de solucionar (<a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a>).</li>
 <li>Si hay curvatura se debe acudir a modelos lineales, pero de regresión no lineal (<a href="#sec-ExtensionesRLM" class="quarto-xref"><span>Sección 1.5.3</span></a>).</li>
@@ -762,7 +762,7 @@ dentro de la clase de todos los estimadores lineales insesgados de <span class="
 <p>Las funciones estimables incluyen predicciones de observaciones futuras, lo que explica por qué vale la pena considerarlas. Si la matriz <span class="math inline">\(\mathbf{X}\)</span> tiene rango completo, entonces todas las combinaciones lineales son estimables.</p>
 <p><strong>Consideraciones adicionales</strong><br>
 El teorema de Gauss-Markov recomienda usar mínimos cuadrados, salvo que haya una buena razón para no hacerlo. Como cuando los errores estén correlados y la varianza no sea constante, incumpliendo así los supuestos del teorema. En tal caso se deben usar mínimos cuadrados generalizados.<br>
-Si los errores son no normales pero se comportan bien, típicamente con colas pesadas, puede que estimadores robustos, generalmente no lineales, funcionen mejor. O cuando se da multicolinealidad, se pueden preferir estimadores sesgados como la regresión ridge (véase <a href="Cap5-Seleccion.html#sec-RegRidge" class="quarto-xref"><span>Sección 5.4</span></a>)</p>
+Si los errores son no normales pero se comportan bien, típicamente con colas pesadas, puede que estimadores robustos, generalmente no lineales, funcionen mejor. O cuando se da multicolinealidad, se pueden preferir estimadores sesgados como la regresión ridge (véase <a href="Cap5-Seleccion.html#sec-RegRidge" class="quarto-xref"><span>Sección 5.4.1</span></a>)</p>
 </section>
 <section id="sec-Identificabilidad" class="level3" data-number="1.3.4">
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="sec-Identificabilidad"><span class="header-section-number">1.3.4</span> Identificabilidad</h3>
@@ -1337,7 +1337,7 @@ Ozone = &amp;\beta_0 + \beta_1 Solar.R + \beta_2 Wind + \beta_3 Temp + \\
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1445,7 +1445,7 @@ Valoremos la adecuación del último modelo examinando sus residuos.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1459,7 +1459,7 @@ Valoremos la adecuación del último modelo examinando sus residuos.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap1-LM_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
