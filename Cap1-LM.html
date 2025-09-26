@@ -307,7 +307,7 @@ window.Quarto = {
 </header>
 
 
-<p>(version “2025-09-24”)</p>
+<p>(version “2025-09-26”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -699,7 +699,7 @@ y^{(\lambda)} =
 </section>
 <section id="sec-RLM" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="sec-RLM"><span class="header-section-number">1.3</span> Modelo lineal de regresión múltiple</h2>
-<p>Cuando se dispone de más variables que podrían explicar la respuesta, entonces podemos plantear un modelo múltiples variables explicativas.</p>
+<p>Cuando se dispone de más variables que podrían explicar la respuesta, entonces podemos plantear un modelo con múltiples variables explicativas.</p>
 <p>Desde el punto de vista estadístico, surgen unas cuantas preguntas:</p>
 <ul>
 <li>¿Qué variables incluir en el modelo?</li>
@@ -739,7 +739,8 @@ y^{(\lambda)} =
 <section id="sec-BondadAjusteMultiple" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="sec-BondadAjusteMultiple"><span class="header-section-number">1.3.2</span> Bondad de ajuste</h3>
 <p>En el caso de regresión lineal <em>múltiple</em> la bondad de ajuste se puede medir con el coeficiente de determinación, <span class="math inline">\(R^2\)</span>, cuya fórmula es: <span class="math display">\[ R^2 = \dfrac{\text{Variabilidad explicada (VE)}}{\text{Variabilidad total (VT)}}=\dfrac{\sum (\hat y_i - \bar y)^2 }{\sum (y_i - \bar y)^2 }\]</span> A partir de <span class="math inline">\(R^2\)</span> se obtiene el coeficiente de correlación múltiple <span class="math inline">\(R\)</span>.</p>
-<p>El <span class="math inline">\(R^2\)</span> ajustado/corregido es una corrección para suavizar el comportamiento de <span class="math inline">\(R^2\)</span> (que siempre aumenta al incluir en el modelo más variables explicativas). Consiste en considerar varianzas (medias de sumas de cuadrados, considerando sus respectivos grados de libertad, en lugar de sumas de cuadrados que se utilizan en <span class="math inline">\(R^2\)</span>): <span class="math display">\[ R^2_{\text{corregido}} = 1 - \dfrac{\text{Varianza residual}}{\text{Varianza de $y$}} = R^2 - (1 - R^2) \dfrac{k}{n+k-1}\]</span> Así, el <span class="math inline">\(R^2\)</span> corregido de una regresión múltiple siempre será menor que el <span class="math inline">\(R^2\)</span>, incluso podría tomar valores negativos.</p>
+<p>El <span class="math inline">\(R^2\)</span> ajustado/corregido es una corrección para suavizar el comportamiento de <span class="math inline">\(R^2\)</span> (que siempre aumenta al incluir en el modelo más variables explicativas). Consiste en considerar varianzas (medias de sumas de cuadrados, considerando sus respectivos grados de libertad, en lugar de sumas de cuadrados que se utilizan en <span class="math inline">\(R^2\)</span>): <span class="math display">\[ R^2_{\text{corregido}} = 1 - \dfrac{\text{Varianza residual}}{\text{Varianza de $y$}} = 1 - \left( \frac{(1 - R^2)(n - 1)}{n - k - 1} \right)\]</span></p>
+<p>Así, el <span class="math inline">\(R^2\)</span> corregido de una regresión múltiple siempre será menor que el <span class="math inline">\(R^2\)</span>, incluso podría tomar valores negativos.</p>
 </section>
 <section id="teorema-de-gauss-markov" class="level3" data-number="1.3.3">
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="teorema-de-gauss-markov"><span class="header-section-number">1.3.3</span> Teorema de Gauss-Markov</h3>
