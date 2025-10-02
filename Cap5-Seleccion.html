@@ -284,7 +284,7 @@ window.Quarto = {
 </header>
 
 
-<p>(version “2025-09-24”)</p>
+<p>(version “2025-10-02”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -335,7 +335,7 @@ body {text-align: justify}
 <blockquote class="blockquote">
 <p>¡Ojo! Los criterios indicados no permiten una comparación válida entre modelos cuya variable respuesta difiere.</p>
 </blockquote>
-<p>También existen otros criterios basados en medidas de bondad del ajuste del modelo, tales como el <strong>coeficiente de determinación corregido (R<span class="math inline">\(^2\)</span>)</strong>, su versión corregida (<strong>R<span class="math inline">\(^2\)</span> corregido</strong>) o la <strong>varianza residual</strong>. Sin embargo, estos criterios únicamente permiten comparaciones, en igualdad de condiciones, entre modelos que poseen el mismo número de parámetros, por lo que su uso debe realizarse con cautela.</p>
+<p>También existen otros criterios basados en medidas de bondad del ajuste del modelo, tales como el <strong>coeficiente de determinación (R<span class="math inline">\(^2\)</span>)</strong> o la <strong>varianza residual</strong>. Sin embargo, estos criterios únicamente permiten comparaciones, en igualdad de condiciones, entre modelos que poseen el mismo número de parámetros, por lo que su uso debe realizarse con cautela.</p>
 </section>
 <section id="sec-Stepwise" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="sec-Stepwise"><span class="header-section-number">5.3</span> Selección paso a paso</h2>
@@ -347,7 +347,7 @@ body {text-align: justify}
 <p>Paso 1. Sea <span class="math inline">\(M_0\)</span> el <em>modelo nulo</em>.</p>
 <p>Paso 2. Para <span class="math inline">\(i = 0, 1, \dots, k - 1\)</span> , de los <span class="math inline">\(k - i\)</span> modelos que se obtienen al añadir una variable explicativa adicional a las ya incluidas en <span class="math inline">\(M_i\)</span>, seleccionamos el mejor, y lo denotamos por <span class="math inline">\(M_{i+1}\)</span>.</p>
 <p>Aquí “mejor” es el modelo que produce el mayor incremento de variabilidad explicada, <span class="math inline">\(R^2\)</span>, al añadir sólo una de las variables que todavía no han entrado al modelo. En las salidas de software se puede reconocer dicha variable como la de mayor valor del estadístico <span class="math inline">\(t\)</span> (de las restantes variables).</p>
-<p>Paso 3. El proceso finaliza escogiendo uno de los <span class="math inline">\(k\)</span> modelos (<span class="math inline">\(M_0, \ldots, M_k\)</span>) según uno de los criterios mencionados: AIC, BIC, etc.</p>
+<p>Paso 3. El proceso finaliza escogiendo uno de los <span class="math inline">\(k+1\)</span> modelos (<span class="math inline">\(M_0, \ldots, M_k\)</span>) según uno de los criterios mencionados: AIC, BIC, etc.</p>
 <p>La ventaja computacional es que, cuanto mayor es el número de variables disponibles, <span class="math inline">\(k\)</span>, el número de modelos a evaluar, <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span>, es menor que en la selección del mejor subconjunto, <span class="math inline">\(2^k\)</span>. Pero tiene una desventaja, no garantiza el mejor modelo posible de todos (por ejemplo, si existe multicolinealidad).</p></li>
 <li><p>Selección <strong>hacia atrás</strong> (<em>backward</em>): se parte del <em>modelo maximal</em> (o el modelo completo), y se van eliminando, una a una, la variable que menos pérdida supongan para el modelo. La de menor valor del estadístico <span class="math inline">\(t\)</span> asociado (que no sea significativa). El proceso finaliza eligiendo de entre los <span class="math inline">\(k\)</span> modelos, el de menor AIC, o BIC,… etc.</p>
 <p>Como la selección <em>hacia adelante</em> evalua <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span> modelos (ventaja computacional frente a otros métodos), pero no garantiza encontrar el mejor modelo. Además, se añade la limitación (que puede ser importante) de necesitar un número de observaciones mayor que el número de variables <span class="math inline">\(n&gt;k\)</span>, de modo que el modelo completo (o, en su caso, el maximal considerado) pueda ajustarse. En contraste, la selección <em>hacia adelante</em> sí puede utilizarse incluso cuando <span class="math inline">\(n &lt; p\)</span>, lo que le otorga una ventaja competitiva, pues le convierte en el único método viable cuando <span class="math inline">\(k\)</span> es muy grande.</p></li>
@@ -1194,7 +1194,7 @@ F-statistic: 124.1 on 11 and 494 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-CDRDurban" class="csl-entry" role="listitem">
-Durbán, María. 2024. <span>«Modelos sparse y métodos penalizados de regresión»</span>. En <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/cap-lm.html">https://cdr-book.github.io/cap-lm.html</a>.
+Durbán, María. 2024. <span>«Modelos sparse y métodos penalizados de regresión»</span>. En <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/cap-sparse.html">https://cdr-book.github.io/cap-sparse.html</a>.
 </div>
 <div id="ref-Faraway" class="csl-entry" role="listitem">
 Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.

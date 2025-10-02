@@ -307,7 +307,7 @@ window.Quarto = {
 </header>
 
 
-<p>(version “2025-09-26”)</p>
+<p>(version “2025-10-02”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -568,7 +568,7 @@ El gráfico de diagnóstico apropiado para observar la homocedasticidad o hetero
 <p>Una alternativa, más elaborada, es la propuesta de <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>: dibujar los residuos frente a cada una de las <span class="math inline">\(x_i\)</span> -en caso de regresión múltiple-. Para todas la variables del conjunto de datos, tanto las incluidas en el modelo, como las no incluidas, mirando en estas últimas si existe alguna relación que indique la necesidad de incluirla en el modelo.</p>
 <p><strong>Contrastes</strong><br>
 Los contrastes para detectar heterocedasticidad, tienen una hipótesis nula clara: <span class="math display">\[H_0: \sigma^2 = \text{cte}, \]</span> Pero dependen de la hipótesis alternativa especificada. Así, el contraste puede detectar bien un tipo específico de heterocedasticidad, pero no tener <em>potencia</em> suficiente para otros.</p>
-<p>De entre los distintos contrastes para comprobar la homocedasticidad destacan, el contraste de Bartlett y el de Levene, que evalúan la hipótesis nula de igualdad de varianzas entre <span class="math inline">\(k\)</span> grupos. Los estadístico de contraste se pueden encontrar en la página web del <em>NIST/SEMATECH e-Handbook of Statistical Methods</em>, concretamente: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm">contraste de Bartlett</a> y <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm">contraste de Levene</a>, respectivamente. El estadístico de Bartlett sigue aproximadamente una distribución <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(k - 1\)</span> grados de libertad bajo <span class="math inline">\(H_0\)</span>. Mientras que el de Levene sigue aproximadamente una distribución <span class="math inline">\(F\)</span> con <span class="math inline">\(k-1\)</span> y <span class="math inline">\(n-k\)</span> grados de libertad. En ambos casos, se rechazará la homocedasticidad si se obtienen p-valores pequeños, habitualmente inferiores a 0.05.</p>
+<p>De entre los distintos contrastes para comprobar la homocedasticidad, el más utilizado en la práctica es el <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Pagan_test">contraste de Breusch-Pagan</a>. El estadístico del contraste sigue aproximadamente una distribución <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(1\)</span> grado de libertad bajo <span class="math inline">\(H_0\)</span>, en el caso de regresión simple. En el caso de regresión múltiple seguirá una <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(k\)</span> grados de libertad bajo <span class="math inline">\(H_0\)</span> , siendo <span class="math inline">\(k\)</span> el número de variables explicativas. En cualquier caso, se rechazará la homocedasticidad si se obtienen p-valores pequeños, habitualmente inferiores a 0.05.</p>
 </section>
 <section id="normalidad" class="level4" data-number="1.2.9.3">
 <h4 data-number="1.2.9.3" class="anchored" data-anchor-id="normalidad"><span class="header-section-number">1.2.9.3</span> Normalidad</h4>
