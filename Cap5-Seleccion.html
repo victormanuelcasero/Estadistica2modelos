@@ -284,7 +284,7 @@ window.Quarto = {
 </header>
 
 
-<p>(version “2025-10-02”)</p>
+<p>(version “2025-10-06”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -357,12 +357,12 @@ body {text-align: justify}
 <section id="selección-por-regularización" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="selección-por-regularización"><span class="header-section-number">5.4</span> Selección por regularización</h2>
 <p>Los métodos de selección basados en <em>regularización</em> (denominados en inglés <em>Shrinkage</em> -contracción-) se basan en modificar el procedimiento de estimación de mínimos cuadrados de los parámetros añadiendo un término de <em>penalización</em> sobre la magnitud de los parámetros. Los parámetros estimados se reducen/contraen hacia cero (“regularizan”) en comparación con las estimaciones por mínimos cuadrados, provocando una disminución en la varianza de los parámetros estimados del modelo. Buscan mejorar la capacidad predictiva del modelo y controlar el sobreajuste de los mismos. Por el contrario, pueden no seleccionar las variables de forma explícita como sí hacen los métodos anteriores. Eso sí, en contextos de alta dimensión (<span class="math inline">\(k &gt;n\)</span>) no se puede aplicar directamente mínimos cuadrados porque la matriz de diseño no tiene rango completo.</p>
-<p>En este capítulo vamos a ver los dos más importantes: <strong>Regresión Ridge</strong> y <strong>Regresión Lasso</strong>.</p>
+<p>En este capítulo vamos a ver los dos más utilizados: <strong>Regresión Ridge</strong> y <strong>Regresión Lasso</strong>.</p>
 <section id="sec-RegRidge" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="sec-RegRidge"><span class="header-section-number">5.4.1</span> Regresión Ridge</h3>
 <p>En este método se añade el término de penalización, suma de los cuadrados de los parámetros (es decir aplica una especie de norma <span class="math inline">\(\ell_2\)</span>, le falta la raíz cuadrada para ser la norma <span class="math inline">\(\ell_2\)</span>). Puede no llegar a realizar una selección efectiva de variables, es decir, no llegar a eliminar las variables menos relevantes, pero reduce su impacto (al reducir las estimaciones de los parámetros).</p>
-<p>Su objetivo es minimizar la siguiente función: <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} \beta_j^2 = \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{k} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{k} \beta_j^2\]</span></p>
-<p>donde</p>
+<p>Su objetivo es minimizar la siguiente función: <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} \beta_j^2 = \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{k} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{k} \beta_j^2,\]</span></p>
+<p>donde:</p>
 <ul>
 <li>RSS es la suma de cuadrados de los residuos,</li>
 <li><span class="math inline">\(\lambda\)</span> es el parámetro de penalización, un parámetro ajustable/ elegible, que controla la intensidad de la penalización. Si <span class="math inline">\(\lambda = 0\)</span> no hay penalización y los estimadores son los de mínimos cuadrados.</li>
@@ -374,7 +374,7 @@ body {text-align: justify}
 </section>
 <section id="regresión-lasso" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="regresión-lasso"><span class="header-section-number">5.4.2</span> Regresión Lasso</h3>
-<p>El método <strong>Lasso (Least Absolute Shrinkage and Selection Operator)</strong> penaliza mediante la suma de los valores absolutos de los parámetros (es decir considera una norma <span class="math inline">\(\ell_1\)</span>): <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} |\beta_j| \]</span> Tiene la propiedad de forzar algunos parámetros a ser exactamente cero, cuando el parámetro <span class="math inline">\(\lambda\)</span> es suficientemente grande, lo que implica una selección efectiva de variables, mejorando la predicción, y aumentando la interpretabilidad del modelo.</p>
+<p>El método <strong>Lasso (Least Absolute Shrinkage and Selection Operator)</strong> penaliza mediante la suma de los valores absolutos de los parámetros (es decir considera una norma <span class="math inline">\(\ell_1\)</span>). Minimiza: <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} |\beta_j|. \]</span> Tiene la propiedad de forzar algunos parámetros a ser exactamente cero, cuando el parámetro <span class="math inline">\(\lambda\)</span> es suficientemente grande, lo que implica una selección efectiva de variables, mejorando la predicción, y aumentando la interpretabilidad del modelo.</p>
 <p><strong>Elección de <span class="math inline">\(\lambda\)</span></strong><br>
 La eficacia de la selección mediante <em>Ridge</em> o <em>Lasso</em> depende de la elección adecuada del parámetro <span class="math inline">\(\lambda\)</span>. En la práctica se utiliza <em>validación cruzada</em> (véase <a href="#sec-CV" class="quarto-xref"><span>Sección 5.5</span></a>) para determinar el valor óptimo que minimiza el error de predicción.</p>
 </section>
@@ -814,7 +814,7 @@ En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a hr
 <section id="regresión-ridge" class="level3" data-number="5.6.3">
 <h3 data-number="5.6.3" class="anchored" data-anchor-id="regresión-ridge"><span class="header-section-number">5.6.3</span> Regresión Ridge</h3>
 <p>Para ajustar un modelo de regresión <em>Ridge</em> (también para <em>Lasso</em>) utilizamos la función <code>glmnet()</code> del paquete <code>glmnet</code>.</p>
-<p>Los argumentos a proporcionar a la función <code>glmnet()</code> difieren de lo visto hasta ahora, en lugar de proporcionarle una <em>fórmula</em> de tipo <code>y ~ x1 + x2</code>, se le debe proporcionar el vector de respuestas y la matriz de variables explicativas. Además, por defecto, la función <em>estandariza</em> las variables para que estén en la misma escala (elemento clave en las <em>regresiones Ridge</em> y <em>Lasso</em> como se ha indicado). También <code>glmnet()</code> incluye el argumento <code>alpha</code> que determina el tipo de modelo a ajustar. Cuando se establece <code>alpha = 0</code>, se ajusta un modelo de <em>regresión Ridge</em>; en cambio, si se estable <code>alpha = 1</code>, se ajusta un modelo de regresión <em>Lasso</em> (y cualquier valor intermedio entre 0 y 1 equivale a una combinación lineal entre <em>Ridge</em> y <em>Lasso</em>, esto es, a aplicar una <em>elastic net</em>) Por último, el argumento <code>lambda</code> permite introducir los valores deseados del parámetro de penalización (por defecto toma 100 valores).</p>
+<p>Los argumentos a proporcionar a la función <code>glmnet()</code> difieren de lo visto hasta ahora, en lugar de proporcionarle una <em>fórmula</em> de tipo <code>y ~ x1 + x2</code>, se le debe proporcionar el vector de respuestas y la matriz de variables explicativas. Además, por defecto, la función <em>estandariza</em> las variables para que estén en la misma escala (elemento clave en las <em>regresiones Ridge</em> y <em>Lasso</em> como se ha indicado). También <code>glmnet()</code> incluye el argumento <code>alpha</code> que determina el tipo de modelo a ajustar. Cuando se establece <code>alpha = 0</code>, se ajusta un modelo de <em>regresión Ridge</em>; en cambio, si se estable <code>alpha = 1</code>, se ajusta un modelo de regresión <em>Lasso</em> (y cualquier valor intermedio entre 0 y 1 equivale a una combinación lineal entre <em>Ridge</em> y <em>Lasso</em>, esto es, a aplicar una <em>elastic net</em>). Por último, el argumento <code>lambda</code> permite introducir los valores deseados del parámetro de penalización (por defecto toma 100 valores).</p>
 <blockquote class="blockquote">
 <p>Observación: una restricción de la función <code>glmnet()</code> es que sólo puede manejar entradas numéricas, por lo que las variables cualitativas deben convertirse en variables dummys, por ejemplo, mediante la función <code>factor()</code>.</p>
 </blockquote>
@@ -867,30 +867,30 @@ En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a hr
 <p>En esta salida se muestran los grados de libertad, el % de <em>deviance</em> explicada (véase <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>) y el valor de <span class="math inline">\(\lambda\)</span>. Se aprecia que los grados de libertad siempre son 12, la regresión <em>Ridge</em>, como se ha comentado, no realiza selección efectiva de variables. El % de <em>deviance</em> y Lambda son inversamente proporcionales, conforme disminuye lambda, la penalización, aumenta el % de <em>deviance</em> explicada.</p>
 <p>La función <code>coef()</code> permite obtener las estimaciones de los parámetros para todos los modelos de regresión <em>Ridge</em> ajustados (los 100!!) o para un valor concreto de <span class="math inline">\(\lambda\)</span> de los predeterminados (aunque hay que especificarlos como <code>s</code>). Aquí se opta por mostrar los del <span class="math inline">\(\lambda\)</span> más pequeño, <code>0.6778</code>, y del más grande, <code>6778</code>, de la salida de <code>print()</code>, para observar los distintos valores de las estimaciones de los parámetros.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="dv">6778</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.6778</span>, <span class="dv">6778</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 2 sparse Matrix of class "dgCMatrix"
-                 s=   0.7      s=6778.0
-(Intercept)  32.580969595  2.253281e+01
-crim         -0.099950913 -4.193841e-37
-zn            0.032571142  1.435758e-37
-indus        -0.044924593 -6.550405e-37
-chas          3.040795956  6.410260e-36
-nox         -12.592691149 -3.425864e-35
-rm            3.902180496  9.194049e-36
-age          -0.001979554 -1.244068e-37
-dis          -1.117830946  1.102639e-36
-rad           0.137192219 -4.071671e-37
-tax          -0.006115460 -2.582636e-38
-ptratio      -0.840383674 -2.178965e-36
-lstat        -0.492502012 -9.596458e-37</code></pre>
+              s=   0.6778   s=6778.0000
+(Intercept)  32.750884353  2.253281e+01
+crim         -0.100335658 -4.193841e-37
+zn            0.032827523  1.435758e-37
+indus        -0.044166962 -6.550405e-37
+chas          3.039080977  6.410260e-36
+nox         -12.715754238 -3.425864e-35
+rm            3.899714958  9.194049e-36
+age          -0.001879063 -1.244068e-37
+dis          -1.126481805  1.102639e-36
+rad           0.139512673 -4.071671e-37
+tax          -0.006197866 -2.582636e-38
+ptratio      -0.842519232 -2.178965e-36
+lstat        -0.494016657 -9.596458e-37</code></pre>
 </div>
 </div>
 <p>Para comparación, obtengamos también sus normas <span class="math inline">\(\ell_2\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fl">0.7</span>)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fl">0.6778</span>)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 35.31004</code></pre>
+<pre><code>[1] 35.5107</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="dv">6778</span>)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -954,7 +954,6 @@ min  0.678   100   25.57 4.194      12
 <pre><code>[1] 1.657788</code></pre>
 </div>
 </div>
-<p>.</p>
 <p>Por último, obtenemos las estimaciones de los parámetros del modelo para el mejor <span class="math inline">\(\lambda\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimaciones del modelo con el mejor lambda</span></span>

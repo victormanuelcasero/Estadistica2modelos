@@ -20,7 +20,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -70,6 +125,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -148,8 +232,37 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#modelo.-función-de-enlace" id="toc-modelo.-función-de-enlace" class="nav-link active" data-scroll-target="#modelo.-función-de-enlace"><span class="header-section-number">3.1</span> Modelo. Función de enlace</a></li>
+  <li><a href="#glm-regresión-logística" id="toc-glm-regresión-logística" class="nav-link" data-scroll-target="#glm-regresión-logística"><span class="header-section-number">3.2</span> GLM: regresión logística</a>
+  <ul class="collapse">
+  <li><a href="#formulación" id="toc-formulación" class="nav-link" data-scroll-target="#formulación"><span class="header-section-number">3.2.1</span> Formulación</a></li>
+  <li><a href="#estimación-de-los-parámetros" id="toc-estimación-de-los-parámetros" class="nav-link" data-scroll-target="#estimación-de-los-parámetros"><span class="header-section-number">3.2.2</span> Estimación de los parámetros</a></li>
+  <li><a href="#sec-Adecuacion" id="toc-sec-Adecuacion" class="nav-link" data-scroll-target="#sec-Adecuacion"><span class="header-section-number">3.2.3</span> Contrastes. Adecuación.</a></li>
+  <li><a href="#selección-de-variables" id="toc-selección-de-variables" class="nav-link" data-scroll-target="#selección-de-variables"><span class="header-section-number">3.2.4</span> Selección de variables</a></li>
+  <li><a href="#sec-Diagnosis-GLM" id="toc-sec-Diagnosis-GLM" class="nav-link" data-scroll-target="#sec-Diagnosis-GLM"><span class="header-section-number">3.2.5</span> Diagnosis</a></li>
+  <li><a href="#sec-bondad-GLM" id="toc-sec-bondad-GLM" class="nav-link" data-scroll-target="#sec-bondad-GLM"><span class="header-section-number">3.2.6</span> Bondad del ajuste</a></li>
+  <li><a href="#interpretación-del-modelo" id="toc-interpretación-del-modelo" class="nav-link" data-scroll-target="#interpretación-del-modelo"><span class="header-section-number">3.2.7</span> Interpretación del modelo</a></li>
+  <li><a href="#predicción.-curva-roc" id="toc-predicción.-curva-roc" class="nav-link" data-scroll-target="#predicción.-curva-roc"><span class="header-section-number">3.2.8</span> Predicción. Curva ROC</a></li>
+  </ul></li>
+  <li><a href="#glm-regresión-de-poisson" id="toc-glm-regresión-de-poisson" class="nav-link" data-scroll-target="#glm-regresión-de-poisson"><span class="header-section-number">3.3</span> GLM: regresión de Poisson</a>
+  <ul class="collapse">
+  <li><a href="#alternativas" id="toc-alternativas" class="nav-link" data-scroll-target="#alternativas"><span class="header-section-number">3.3.1</span> Alternativas</a></li>
+  </ul></li>
+  <li><a href="#caso-práctico-cleveland" id="toc-caso-práctico-cleveland" class="nav-link" data-scroll-target="#caso-práctico-cleveland"><span class="header-section-number">3.4</span> Caso práctico: <code>cleveland</code></a>
+  <ul class="collapse">
+  <li><a href="#análisis-exploratorio" id="toc-análisis-exploratorio" class="nav-link" data-scroll-target="#análisis-exploratorio"><span class="header-section-number">3.4.1</span> Análisis exploratorio</a></li>
+  <li><a href="#regresión-logística" id="toc-regresión-logística" class="nav-link" data-scroll-target="#regresión-logística"><span class="header-section-number">3.4.2</span> Regresión logística</a></li>
+  <li><a href="#regresión-de-poisson" id="toc-regresión-de-poisson" class="nav-link" data-scroll-target="#regresión-de-poisson"><span class="header-section-number">3.4.3</span> Regresión de Poisson</a></li>
+  </ul></li>
+  <li><a href="#resumen" id="toc-resumen" class="nav-link" data-scroll-target="#resumen"><span class="header-section-number">3.5</span> Resumen</a></li>
+  <li><a href="#bibliografía" id="toc-bibliografía" class="nav-link" data-scroll-target="#bibliografía"><span class="header-section-number">3.6</span> Bibliografía</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -173,9 +286,1339 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>En preparación</p>
+<p>(“2025-10-08”)</p>
+<style>
+body {text-align: justify}
+</style>
+<p>En el capítulo <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a> se ha introducido la idea de utilizar modelos estadísticos para intentar explicar, o predecir, una variable, a partir de otras que se supone influyen en su comportamiento. En dichos modelos lineales, la variable dependiente/respuesta considerada se supone continua, pero, en ocasiones, la variable dependiente es de otro tipo, discreta o categórica, y también se desea saber cómo influyen otras variables en ella. Por ejemplo:</p>
+<ul>
+<li>cómo varía el número de días de hospitalización, en función de la enfermedad, sexo, edad, etc.</li>
+<li>si se diagnostica a un paciente una enfermedad, o no, en función del sexo, valores de análisis en sangre, nivel de colesterol, etc.</li>
+</ul>
+<p>Estos casos no se pueden abordar <em>correctamente</em> con el modelo de regresión lineal múltiple presentado, dado que la variable respuesta, al ser discreta, y sobre todo si es categórica, se alejan de la distribución Normal, que, como se ha visto, es un supuesto clave en regresión. Concretamente, algunas variables respuestas discretas se pueden modelizar mejor con una distribución de <em>Poisson</em>, como las variables que son <em>conteos</em> (<em>número de</em> … días de hospitalización, que sólo toman valores enteros no negativos). Las variables respuesta de tipo categórica <em>dicotómica</em> (como tener o no una enfermedad) se modelizan con una distribución de <em>Bernoulli</em>, muy alejada de la distribución Normal.</p>
+<p>Para abordar estos problemas con variable respuesta no continua, se introduce en este capítulo el <strong>modelo lineal generalizado (GLM)</strong>, que amplía el marco de la regresión lineal permitiendo que la variable dependiente siga cualquier distribución de probabilidad dentro de la <em>familia exponencial</em> (Normal, Binomial, Poisson, Gamma…). Además, este modelo admite que la varianza de los errores no sea constante (otro de los supuestos de la regresión lineal). Este capítulo se centra en dos escenarios concretos de GLM: la <strong>regresión logística</strong>, adecuada para variables respuesta binarias, y caso paradigmático de <em>modelo de clasificación (supervisada)</em>, y la <strong>regresión de Poisson</strong>, ideal para variables respuesta de tipo conteo.</p>
+<blockquote class="blockquote">
+<p>El calificativo <em>generalizado</em> tiene una connotación distinta a <em>general</em>. Es habitual encontrar <em>modelo lineal general</em> refiriéndose a lo que en este material se denomina <em>modelo de regresión lineal múltiple</em>.</p>
+</blockquote>
+<p>Un par de referencias bibliográficas sobre este tema, que conjugan teoría y práctica, son las mencionadas en otros capítulos: <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> y <span class="citation" data-cites="CDR">Fernández-Avilés y Montero (<a href="#ref-CDR" role="doc-biblioref">2024</a>)</span>. Una referencia bibliográfica clásica sobre GLMs es <span class="citation" data-cites="mccullagh1989glm">McCullagh y Nelder (<a href="#ref-mccullagh1989glm" role="doc-biblioref">1989</a>)</span>.</p>
+<section id="modelo.-función-de-enlace" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="modelo.-función-de-enlace"><span class="header-section-number">3.1</span> Modelo. Función de enlace</h2>
+<p>La forma de definir el <em>modelo lineal generalizado</em> difiere de la del modelo lineal de regresión. La idea detrás del modelo lineal de regresión es predecir valores de la variable respuesta <span class="math inline">\(Y\)</span>, a partir de la combinación lineal de los predictores <span class="math inline">\(X = (1, X_1, \ldots, X_k)\)</span> y sus correspondientes parámetros estimables <span class="math inline">\(\beta = (\beta_0, \beta_1, \ldots, \beta_k)\)</span>. Si la variable <span class="math inline">\(Y\)</span> no es continua, por ejemplo, es dicotómica, tomando valores 0 y 1, la predicción de una respuesta media obtenida para unos determinados valores de <span class="math inline">\(X_i\)</span> difícilmente proporcionará siempre los valores 0 ó 1 (que son sus dos únicos valores admisibles). Es por ello que se introduce la denominada <strong>función de enlace</strong>, <span class="math inline">\(g\)</span>, que, escogida cuidadosamente, permitirá obtener tales valores. Matemáticamente: <span class="math display">\[E(Y) = g^{-1}(X \beta),\]</span> donde:</p>
+<ul>
+<li><span class="math inline">\(Y\)</span> es el vector que contiene las respuestas, que puede seguir cualquier distribución de probabilidad de la familia exponencial: Normal (por tanto el modelo de <strong>regresión lineal</strong> es un caso particular de GLM), Bernoulli/binomial (utilizada en la denominada <em>regresión logística</em>), Poisson, Gamma, etc..</li>
+<li><span class="math inline">\(E(Y)\)</span>, es el valor <em>esperado</em> de la variable respuesta,</li>
+<li><span class="math inline">\(X \beta\)</span>, es el <em>predictor lineal</em>, la “estructura” que aportan los predictores, la forma funcional con la que se intentan explicar el comportamiento de la variable respuesta,</li>
+<li><span class="math inline">\(g(\cdot)\)</span>, la <em>función de enlace</em>, la artífice de la generalización, que relaciona la “estructura” con la distribución de probabilidad de la variable respuesta.<br>
+En <span class="citation" data-cites="mccullagh1989glm">McCullagh y Nelder (<a href="#ref-mccullagh1989glm" role="doc-biblioref">1989</a>)</span> se indican las <em>funciones de enlace <strong>canónicas</strong></em> asociadas a cada distribución de probabilidad:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 43%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribución</th>
+<th>Fórmula: <span class="math inline">\(g(\mu) = g(E(Y)) = ...\)</span></th>
+<th>Función de enlace canónica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\(\mu\)</span></td>
+<td>Identidad</td>
+</tr>
+<tr class="even">
+<td>Binomial</td>
+<td><span class="math inline">\(\text{logit}(\mu) = \log\left(\frac{\mu}{1 - \mu}\right)\)</span></td>
+<td>Logit</td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td><span class="math inline">\(\log(\mu)\)</span></td>
+<td>Logaritmo</td>
+</tr>
+<tr class="even">
+<td>Gamma</td>
+<td><span class="math inline">\(\frac{1}{\mu}\)</span></td>
+<td>Inversa</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>Podrían utilizarse otras funciones de enlace para cada distribución. Una habitual es la función <em>probit</em> para la Bernoulli.</p>
+</blockquote>
+<p>Lo que no cambia respecto al modelo lineal de regresión son las etapas del análisis de un GLM:</p>
+<ol type="1">
+<li><p><strong>Especificación</strong>: se predefine una estructura de las variables predictoras (predictor lineal), que pueden ser variables continuas, denominadas covariables, y/o variables cualitativas, denominadas factores.</p></li>
+<li><p><strong>Estimación</strong>: a partir de los datos muestrales se estiman los parámetros que determinan la relación entre la respuesta y el predictor lineal especificado.</p></li>
+<li><p><strong>Adecuación</strong>: se realiza la correspondiente diagnosis para comprobar la adecuación del modelo, o la necesidad de introducir cambios en la especificación.</p></li>
+<li><p><strong>Interpretación y predicción</strong>: El modelo final (adecuado) estimado se utiliza para interpretar, y, sobre todo, predecir nuevas respuestas. Dichas respuestas pueden ser, según sea el caso: valores <span class="math inline">\(\hat y_i\)</span>, probabilidades de ocurrencia <span class="math inline">\(\hat p_i\)</span>, etc. Este enfoque predictivo se utiliza en “Machine Learning”, que utiliza los errores de predicción como métrica para comparar modelos y elegir el que mejores predicciones realice para el problema entre manos.</p></li>
+</ol>
+</section>
+<section id="glm-regresión-logística" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="glm-regresión-logística"><span class="header-section-number">3.2</span> GLM: regresión logística</h2>
+<p>De entre los distintos casos particulares de GLM, destaca el modelo de regresión logística. Se suele etiquetar como <em>modelo de clasificación supervisada</em>, de gran relevancia en multitud de campos científicos, como la Epidemiología, Psicología, Economía, etc. Hablar de <em>clasificación</em> proviene del hecho de que la variable respuesta <span class="math inline">\(Y\)</span> que se quiere explicar o predecir consiste en la pertenencia, o no, a un determinado grupo de interés.</p>
+<blockquote class="blockquote">
+<p>Se distingue entre clasificación supervisada y no supervisada cuando se conoce (o no) la clasificación de los datos de entrenamiento (en el conjunto de datos hay una variable que contiene dicho valor de clasificación, o no hay dicha variable). La regresión logística predomina sobre otros métodos de clasificación supervisada (Análisis Discriminante, <span class="math inline">\(K\)</span>-vecinos más próximos (KNN), etc.) al poseer una interpretabilidad que no poseen los otros métodos (véase la imagen del Capítulo 2 de <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span>)</p>
+</blockquote>
+<section id="formulación" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="formulación"><span class="header-section-number">3.2.1</span> Formulación</h3>
+<p>La aplicación de una regresión logística se asocia a una variable respuesta dicotómica. Habitualmente se consideran los valores: <span class="math inline">\(Y = 1\)</span> si pertenece al grupo de interés (por ejemplo, diagnosticados de enfermedad X, morosos, piezas defectuosas, etc.), e <span class="math inline">\(Y = 0\)</span> si no pertenece al grupo. Al igual que en el modelo de regresión múltiple, a partir de un conjunto de <span class="math inline">\(k\)</span> variables explicativas <span class="math inline">\(X_1, X_2, \ldots, X_k\)</span> se quiere predecir <span class="math inline">\(Y\)</span>, y clasificar al individuo en el grupo, o no.</p>
+<p>Si se modeliza la variable respuesta, mediante una distribución de Bernoulli, dicha distribución quedará caracterizada por la probabilidad de pertenencia al grupo, <span class="math inline">\(p\)</span>. Así, <span class="math inline">\(P[Y = 1] = p\)</span>, <span class="math inline">\(P[Y = 0] = 1-p\)</span>, y <span class="math inline">\(E[Y] = p\)</span>. Con los datos disponibles (tanto de la variable <span class="math inline">\(Y\)</span> como de las <span class="math inline">\(k\)</span> variables explicativas) se estimará dicho valor, <span class="math inline">\(\hat{p}\)</span>, mejor dicho se estimará el modelo, con la intención de clasificar nuevos individuos o elementos (predecir el grupo al que pertenecerá), con la información que proporcionan los valores de las variables explicativas. En el proceso de estimación se determinaran aquellas variables que influyen <em>significativamente</em> en la clasificación.</p>
+<blockquote class="blockquote">
+<p>En los GLMs se utilizan estimadores de <em>máxima verosimilitud</em>, pues los estimadores de <em>mínimos cuadrados</em> no son eficientes al no tener normalidad en la variable respuesta.</p>
+</blockquote>
+<p>Según la formulación del modelo lineal generalizado: <span class="math display">\[E[Y] = g^{-1}(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k).\]</span> Concretamente, para la regresión logística: <span class="math display">\[ \text{logit}(p) = \log{ \Big(\dfrac{p}{1-p}  \Big)} = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k.\]</span> Al estimar el modelo como si fuese una regresión múltiple, el predictor lineal no proporcionará valores plausibles de la variable respuesta <span class="math inline">\(Y\)</span>, sino que proporciona valores de logit(<span class="math inline">\(p\)</span>), o log-odds, es decir, de la estimación del logaritmo del ratio (razón) entre la probabilidad de pertenecer al grupo de interés, <span class="math inline">\(p\)</span>, y la de no pertenecer a dicho grupo, <span class="math inline">\(1-p\)</span>, o, dicho en escala logarítmica, la diferencia entre pertenecer y no pertenecer al grupo. La ventaja de utilizar el logit, es que transforma los valores del predictor, que podrían estar en cualquier rango de valores, a valores para <span class="math inline">\(p\)</span>: <span class="math display">\[ p = \dfrac{1}{1+e^{-(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k)}},\]</span> que tienden a 0 cuando el predictor lineal tiende a <span class="math inline">\(-\infty\)</span> y a 1 cuando tiende a <span class="math inline">\(\infty\)</span>, por lo que la predicción es siempre un valor válido para una probabilidad. Si el predictor es <span class="math inline">\(0\)</span>, la probabilidad estimada es 0.5, y por tanto el odds es 1.</p>
+<p>La función logística, en la parte central de su dominio, es prácticamente lineal. Esto implica que para modelizar respuestas de probabilidad moderada, el modelo lineal y el logístico no diferirán mucho. La contrapartida es que la probabilidad es una función no lineal de los predictores, sobre todo cuando las probabilidades se aproximan a 0 ó a 1, y la interpretación de los parámetros estimados se complica.</p>
+<blockquote class="blockquote">
+<p>Como se ha mencionado, existen otras posibles funciones enlace, como la inversa de la distribución normal tipificada que conduce al denominado modelo probit (muy utilizado en Economía), o tomar la inversa de la distribución uniforme. La curva de la función logística y la de la función probit son muy similares, pero la logística tiene colas más pesadas (véase la figura 14.1 de la página 642 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> o <a href="https://bookdown.org/j_morales/librostat/glmbinomial.html#representaci%C3%B3n-de-las-funciones-link">representación de las funciones link</a>).</p>
+</blockquote>
+</section>
+<section id="estimación-de-los-parámetros" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="estimación-de-los-parámetros"><span class="header-section-number">3.2.2</span> Estimación de los parámetros</h3>
+<p>La estimación de los parámetros del modelo se realiza mediante máxima verosimilitud. Partiendo de una muestra de <span class="math inline">\(n\)</span> observaciones, <span class="math inline">\((y_i, x_{1i}, \ldots, x_{ki}), i=1, \ldots, n,\)</span> suponiendo independencia entre ellas, se puede expresar la función de probabilidad de la muestra, verosimilitud, <span class="math display">\[P(y_1, \ldots, y_n) = \prod_{i=1}^n p_i^{y_i}(1-p_i)^{(1-y_i)}.\]</span> Tomando logaritmos, <span class="math display">\[\log(P(y_1, \ldots, y_n)) = \sum_{i=1}^n \big(y_i \log(p_i) + (1-y_i) \log(1-p_i)\big).\]</span> Maximizando esta log-verosimilitud (<em>log-likelihood</em>) se obtienen los estimadores de los parámetros del modelo. Para encontrarlos, se visualiza en la fórmula anterior el predictor lineal: <span class="math display">\[\begin{eqnarray}
+LL(\beta) &amp;=&amp; \sum_{i=1}^n y_i \log\left(\dfrac{p_i(\beta)}{1-p_i(\beta)}\right) + \sum_{i=1}^n \log(1-p_i(\beta)) \\
+     &amp;=&amp;  \sum_{i=1}^n y_i \beta^\top x_i - \sum_{i=1}^n \log(1+\exp(\beta^\top x_i)).
+\end{eqnarray}\]</span> Derivando respecto a los parámetros <span class="math inline">\(\beta\)</span>, <span class="math display">\[\dfrac{\partial LL(\beta)}{\partial \beta} = \sum_{i=1}^n y_i x_i - \sum_{i=1}^n x_i \left(\dfrac{\exp(\beta^\top x_i)}{1+\exp(\beta^\top x_i)}\right),\]</span> e igualando a cero, se obtiene el sistema de ecuaciones (no lineales) cuya solución son los estimadores de máxima verosimilitud: <span class="math display">\[ \sum_{i=1}^n y_i x_i = \sum_{i=1}^n x_i \left(\dfrac{1}{1+\exp(-\beta^\top x_i)}\right) = \sum_{i=1}^n \hat y_i x_i.\]</span></p>
+<blockquote class="blockquote">
+<p>Técnicamente, la serie de ecuaciones que hay que resolver no tienen solución analítica, por lo que se acude a métodos iterativos basados en el algoritmo de <em>Newton-Raphson</em> o en <em>Scoring</em>. En la práctica se alcanzan las condiciones de convergencia de uno u otro método en pocas iteraciones.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Cabe señalar que la estimación MV requiere de un tamaño de muestra considerable para obtener estimaciones fiables.</p>
+</blockquote>
+<p><strong>Deviance</strong><br>
+Se define la <strong>deviance</strong> en la observación <span class="math inline">\(i\)</span> como: <span class="math display">\[d_i = -2\big(y_i \log(p_i) + (1-y_i) \log(1-p_i)\big).\]</span></p>
+<blockquote class="blockquote">
+<p>Observación <span class="math inline">\(d_i&gt;0\)</span>, y la constante 2 es arbitraria, escogida por conveniencia.</p>
+</blockquote>
+<p>Refleja la desviación al modelo en la observación <span class="math inline">\(i\)</span> (equivalente al <em>residuo</em> en regresión lineal). Para un buen ajuste del modelo, interesa encontrar el mínimo de la suma de las <span class="math inline">\(n\)</span> <em>deviance</em>, <em>Total deviance</em>: <span class="math display">\[D =  \sum_i d_i\]</span> Observando las fórmulas se infiere que maximizar la verosimilitud equivale a minimizar la <em>deviance</em>, <span class="math inline">\(D\)</span>.</p>
+<p><strong>Propiedades</strong><br>
+A la vista de los estimadores MV obtenidos, los residuos del modelo, <span class="math inline">\(e_i = y_i - \hat y_i\)</span>, deben sumar cero y ser ortogonales a las variables explicativas <span class="math inline">\(x_i\)</span>. Aunque se da esta condición, análoga al modelo de regresión general, ahora el sistema de ecuaciones no es lineal en los parámetros <span class="math inline">\(\beta\)</span>. Por último, en <span class="citation" data-cites="mccullagh1989glm">McCullagh y Nelder (<a href="#ref-mccullagh1989glm" role="doc-biblioref">1989</a>)</span> puede verse como los estimadores MV tienen una distribución asintóticamente normal.</p>
+</section>
+<section id="sec-Adecuacion" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="sec-Adecuacion"><span class="header-section-number">3.2.3</span> Contrastes. Adecuación.</h3>
+<p>La adecuación del modelo se puede realizar mediante contrastes de hipótesis. Por un lado se contrasta si un parámetro es o no significativo: <span class="math display">\[ \left. \begin{eqnarray}
+H_0 &amp;:&amp; \beta_i = 0 \\
+H_1 &amp;:&amp; \beta_i \neq 0 \\
+\end{eqnarray} \right\rbrace.\]</span> Y por otro lado, se contrasta si el modelo en su conjunto es adecuado. Existen distintas alternativas.</p>
+<p><strong>Contraste de razón de verosimilitudes</strong><br>
+Este contraste comparan la función de verosimilitud con y sin la variable asociada a dicho parámetro. Bajo el supuesto de que <span class="math inline">\(H_0\)</span> es cierta, la diferencia de <em>deviance</em> entre el modelo sin <span class="math inline">\(\beta_i\)</span> y con <span class="math inline">\(\beta_i\)</span> es: <span class="math display">\[D_0 - D_1 = -2L(\hat\beta_i^C) +2L(\hat\beta_i)=-2\dfrac{L(\hat\beta_i^C)}{L(\hat\beta_i)}\]</span> que se distribuye (asintóticamente) siguiendo una <span class="math inline">\(\chi^2\)</span> con 1 grado de libertad. De la última expresión se infiere el nombre del contraste… <em>razón de verosimilitudes</em>.</p>
+<blockquote class="blockquote">
+<p>El resultado es extensible a un subconjunto de <span class="math inline">\(s\)</span> parámetros <span class="math inline">\(\beta_i\)</span>, siguiendo en tal caso una <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(s\)</span> grado de libertad. Concretamente, se puede aplicar a todos los parámetros del modelo, comparándolo entonces con el modelo nulo.</p>
+</blockquote>
+<p><strong>Estadístico de Wald</strong><br>
+El <strong>estadístico de Wald</strong> de cada parámetro se define como: <span class="math display">\[\omega_i = \dfrac{\hat\beta_i}{sd(\hat\beta_i)},\]</span> que se distribuye como una normal tipificada, en muestras grandes y bajo <span class="math inline">\(H_0\)</span>.</p>
+<blockquote class="blockquote">
+<p>El estadístico de Wald es la raíz cuadrada del contraste <span class="math inline">\(\chi^2\)</span> de Wald, de aquí que el estadístico se distribuya como una normal tipificada, pues al elevarlo al cuadrado se obtiene una distribución <span class="math inline">\(\chi^2\)</span>.</p>
+</blockquote>
+<p><strong>Contraste de Hosmer-Lemeshow</strong><br>
+Un contraste global sobre el modelo, muy utilizado en la práctica, es el contraste de <em>Hosmer-Lemeshow</em>, que evalúa si las probabilidades predichas por la regresión logística se ajustan bien a las observaciones reales. <span class="math display">\[ \left. \begin{eqnarray}
+H_0 &amp;:&amp; \text{El modelo se ajusta bien a los datos} \\
+H_1 &amp;:&amp; \hspace{1cm} \text{... no se ajusta...} \\
+\end{eqnarray} \right\rbrace \]</span></p>
+<p>Para comprobar la discrepancia entre las probabilidades predichas y las reales, utiliza un enfoque basado en la distribución <span class="math inline">\(\chi^2\)</span>. Agrupa los datos (ordenados por probabilidad predicha) en grupos (habitualmente en <em>deciles</em>, esto es, en 10 grupos de igual tamaño, si es posible). Construye la tabla de contingencia de frecuencias observadas y esperadas (según el modelo), y con ella se calcula el estadístico: <span class="math display">\[\chi^2 = \sum_{g=1}^{G} \frac{(O_g - E_g)^2}{E_g (1 - \hat{p}_g)} \]</span> donde:</p>
+<ul>
+<li><span class="math inline">\(G\)</span> es el número de grupos considerado,</li>
+<li><span class="math inline">\(O_g\)</span>: número observado de eventos en el grupo <span class="math inline">\(g\)</span>,</li>
+<li><span class="math inline">\(E_g\)</span>: número esperado de eventos en el grupo <span class="math inline">\(g\)</span>,</li>
+<li><span class="math inline">\(\hat{p}_g\)</span>: probabilidad promedio predicha en el grupo <span class="math inline">\(g\)</span>.</li>
+</ul>
+<p>El estadístico sigue una distribución <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(G - 2\)</span> grados de libertad, llevando a rechazar <span class="math inline">\(H_0\)</span> para valores grandes del estadístico. En términos de p-valor, si es menor que 0.05, se rechaza <span class="math inline">\(H_0\)</span>, esto es, el modelo no ajusta bien los datos.</p>
+<p>Este contraste permite detectar problemas de especificación del modelo, como omisión de variables relevantes o mala elección de la forma funcional. Hay que tener en cuenta que, como muchos otros contrastes, si la muestra es grande, puede detectar diferencias pequeñas como significativas. Además, el resultado depende del número de grupos considerados y se debe tener cuidado con las predicciones extremas.</p>
+</section>
+<section id="selección-de-variables" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="selección-de-variables"><span class="header-section-number">3.2.4</span> Selección de variables</h3>
+<p>Hay situaciones en las que se dispone de numerosas variables explicativas que, en principio, podrían estar en el modelo y el objetivo es seleccionar cuáles de ellas realmente deben estar en el modelo, tanto a nivel estadístico como por el contexto del problema. En el <a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a> se detallan distintos métodos de selección de variables y distintos criterios para llevar a cabo la selección.</p>
+<p>En los modelos de regresión logística, además de las razones habituales para la selección de variables (multicolinealidad, etc.), es importante tener en cuenta que, si la proporción del evento de interés (<em>prevalencia</em>) es muy baja, pueden surgir problemas numéricos. Esto puede dar lugar a estimadores inestables, cuya magnitud depende en gran medida de los datos observados.</p>
+<blockquote class="blockquote">
+<p>“Encontrar un modelo adecuado es en parte ciencia, en parte métodos estadísticos, en parte experiencia y sobre todo sentido común.” (María Durbán)</p>
+</blockquote>
+</section>
+<section id="sec-Diagnosis-GLM" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="sec-Diagnosis-GLM"><span class="header-section-number">3.2.5</span> Diagnosis</h3>
+<p>Como se sabe, la diagnosis permite verificar los supuestos en los que está basado el modelo. Principalmente se busca verificar la linealidad entre los predictores y el logaritmo de las odds y la ausencia de interacción entre covariables y factores. Existe interacción cuando el efecto de la covariable no es constante para los distintos niveles del factor. Por lo que la ausencia de interacción implica que las “pendientes” sean paralelas, no cambien entre niveles del factor (véanse los gráficos de la <a href="#sec-diagnosis-glm-diag" class="quarto-xref"><span>Sección 3.4.2.3</span></a>).</p>
+<p>Cuando no se cumplen las hipótesis, pueden producirse distintos errores:</p>
+<ul>
+<li>Coeficientes sesgados: los estimadores tienden a sobrestimar o subestimar sistemáticamente los efectos. Se pueden producir por una mala especificación del modelo (falta de variables relevantes, forma funcional incorrecta, existencia de interacciones,…).</li>
+<li>Estimadores ineficientes: los errores estándar son elevados, lo que puede llevar a concluir erróneamente que un parámetro es cero.</li>
+<li>Inferencia estadística no válida: las pruebas de significación pueden ser incorrectas.</li>
+</ul>
+<p>Además, la diagnosis permite descubrir valores extremos en los predictores (puntos con alto <em>leverage</em>, <span class="math inline">\(h_i\)</span>) o en la variable respuesta (<em>outliers</em>) que pueden distorsionar los resultados del modelo.</p>
+<p><strong>Análisis de residuos en regresión logística</strong><br>
+Es habitual trabajar con las <em>deviance</em>, <span class="math inline">\(d_i\)</span>, y los residuos de Pearson. Estos últimos se definen como: <span class="math display">\[r_i = \frac{y_i - n_i \hat{p}_i}{\sqrt{n_i \hat{p}_i (1 - \hat{p}_i)}},\]</span> donde <span class="math inline">\(n_i\)</span> es el número de individuos que comparten el mismo valor de los predictores. Con muestras grandes, los residuos de Pearson tienden a seguir una distribución normal tipificada, por lo que, si el modelo se ajusta bien se espera que los valores de <span class="math inline">\(r_i\)</span> se encuentren en el intervalo <span class="math inline">\((-3,3)\)</span>.</p>
+<p><strong>Medidas de influencia</strong><br>
+En regresión logística, existen varias métricas específicas para evaluar la influencia:</p>
+<ol type="1">
+<li><span class="math inline">\(\Delta D\)</span> de Hosmer-Lemeshow: mide el impacto de cada observación en el ajuste global del modelo. Equivalente al <em>leverage</em> de la regresión lineal.</li>
+<li><span class="math inline">\(\Delta \beta\)</span> de Pregibon: estima cuánto cambiarían los parámetros si se eliminara una observación. Equivalente a la <em>distancia de Cook</em> de la regresión lineal.</li>
+</ol>
+</section>
+<section id="sec-bondad-GLM" class="level3" data-number="3.2.6">
+<h3 data-number="3.2.6" class="anchored" data-anchor-id="sec-bondad-GLM"><span class="header-section-number">3.2.6</span> Bondad del ajuste</h3>
+<p>El coeficiente de determinación, <span class="math inline">\(R^2\)</span>, definido para la regresión lineal debe adaptarse en el caso del modelo de regresión lineal generalizada. Entre los coeficientes de bondad de ajuste propuestos para el modelo de regresión logística, uno de los más utilizados es el estadístico: <span class="math display">\[R^2 = 1 - \dfrac{D(\hat\beta)}{D(\beta_0)}\]</span> donde <span class="math inline">\(\hat\beta\)</span> se refiere a todos los parámetros menos <span class="math inline">\(\beta_0\)</span>. Si el ajuste fuese perfecto, <span class="math inline">\(D(\hat\beta) = 0\)</span> y <span class="math inline">\(R^2=1\)</span>. Así, la falta de ajuste implica que <span class="math inline">\(R^2 &lt; 1\)</span> y es menor cuanto mayor sea la <em>deviance</em> total <span class="math inline">\(D(\hat\beta)\)</span>, hasta <span class="math inline">\(D(\hat\beta) = D(\beta_0)\)</span> (cuando ninguna variable del modelo sea capaz de explicar la variable respuesta) que conduce a <span class="math inline">\(R^2=0\)</span>.</p>
+<p>El estadístico anterior, reformulado en términos de verosimilitud, se conoce como <strong>Pseudo <span class="math inline">\(R^2\)</span> de McFadden’s</strong> y es el encontrado habitualmente en las salidas de software: <span class="math display">\[R^2 = 1 - \dfrac{LL(\hat\beta)}{LL(\beta_0)}\]</span> donde <span class="math inline">\(LL(\cdot)\)</span> se refiere a la log-verosimilitud del modelo correspondiente.</p>
+<p>Otros coeficientes utilizados en la práctica son el <span class="math inline">\(R^2\)</span> de Cox &amp; Snell y el <span class="math inline">\(R^2\)</span> de Nagelkerke. Ambos ajustan los valores del Pseudo <span class="math inline">\(R^2\)</span> de McFadden’s para que tome valores entre 0 y 1, siendo el de Nagelkerke una versión corregida del de Cox &amp; Snell.</p>
+</section>
+<section id="interpretación-del-modelo" class="level3" data-number="3.2.7">
+<h3 data-number="3.2.7" class="anchored" data-anchor-id="interpretación-del-modelo"><span class="header-section-number">3.2.7</span> Interpretación del modelo</h3>
+<p>En un modelo de regresión logística, <span class="math display">\[ \text{logit}(p) = \log{ \Big(\dfrac{p}{1-p}  \Big)} = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k,\]</span></p>
+<p>los valores estimados de los parámetros, <span class="math inline">\(\hat{\beta}_i\)</span> son difíciles de interpretar, pues, proporcionan, <em>ceteris paribus</em> (manteniendo el valor de las demás variables), el cambio en el logit de <span class="math inline">\(p\)</span>, o log-odds, esto es el cambio en escala logarítmica de los llamados <em>odds</em>, <span class="math inline">\(\frac{p}{1-p}\)</span>, por unidad de cambio en <span class="math inline">\(x_i\)</span>.</p>
+<blockquote class="blockquote">
+<p>La expresión <em>ceteris paribus</em> también se puede entender como estimaciones de <span class="math inline">\(\hat \beta_i\)</span> obtenidas <em>ajustando por los otros predictores</em> incluidos en el modelo.</p>
+</blockquote>
+<p>Al aplicar la exponencial a ambos términos se llega a: <span class="math display">\[\dfrac{p}{1-p} = \exp(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k) = \exp(\beta_0)\prod_{i = 1}^k \exp(\beta_i)^{X_i}.\]</span> La interpretación se hace a través de las funciones <span class="math inline">\(\exp(\hat\beta_i)\)</span> denominadas <strong>odds ratios</strong>. Indican cuánto se modifica la razón de probabilidades (la probabilidad de pertenecer al grupo de interés entre la de no pertenecer a dicho grupo) por unidad de cambio en la variable <span class="math inline">\(X_i\)</span>. Es decir, si se mantienen todas las variables en los mismos valores (<em>ceteris paribus</em>), menos una variable que cambia en 1 unidad de un individuo/elemento a otro, todas las exponenciales darán como resultado 1 excepto el término <span class="math inline">\(\exp(\hat\beta_i)\)</span>, y <span class="math inline">\(\exp(\hat\beta_0)\)</span> que no depende de las <span class="math inline">\(x_i\)</span> (si el cambio es en <span class="math inline">\(c\)</span> unidades, se tiene <span class="math inline">\(\exp(c\hat\beta_i)\)</span>). Y si cambian dos variables en una unidad, aparecen ambos términos multiplicándose. Así los efectos en el modelo de regresión logística son <strong>multiplicativos</strong>: si <span class="math inline">\(\exp(\hat{\beta}_i)&lt;1\)</span>, entonces disminuye la probabilidad de pertenecer al grupo de interés, aumentando dicha probabilidad cuando <span class="math inline">\(\exp (\hat{\beta}_i)&gt;1\)</span>, <em>ceteris paribus</em>.</p>
+<blockquote class="blockquote">
+<p>Que los efectos, de los <em>factores</em> o <em>covariables</em> sobre la respuesta, sean <strong>multiplicativos</strong> proviene del logaritmo (neperiano) que aparece en la función de enlace canónica asociada a la distribución Bernoulli. Este es otro punto en el que difiere de la regresión lineal, en la que los efectos son <strong>aditivos</strong>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Los efectos <em>multiplicativos</em> también se dan en el modelo de regresión de Poisson (que se ve más adelante en este capítulo), al tener también el logaritmo en la función de enlace.</p>
+</blockquote>
+<p><strong>Predictor en forma de diferencias</strong><br>
+El predictor lineal también se puede reescribir en forma de diferencias con respecto a la media de cada variable: <span class="math display">\[\text{logit}(p) = \beta_0 + \beta_1 (x_{1i} - \bar{x}_1) + \ldots + \beta_k (x_{ki} - \bar{x}_k).\]</span> Así, la ordenada en el origen, <span class="math inline">\(\beta_0\)</span>, se puede interpretar como el valor del logit cuando las variables son iguales a sus medias. En tal caso, si <span class="math inline">\(\beta_0 = 0\)</span>, se tendría que logit<span class="math inline">\((p) = 0\)</span> lo que conduce a <span class="math inline">\(1 = p_i/(1-p_i)\)</span> y por lo tanto <span class="math inline">\(p_i = 0.5\)</span>. Y si <span class="math inline">\(\beta_0 \neq 0\)</span> se tiene que <span class="math inline">\(p_i = 1/(1 + \exp(-\beta_0))\)</span>.</p>
+<section id="intervalos-de-confianza" class="level4" data-number="3.2.7.1">
+<h4 data-number="3.2.7.1" class="anchored" data-anchor-id="intervalos-de-confianza"><span class="header-section-number">3.2.7.1</span> Intervalos de confianza</h4>
+<p>Además de los parámetros estimados, o de los OR, se pueden proporcionar sus intervalos de confianza que aportan información adicional. Los IC para los parámetros del modelo, <span class="math inline">\(\beta_i\)</span>, se pueden calcular utilizando los errores estándar y asumiendo que sus estimadores siguen una distribución normal. Los IC para el odds ratio se calcula tomando exponenciales: <span class="math display">\[\exp\left[ \hat{\beta}_1 \pm t_{gl,\alpha/2} \times sd(\hat{\beta}_1) \right].\]</span> Para obtener el intervalo de confianza para las probabilidades, basta con utilizar la función logística, que relaciona el logit y la probabilidad:</p>
+<p><span class="math display">\[\frac{e^{\text{IC.logit}}}{1 + e^{\text{IC.logit}}}\]</span></p>
+</section>
+<section id="predictores-cualitativos" class="level4" data-number="3.2.7.2">
+<h4 data-number="3.2.7.2" class="anchored" data-anchor-id="predictores-cualitativos"><span class="header-section-number">3.2.7.2</span> Predictores cualitativos</h4>
+<p>La interpretación de los parámetros de los factores es diferente a la de las covariables, como en regresión lineal. Supóngase que sólo se tiene una variable predictora: <span class="math display">\[log \left( \dfrac{p}{1-p} \right) = \beta_0 + \beta_1 X\]</span> Si es dicotómica, codificada con 0 y 1, si <span class="math inline">\(X = 0\)</span>, el logit es <span class="math inline">\(\beta_0\)</span>, y si <span class="math inline">\(X = 1\)</span> el logit es <span class="math inline">\(\beta_0 + \beta_1\)</span>. Por tanto, <span class="math inline">\(\beta_1\)</span> resulta ser la diferencia en el logit entre los dos grupos.</p>
+<p>También se puede ver de otra forma: <span class="math display">\[ \dfrac{p}{1-p} = e^{\beta_0 + \beta_1 X} = e^{\beta_0} e^{\beta_1 X}.\]</span> Si <span class="math inline">\(X=0\)</span>, el <em>odds</em> es <span class="math inline">\(e^{\beta_0}\)</span>, y si <span class="math inline">\(X=1\)</span>, el <em>odds</em> es <span class="math inline">\(e^{\beta_0}e^{\beta_1}\)</span>. Así, el <em>odds ratio</em> (la razón entre los odds, razón de posibilidades) entre ambos grupos es: <span class="math display">\[ \text{OR} = \dfrac{p/(1-p) |_{X=1}}{p/(1-p) |_{X=0}} = \dfrac{e^{\beta_0 + \beta_1}}{e^{\beta_0}} = e^{\beta_1}.\]</span> Por lo tanto, el <em>odds ratio</em> asociado a una variable dicotómica es simplemente la exponencial del parámetro asociado a dicha variable. Si <span class="math inline">\(\beta_1&gt;0\)</span>, entonces <span class="math inline">\(e^{\beta_1} &gt; 1\)</span>, y la probabilidad de pertenecer al grupo de interés es mayor en el grupo con <span class="math inline">\(X=1\)</span> que en el grupo con <span class="math inline">\(X=0\)</span>, y viceversa.</p>
+<p>El valor <em>neutro</em> del OR es el 1, que indica que las dos categorías comparadas presentan la misma probabilidad de ocurrencia. El valor mínimo posible del OR es 0, mientras que el máximo teóricamente posible es infinito. Un OR inferior a 1 se interpreta como que el evento es menos frecuente en la categoría o grupo de interés en comparación con el grupo o categoría de referencia. Por ejemplo, un OR = 3 indica que el evento es tres veces más probable en la categoría <span class="math inline">\(X = 1\)</span> que en la categoría <span class="math inline">\(X = 0\)</span>.</p>
+<p><strong>Diferencias con el Riesgo Relativo</strong><br>
+El <em>odds ratio</em> (OR) y el <em>riesgo relativo</em> (RR) son dos medidas estadísticas utilizadas para cuantificar la asociación entre una variable y una respuesta, pero tienen diferencias clave en su interpretación y cálculo.</p>
+<p>El riesgo relativo se define como: <span class="math display">\[RR = \frac{P(Y = 1 | X = 1)}{P(Y = 1 | X = 0)},\]</span> es decir, es una medida de cuánto más probable es encontrar el evento (<span class="math inline">\(Y=1\)</span>) entre los individuos con <span class="math inline">\(X = 1\)</span> que entre aquellos con <span class="math inline">\(X = 0\)</span>.</p>
+<p>El OR se puede aproximar por el RR, pero es necesario que tanto <span class="math inline">\(P(Y = 1 \mid X = 1)\)</span> como <span class="math inline">\(P(Y = 1 \mid X = 0)\)</span> sean pequeñas.</p>
+<p>Por ejemplo, si se tienen los siguientes datos:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th>Evento (Y=1)</th>
+<th>No evento (Y=0)</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Grupo X=1</td>
+<td>50</td>
+<td>50</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>Grupo X=0</td>
+<td>25</td>
+<td>75</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>Los riesgos en cada grupo son:</p>
+<p><span class="math display">\[P(Y=1 \mid X=1) = \frac{50}{100} = 0.5; \qquad
+P(Y=1 \mid X=0) = \frac{25}{100} = 0.25.\]</span></p>
+<p>Entonces, el riesgo relativo es <span class="math display">\[RR = \frac{0.5}{0.25} = 2.\]</span> Por su parte, los odds en cada grupo son:</p>
+<p><span class="math display">\[\text{odds}(X=1) = \frac{50}{50} = 1; \qquad
+\text{odds}(X=0) = \frac{25}{75} = \frac{1}{3},\]</span></p>
+<p>y <span class="math display">\[
+OR = \frac{1}{1/3} = 3 \neq RR\]</span></p>
+<p>El valor (y la interpretación) de estas medidas es diferente: <span class="math inline">\(RR = 2\)</span> indica que el riesgo de evento en el grupo <span class="math inline">\(X=1\)</span> es el doble que en el grupo <span class="math inline">\(X=0\)</span>.<br>
+Mientras que el <span class="math inline">\(OR = 3\)</span> sugiere que las odds del evento son 3 veces mayores en el grupo <span class="math inline">\(X=1\)</span>. Y la diferencia se hace más notable cuando los riesgos no son pequeños.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+Invente otros números que hagan que el RR y el OR sean similares (o iguales). ¿La interpretación es también similar (o igual)?</p>
+</blockquote>
+<p><strong>Predictores cualitativos con más de dos categorías</strong><br>
+Si la variable cualitativa tiene más de dos categorías, la solución se basa en crear variables ficticias (<em>dummies</em>) para cada categoría, tomando una de las categorías como referencia (véase la <a href="Cap1-LM.html#sec-factor" class="quarto-xref"><span>Sección 1.4.3.1</span></a>). De este modo, se aplica la interpretación anterior de variable dicotómica en cada comparación entre una categoría y la categoría de referencia.</p>
+<p>Por ejemplo, si la variable <span class="math inline">\(X\)</span> tiene tres categorías (A, B y C), se toma una de ellas como referencia, por ejemplo C, y se crean dos variables ficticias:</p>
+<ul>
+<li><span class="math inline">\(X_1 = 1\)</span> si la categoría es A, y 0 en otro caso,</li>
+<li><span class="math inline">\(X_2 = 1\)</span> si la categoría es B, y 0 en otro caso.</li>
+</ul>
+<p>El modelo quedará: <span class="math display">\[\text{logit}(p) = \beta_0 + \beta_1 X_1 + \beta_2 X_2.\]</span> Así, el OR asociado a la categoría A es <span class="math inline">\(e^{\beta_1}\)</span>, que compara la categoría A con la C, y el OR asociado a la categoría B es <span class="math inline">\(e^{\beta_2}\)</span>, que compara la categoría B con la C. Y el efecto de la categoría C queda incluido en la ordenada en el origen, <span class="math inline">\(\beta_0\)</span>.</p>
+</section>
+</section>
+<section id="predicción.-curva-roc" class="level3" data-number="3.2.8">
+<h3 data-number="3.2.8" class="anchored" data-anchor-id="predicción.-curva-roc"><span class="header-section-number">3.2.8</span> Predicción. Curva ROC</h3>
+<p>La aplicación más común de la regresión logística es utilizarla como método de clasificación, basándose en los valores de las variables explicativas que influyen en el modelo. Esta predicción de clasificación se realiza estableciendo un umbral de probabilidad (estimada), que determina la pertenencia, o no, al grupo de interés. Por ejemplo, se podría clasificar a un individuo en el grupo de interés si la probabilidad estimada supera 0.6, y clasificarlo en el otro grupo en caso contrario.</p>
+<p>Para evaluar la eficacia del modelo en esta tarea de clasificación, se recurre al análisis de los aciertos y errores cometidos, en función del umbral de probabilidad escogido. Para ello, se introducen dos métricas fundamentales: la <strong>sensibilidad</strong> y la <strong>especificidad</strong>, que se calculan a partir de la <strong>matriz de confusión</strong>. Con un ejemplo se ilustra su obtención. Supóngase que se tiene una prueba rápida para diagnosticar una enfermedad, que no siempre acierta. Y por otro lado, supóngase que se conoce realmente quién tiene esa enfermedad. Esquemáticamente:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Matriz de confusión</th>
+<th>Enfermedad Presente</th>
+<th>Enfermedad Ausente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Prueba Positiva</strong></td>
+<td>Verdadero Positivo (VP)</td>
+<td>Falso Positivo (FP)</td>
+</tr>
+<tr class="even">
+<td><strong>Prueba Negativa</strong></td>
+<td>Falso Negativo (FN)</td>
+<td>Verdadero Negativo (VN)</td>
+</tr>
+</tbody>
+</table>
+<p>La <em>sensibilidad</em>, también conocida como tasa de verdaderos positivos, indica la proporción de casos de interés correctamente identificados por el modelo: <span class="math display">\[ \text{sensibilidad} = \dfrac{VP}{VP+FN}\]</span></p>
+<p>Por su parte, la <em>especificidad</em>, o tasa de verdaderos negativos, refleja la capacidad del modelo para identificar correctamente los casos negativos: <span class="math display">\[ \text{especificidad} = \dfrac{VN}{VN+FP}\]</span></p>
+<p>Estas métricas pueden representarse gráficamente para distintos valores del umbral de clasificación (puntos de corte), lo que permite observar cómo varían la <em>sensibilidad</em> y la <em>especificidad</em> a lo largo del rango de probabilidades (de 0 a 1). La herramienta habitualmente utilizada para este análisis es la <strong>curva ROC</strong> (<em>Receiver Operating Characteristic</em>), que muestra la <em>sensibilidad</em> frente a la <em>tasa de falsos positivos</em> (es decir, <span class="math inline">\(1 -\)</span> <em>especificidad</em>) para diferentes puntos de corte (umbrales). Esta representación se ha convertido en un estándar para evaluar modelos de clasificación. Un clasificador aleatorio presenta una curva ROC coincidente con la diagonal, mientras que un clasificador perfecto tiene una curva en ángulo recto que abarca toda la parte superior del gráfico por encima de la diagonal. La curva ROC del resto de modelos de clasificación se moverá entre ellas.</p>
+<p>El <em>área bajo la curva</em>, <strong>AUC</strong> (<em>Area Under the Curve</em>), asociado a una curva ROC proporciona una medida cuantitativa del rendimiento del modelo. El valor máximo de AUC es 1, indicando un método de clasificación perfecto, , mientras que un modelo sin capacidad predictiva (equivalente a una clasificación aleatoria) tendría una curva ROC alineada con la diagonal y un AUC de 0.5. Cuanto más próximo a 1 esté el valor de AUC mayor capacidad discriminante tiene el modelo. Esta métrica resulta especialmente útil para comparar distintos modelos de regresión logística o incluso otros algoritmos de clasificación.</p>
+</section>
+</section>
+<section id="glm-regresión-de-poisson" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="glm-regresión-de-poisson"><span class="header-section-number">3.3</span> GLM: regresión de Poisson</h2>
+<p>Cuando la <em>variable respuesta</em> es razonable modelizarla con la <em>distribución de Poisson</em>, por ejemplo, cuando es de tipo conteo, se puede plantear una <strong>regresión de Poisson</strong>, cuyo objetivo es explicar dicha variable en función de <span class="math inline">\(k\)</span> variables explicativas <span class="math inline">\(X_1, X_2, \ldots, X_k\)</span>.</p>
+<p>En este caso, la distribución de Poisson queda caracterizada por su esperanza matemática, <span class="math inline">\(\lambda\)</span>, que coincide también con su varianza. Este hecho impone un supuesto fundamental de la regresión de Poisson: que la <em>varianza condicional</em> de la variable respuesta es igual a su <em>esperanza condicional</em>. De ser mayor la varianza se tiene el problema de <strong>sobredispersión</strong>.</p>
+<p>Con los datos disponibles se estimará el modelo, también mediante máxima verosimilitud, con la intención de predecir valores de la variable respuesta <span class="math inline">\(\hat{Y}\)</span> con la información que proporcionan los valores de las variables explicativas significativas. Aquí tampoco tiene cabida el modelo de regresión lineal, porque, entre otras razones, las predicciones podrían arrojar valores negativos, o no enteros, o la varianza de la variable respuesta depende de la media (heterocedasticidad).</p>
+<p>Dado que la función de enlace es de tipo logarítmico, los efectos de las variables explicativas son también <em>multiplicativos</em>, como en la regresión logística.</p>
+<p>Como contraste de bondad de ajuste se utiliza el contraste de razón de verosimilitudes, con el que hay que tener cuidado dado que su validez radica en que, de cada valor de la variable respuesta, se tengan al menos 5 observaciones.</p>
+<p>Respecto a la diagnosis, es habitual utilizar los residuos estandarizados, que en este caso resultan ser: <span class="math display">\[r_i = \dfrac{y_i - \hat{y}_i}{\sqrt{\hat{y}_i}},\]</span> y siguen una distribución normal tipificada, en muestras grandes y si el modelo se ajusta bien a los datos.</p>
+<p>La utilidad de la regresión de Poisson radica en su mejor adecuación a variables respuesta de naturaleza poco frecuente (número entero pequeño), asimétricas, frente a variables de naturaleza común, generalmente simétricas, que se distribuyen según una distribución normal. Ofrece predicciones más correctas que una regresión lineal “gaussiana”. En medicina o biología se utiliza para estudiar variables relacionadas con las supervivencia/muerte de organismos, o la reproducción (número de crías); en ingeniería se estudia para fallos en sistemas mecánicos, etc.</p>
+<section id="alternativas" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="alternativas"><span class="header-section-number">3.3.1</span> Alternativas</h3>
+<p>Un modelo de regresión de Poisson puede no ser adecuado porque el modelo esté mal especificado. El primer paso es revisar si se han omitido variables relevantes o si se ha elegido una forma funcional inapropiada. Por ejemplo, excluir una variable predictora importante puede inducir síntomas de sobredispersión.</p>
+<p>Asegurada la correcta especificación, si existe sobredispersión, puede considerarse ajustar una <strong>regresión binomial negativa</strong>, que comparte la misma estructura en la esperanza matemática que la regresión de Poisson y cuenta con un parámetro adicional para modelar la sobredispersión, que se puede contrastar mediante una <em>prueba de razón de verosimilitud</em>. Este modelo de regresión puede considerarse una generalización de la regresión de Poisson.</p>
+<p>Una causa frecuente de sobredispersión es el <em>exceso de ceros</em> en los datos, cuando se cree que sólo algunos de los ceros son verdaderos. Los <strong>modelos inflados por ceros</strong> (<em>zero-inflated model</em>) intentan contemplar dicho exceso de ceros, estimando dos modelos simultáneamente: uno para el modelo de conteo y otro para el exceso de ceros. Por otro lado, si el diseño del estudio impide que se registren ceros —como puede ocurrir con el número de días de hospitalización, que puede no ser cero—, entonces conviene emplear un <strong>modelo truncado en ceros</strong>.</p>
+</section>
+</section>
+<section id="caso-práctico-cleveland" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="caso-práctico-cleveland"><span class="header-section-number">3.4</span> Caso práctico: <code>cleveland</code></h2>
+<p>Para obtener regresiones lineales generalizadas con <code>R</code>, se puede utilizar la función <code>glm()</code> del paquete <code>stats</code> (cargado por defecto al iniciar sesión). Con ella se obtienen tanto la regresión logística, como la regresión de Poisson.</p>
+<section id="análisis-exploratorio" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="análisis-exploratorio"><span class="header-section-number">3.4.1</span> Análisis exploratorio</h3>
+<p>El caso práctico se basa en los datos <code>cleveland</code> incluidos en el paquete <code>CDR</code> y estudiados en <span class="citation" data-cites="CDRglm">Casero-Alonso y Durbán (<a href="#ref-CDRglm" role="doc-biblioref">2024</a>)</span>. Se pueden ver otros ejemplos, con otros conjuntos de datos, en <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> (lab del capítulo 4).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CDR)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleveland)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  diag  edad       dep        sexo  tdolor dhosp
+  &lt;fct&gt; &lt;labelled&gt; &lt;labelled&gt; &lt;fct&gt; &lt;fct&gt;  &lt;int&gt;
+1 0     63         2.3        1     1          0
+2 1     67         1.5        1     4          4
+3 1     67         2.6        1     4          3
+4 0     37         3.5        1     3          0
+5 0     41         1.4        0     2          1
+6 0     56         0.8        1     2          1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cleveland)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [303 × 6] (S3: tbl_df/tbl/data.frame)
+ $ diag  : Factor w/ 2 levels "0","1": 1 2 2 1 1 1 2 1 2 2 ...
+ $ edad  : 'labelled' int [1:303] 63 67 67 37 41 56 62 57 63 53 ...
+  ..- attr(*, "label")= chr "Edad en años"
+ $ dep   : 'labelled' num [1:303] 2.3 1.5 2.6 3.5 1.4 0.8 3.6 0.6 1.4 3.1 ...
+  ..- attr(*, "label")= chr "epresión ST inducida por ejercicio en relación al reposo"
+ $ sexo  : Factor w/ 2 levels "0","1": 2 2 2 2 1 2 1 1 2 2 ...
+ $ tdolor: Factor w/ 4 levels "1","2","3","4": 1 4 4 3 2 2 4 4 4 4 ...
+ $ dhosp : int [1:303] 0 4 3 0 1 1 7 0 1 3 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleveland)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> diag         edad            dep       sexo    tdolor      dhosp      
+ 0:164   Min.   :29.00   Min.   :0.00   0: 97   1: 23   Min.   :0.000  
+ 1:139   1st Qu.:48.00   1st Qu.:0.00   1:206   2: 50   1st Qu.:1.000  
+         Median :56.00   Median :0.80           3: 86   Median :2.000  
+         Mean   :54.44   Mean   :1.04           4:144   Mean   :2.033  
+         3rd Qu.:61.00   3rd Qu.:1.60                   3rd Qu.:3.000  
+         Max.   :77.00   Max.   :6.20                   Max.   :8.000  </code></pre>
+</div>
+</div>
+<p>Como se puede apreciar, en este caso se tienen 6 variables, 3 de ellas factores. Para la regresión logística, la variable dicotómica que interesa explicar es <code>diag</code>, el diagnóstico de accidente coronario (consultando la ayuda se puede ver que 1 significa sí diagnosticado de accidente coronario), a partir del resto de variables: <code>edad</code>, <code>dep</code> (depresión en el segmento ST inducida por ejercicio en relación al reposo), <code>sexo</code>, <code>tdolor</code>(tipo de dolor), <code>dhosp</code> (días de hospitalización). Para la regresión de Poisson, la variable discreta a explicar es <code>dhosp</code>, en función del resto (incluida <code>diag</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(cleveland, <span class="at">lower.panel =</span> <span class="cn">NULL</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La visualización de <code>pairs()</code> muestra los gráficos de dispersión de cada par de variables, sólo del panel superior para mostrar <code>diag</code> como variable respuesta (primera fila del primer gráfico de<code>pairs()</code>).</p>
+<blockquote class="blockquote">
+<p>Un detalle llamativo es que, a pesar de que <code>diag</code> toma valores 0 y 1, en los gráficos se muestra con valores 1 y 2. ¿Sabría cómo cambiarlo? Consulte <span class="citation" data-cites="CDRglm">Casero-Alonso y Durbán (<a href="#ref-CDRglm" role="doc-biblioref">2024</a>)</span>.</p>
+</blockquote>
+</section>
+<section id="regresión-logística" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="regresión-logística"><span class="header-section-number">3.4.2</span> Regresión logística</h3>
+<p>Se va a ajustar el modelo de <em>regresión logística</em> indicado anteriormente: <code>diag ~ .</code> (en formato de fórmula de <code>R</code>).</p>
+<section id="estimación" class="level4" data-number="3.4.2.1">
+<h4 data-number="3.4.2.1" class="anchored" data-anchor-id="estimación"><span class="header-section-number">3.4.2.1</span> Estimación</h4>
+<p>Se utiliza la función <code>glm()</code>, que tiene la misma sintaxis que <code>lm()</code>, pero se debe especificar el argumento <code>family</code>. Concretamente,</p>
+<ul>
+<li>para ajustar una regresión logística: <code>family = binomial</code>.</li>
+<li>para una regresión lineal: <code>family = gaussian</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>glm.diag <span class="ot">&lt;-</span> <span class="fu">glm</span>(diag <span class="sc">~</span> .,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> cleveland,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> binomial)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm.diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = diag ~ ., family = binomial, data = cleveland)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -8.15790    1.62589  -5.017 5.23e-07 ***
+edad         0.05015    0.02247   2.232  0.02564 *  
+dep          0.92345    0.20269   4.556 5.21e-06 ***
+sexo1        1.15434    0.44938   2.569  0.01021 *  
+tdolor2      0.57374    0.83593   0.686  0.49250    
+tdolor3      0.22284    0.71943   0.310  0.75676    
+tdolor4      2.54786    0.70137   3.633  0.00028 ***
+dhosp        1.10953    0.16810   6.600 4.10e-11 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 417.98  on 302  degrees of freedom
+Residual deviance: 183.30  on 295  degrees of freedom
+AIC: 199.3
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+</div>
+<p>Con la función <code>summary()</code> se obtienen las estimaciones de los parámetros del predictor lineal, sus errores estándar, los estadísticos de Wald (columna <code>z value</code>, que, como se sabe, es el cociente entre las dos columnas anteriores) y se puede ver qué variables resultan significativas y cuales no. A diferencia de la regresión lineal, las estimaciones de los parámetros obtenidos no se suelen interpretar directamente (están en escala logarítmica). Se interpretarán como odds ratios (véase <a href="#sec-interp-boston" class="quarto-xref"><span>Sección 3.4.2.5</span></a>).</p>
+</section>
+<section id="adecuación-del-modelo" class="level4" data-number="3.4.2.2">
+<h4 data-number="3.4.2.2" class="anchored" data-anchor-id="adecuación-del-modelo"><span class="header-section-number">3.4.2.2</span> Adecuación del modelo</h4>
+<p>En la salida del <code>summary()</code> también aparecen las <em>deviance</em> del modelo nulo y del ajustado, junto con sus grados de libertad. También el <em>AIC</em> del modelo ajustado (véase <a href="Cap5-Seleccion.html#sec-Criterios" class="quarto-xref"><span>Sección 5.2</span></a>). Estos valores nos permiten valorar la adecuación del modelo y compararlo con otros modelos.</p>
+<p>Con los valores de <em>deviance</em> se puede realizar el contraste de razón de verosimilitudes (<a href="#sec-Adecuacion" class="quarto-xref"><span>Sección 3.2.3</span></a>), entre el modelo más elaborado y el modelo nulo, cuyo estadístico se sabe que se distribuye siguiendo una <span class="math inline">\(\chi^2\)</span>. Este contraste se obtiene en <code>R</code> con la función <code>anova()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.diag, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: diag
+
+Terms added sequentially (first to last)
+
+       Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+NULL                     302     417.98              
+edad    1   15.447       301     402.54 8.487e-05 ***
+dep     1   51.894       300     350.64 5.858e-13 ***
+sexo    1   23.982       299     326.66 9.726e-07 ***
+tdolor  3   62.153       296     264.51 2.037e-13 ***
+dhosp   1   81.202       295     183.30 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Como se puede comprobar, interesa añadir todas las variables.</p>
+<p>Se cambia el orden de las variables a modo de comparación:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>glm.diag.bis <span class="ot">&lt;-</span> <span class="fu">glm</span>(diag <span class="sc">~</span> dhosp <span class="sc">+</span> tdolor <span class="sc">+</span> dep <span class="sc">+</span> sexo <span class="sc">+</span> edad,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> cleveland,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> binomial)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.diag.bis, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: diag
+
+Terms added sequentially (first to last)
+
+       Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+NULL                     302     417.98              
+dhosp   1  143.572       301     274.41 &lt; 2.2e-16 ***
+tdolor  3   50.421       298     223.99 6.500e-11 ***
+dep     1   30.134       297     193.86 4.032e-08 ***
+sexo    1    5.383       296     188.47   0.02033 *  
+edad    1    5.169       295     183.30   0.02300 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>En las salidas anteriores se puede observar como la “ganancia” en <em>Residual deviance</em> varía al incluir cada variable (en un orden especificado distinto) al modelo que ya contiene las anteriores variables. La mayor disminución (y por tanto ganancia) se da al incluir primero la variable <code>dhosp</code> (en lugar de incluir primero <code>edad</code>). Aunque el resultado final es el mismo, es óptima la inclusión de todas las variables (en cualquiera de los dos órdenes), llegando a la misma <em>Residual deviance</em></p>
+<p><strong>Contraste de Hosmer-Lemeshov</strong><br>
+Para obtener el contraste de Hosmer-Lemeshov, se acude al paquete <code>ResourceSelection</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ResourceSelection)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ResourceSelection 0.3-6      2023-06-27</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(glm.diag<span class="sc">$</span>y, glm.diag<span class="sc">$</span>fitted.values, <span class="at">g =</span> <span class="dv">10</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Hosmer and Lemeshow goodness of fit (GOF) test
+
+data:  glm.diag$y, glm.diag$fitted.values
+X-squared = 9.4523, df = 8, p-value = 0.3056</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿A qué conclusión se llega con el contraste de Hosmer-Lemeshov?</p>
+</blockquote>
+</section>
+<section id="sec-diagnosis-glm-diag" class="level4" data-number="3.4.2.3">
+<h4 data-number="3.4.2.3" class="anchored" data-anchor-id="sec-diagnosis-glm-diag"><span class="header-section-number">3.4.2.3</span> Diagnosis</h4>
+<p>Como en regresión lineal, se puede realizar una diagnosis gráfica del modelo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glm.diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Los 4 gráficos obtenidos son los mismos que en regresión lineal, pero llama la atención la “peculiar” disposición de los puntos en ellos. Sobre todo en los gráficos <code>Residuals vs Fitted</code> y <code>Scale-Location</code>. Esto se debe a que cada residuo corresponde a una de las dos posibles respuestas. En todos los gráficos se etiqueta a la observación 262, posible atípico, aunque no llega a tener un gran leverage ni un valor significativo de la distancia de Cook (medidas de influencia). Los residuos de deviance y de Pearson se pueden obtener con la función <code>residuals()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Deviance.resid <span class="ot">&lt;-</span> <span class="fu">residuals</span>(glm.diag, <span class="at">type =</span> <span class="st">"deviance"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Pearson.resid <span class="ot">&lt;-</span> <span class="fu">residuals</span>(glm.diag, <span class="at">type =</span> <span class="st">"pearson"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Deviance.resid[<span class="dv">262</span>]; Pearson.resid[<span class="dv">262</span>]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     262 
+3.061044 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     262 
+10.35904 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>leverage <span class="ot">&lt;-</span> <span class="fu">hatvalues</span>(glm.diag)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(glm.diag))</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>leverage[<span class="fu">c</span>(<span class="dv">262</span>,<span class="dv">142</span>,<span class="dv">288</span>)]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        262         142         288 
+0.004847185 0.030634372 0.039385021 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cooks.distance</span>(glm.diag)[<span class="fu">c</span>(<span class="dv">262</span>,<span class="dv">142</span>,<span class="dv">288</span>)]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       262        142        288 
+0.06533395 0.06178121 0.05616247 </code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Tarea</strong><br>
+Para comprobar o descartar que sea un valor influyente en la regresión logística, elimine dicha observación del conjunto de datos y vuelva a estimar el modelo y representar los gráficos de diagnóstico.</p>
+</blockquote>
+<p>Para la diagnosis del modelo de regresión logística también se puede utilizar la función <code>glm.diag.plots()</code> del paquete <code>boot</code>. Que presenta 2 gráficos similares a los anteriores y otros 2 distintos, en los que se muestran el leverage y el estadístico de Cook.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glm.diag.plots</span>(glm.diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Las medidas de influencia comentadas en <a href="#sec-Diagnosis-GLM" class="quarto-xref"><span>Sección 3.2.5</span></a>, se puede obtener con la función <code>influence.measures()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>IM <span class="ot">&lt;-</span> <span class="fu">influence.measures</span>(glm.diag)<span class="sc">$</span>infmat</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(IM)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        dfb.1_     dfb.edad      dfb.dep     dfb.sex1     dfb.tdl2     dfb.tdl3
+1 -0.041139152 -0.037432774 -0.010018751 -0.032624574  0.112738392  0.140618954
+2 -0.006969513  0.005267112  0.003265976  0.002909962  0.001195226  0.001061743
+3 -0.007748944  0.005461484  0.006869752  0.003436552  0.002500330  0.001505589
+4 -0.081124089  0.121147136 -0.114056219 -0.012596453 -0.033483343 -0.062843061
+5 -0.030739541  0.029927425 -0.012798444  0.032881869 -0.025819215  0.001775486
+6  0.007451324 -0.011587802 -0.012256548 -0.022657261 -0.084978573 -0.001446646
+      dfb.tdl4    dfb.dhsp        dffit    cov.r       cook.d         hat
+1  0.145543740 0.085366986 -0.197065998 1.081345 1.641869e-03 0.064257672
+2  0.003814638 0.007050015  0.009967252 1.030340 3.888022e-06 0.003490216
+3  0.004873476 0.005583668  0.011011287 1.030662 4.747198e-06 0.003877146
+4 -0.017329433 0.072835211 -0.216723932 1.092334 1.989897e-03 0.074188980
+5  0.003150394 0.012160412 -0.058997068 1.048813 1.385225e-04 0.024043759
+6 -0.001766489 0.047201303 -0.142076614 1.052098 8.501020e-04 0.037141000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>IM[<span class="fu">c</span>(<span class="dv">262</span>,<span class="dv">142</span>,<span class="dv">288</span>), <span class="fu">c</span>(<span class="st">"hat"</span>, <span class="st">"cook.d"</span>)]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            hat     cook.d
+262 0.004823803 0.06533395
+142 0.029723802 0.06178121
+288 0.037892619 0.05616247</code></pre>
+</div>
+</div>
+<p>También hay diferentes funciones gráficas, que muestran las observaciones influyentes, o gráficos parciales de residuos, para cada predictor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">influencePlot</span>(glm.diag)     </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       StudRes         Hat      CookD
+142  2.4708079 0.029723802 0.06178121
+184 -1.1802541 0.164150521 0.02486525
+212  0.9777884 0.161088097 0.01523598
+262  3.1448595 0.004823803 0.06533395</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">crPlots</span>(glm.diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Mas info en: <a href="https://rubenfcasal.github.io/aprendizaje_estadistico/reg-glm.html#analisis-glm" class="uri">https://rubenfcasal.github.io/aprendizaje_estadistico/reg-glm.html#analisis-glm</a> y en <a href="https://bookdown.org/j_morales/librostat/glmbinomial.html#diagn%C3%B3stico-3" class="uri">https://bookdown.org/j_morales/librostat/glmbinomial.html#diagn%C3%B3stico-3</a></p>
+</blockquote>
+<p><strong>Interacción entre covariables y factores</strong></p>
+<p>Se debe comprobar que las variables factor, aquí <code>sexo</code> y <code>tdolor</code>, no interaccionen con las covariables. Si no hay interacción, se tendrán “pendientes” paralelas. En el caso de que haya interacción, las “pendientes” cambiarán según los niveles de los factores.</p>
+<blockquote class="blockquote">
+<p>Obviamente se comprobará para aquellas variables para las que tiene sentido práctico esa interacción, por lo que, en la práctica, en el campo “bio”, el factor <code>sexo</code> tiene casi siempre sentido analizarlo.</p>
+</blockquote>
+<p>Se debe introducir una interacción cada vez.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>glm.diag.int <span class="ot">&lt;-</span> <span class="fu">glm</span>(diag <span class="sc">~</span> edad <span class="sc">*</span> sexo <span class="sc">+</span> dep <span class="sc">+</span> tdolor <span class="sc">+</span> dhosp,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> cleveland,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> binomial)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.diag, glm.diag.int, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: diag ~ edad + dep + sexo + tdolor + dhosp
+Model 2: diag ~ edad * sexo + dep + tdolor + dhosp
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+1       295     183.30                     
+2       294     182.92  1  0.38285   0.5361</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+Compruebe si existe o no interacción en el resto de casos. ¿Qué conclusión obtiene?</p>
+</blockquote>
+<p>Los gráficos que se pueden obtener para representar el efecto de dicha interacción sirven para ilustrar el concepto de “pendientes” paralelas (o no).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>lattice theme set by effectsTheme()
+See ?effectsTheme for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effect</span>(<span class="st">"sexo"</span>, glm.diag.int), </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Probabilidad de diagnóstico"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: sexo is not a high-order term in the model</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effect</span>(<span class="st">"edad:sexo"</span>, glm.diag.int),</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Probabilidad de diagnóstico"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bondad-de-ajuste" class="level4" data-number="3.4.2.4">
+<h4 data-number="3.4.2.4" class="anchored" data-anchor-id="bondad-de-ajuste"><span class="header-section-number">3.4.2.4</span> Bondad de ajuste</h4>
+<p>Las medidas más habituales de bondad de ajuste para un modelo de regresión logística se pueden obtener con:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">PseudoR2</span>(glm.diag, <span class="at">which =</span> <span class="st">"all"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       McFadden     McFaddenAdj        CoxSnell      Nagelkerke   AldrichNelson 
+      0.5614544       0.5231753       0.5390725       0.7204056       0.4364656 
+VeallZimmermann           Efron McKelveyZavoina            Tjur             AIC 
+      0.7528645       0.6334330       0.7702445       0.6287870     199.3042278 
+            BIC          logLik         logLik0              G2 
+    229.0140903     -91.6521139    -208.9910692     234.6779106 </code></pre>
+</div>
+</div>
+<p>Proporciona tanto la Pseudo <span class="math inline">\(R^2\)</span> de McFadden, como las otras comentadas en la <a href="#sec-bondad-GLM" class="quarto-xref"><span>Sección 3.2.6</span></a>: la de Cox y Snell y la de Nagelkerke. Esta última es más efectiva ya que la de Cox y Snell nunca puede alcanzar el 1.</p>
+<p>El Pseudo <span class="math inline">\(R^2\)</span> de McFadden se puede obtener “a mano” así:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>glm.null <span class="ot">&lt;-</span> <span class="fu">glm</span>(diag <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> cleveland, </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="st">"binomial"</span>, )</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">logLik</span>(glm.diag) <span class="sc">/</span> <span class="fu">logLik</span>(glm.null)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' 0.5614544 (df=8)</code></pre>
+</div>
+</div>
+</section>
+<section id="sec-interp-boston" class="level4" data-number="3.4.2.5">
+<h4 data-number="3.4.2.5" class="anchored" data-anchor-id="sec-interp-boston"><span class="header-section-number">3.4.2.5</span> Interpretación</h4>
+<p>Como se ha mencionado, no se interpretan directamente las estimaciones de los parámetros del predictor lineal, sino los odds ratios, que se obtienen con:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(glm.diag))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept)         edad          dep        sexo1      tdolor2      tdolor3 
+2.864642e-04 1.051424e+00 2.517958e+00 3.171935e+00 1.774885e+00 1.249619e+00 
+     tdolor4        dhosp 
+1.277974e+01 3.032947e+00 </code></pre>
+</div>
+</div>
+<p>Así, <span class="math inline">\(e^{\hat\beta_{\mathrm{edad}}} =\)</span> 1.0514241, indica que, <em>ceteris paribus</em> y en media, una diferencia de 1 año de edad (los datos de edad vienen dados en años) aumenta el odds de ser diagnosticado de la enfermedad, en un 5%. Es decir, dos pacientes con el resto de valores iguales que se diferencia en 1 año de edad, el mayor tiene una probabilidad ligeramente mayor de ser diagnosticado. Si se lleva a una diferencia de 15 años, <em>ceteris paribus</em>, el odds aumenta en un <span class="math inline">\(e^{15\hat\beta_{\mathrm{edad}}}-1 =\)</span> 112.2%, es decir, más que se duplica el odds ratio (lo que se ve mejor observando que <span class="math inline">\(e^{15\hat\beta_{\mathrm{edad}}} =\)</span> 2.1).</p>
+<p>Por su parte, la variable <em>dep</em> tiene un <em>odds ratio</em> por encima de 2, y las variables <em>sexo</em> y <em>dhosp</em> por encima de 3, indicando que un aumento de una unidad en dichas variables más que duplica o triplica el <em>odds</em> del paciente. Para la variable <em>sexo</em> no tiene sentido como aumento de una unidad, sino el pertenecer a un sexo o a otro, al ser una variable factor (si se consulta la ayuda de los datos se ve que son los hombres los que, en media y <em>ceteris paribus</em>, más que triplican el <em>odds</em> de las mujeres).</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+¿Cómo se interpretan las estimaciones de la variable <code>tdolor</code>?</p>
+</blockquote>
+<p><strong>Intervalos de confianza</strong><br>
+Los intervalos de confianza para los odds ratios se obtienen tomando exponenciales de los intervalos de confianza para los parámetros del modelo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(glm.diag))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Waiting for profiling to be done...</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   2.5 %       97.5 %
+(Intercept) 9.813339e-06  0.005961831
+edad        1.006864e+00  1.100094271
+dep         1.719134e+00  3.820346000
+sexo1       1.344002e+00  7.908438580
+tdolor2     3.457572e-01  9.385851248
+tdolor3     3.114397e-01  5.339831629
+tdolor4     3.408239e+00 54.220959203
+dhosp       2.237099e+00  4.335458699</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>En regresión lineal, que un parámetro sea significativo se interpreta como <em>significativamente distinto de cero</em>, por el hecho de que el modelo considera <em>efectos aditivos</em> de las variables. El modelo de regresión logística es de <em>efectos multiplicativos</em> y, por ello, el valor “neutro” es el 1. Así, un parámetro significativo se interpreta ahora como efecto <em>significativamente distinto de 1</em> en el <em>odds ratio</em> (equivalentemente, el IC no contendrá el valor 1). Una estimación significativa, de signo negativo (positivo), del parámetro del predictor, por la transformación exponencial, se convierte en un efecto significativo, por debajo (encima) de 1, en el <em>odd ratio</em> asociado a dicho predictor. Dicho de otro modo, disminuye (aumenta) la probabilidad de pertenecer al grupo de interés.</p>
+</blockquote>
+<p><strong>Riesgo relativo</strong><br>
+La prevalencia del evento (diagnóstico de enfermedad) en la muestra es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(cleveland<span class="sc">$</span>diag)<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4587459</code></pre>
+</div>
+</div>
+<p>Lo que, probablemente, implica que las probabilidades del evento no serán pequeñas en los grupos que se quieran investigar, por ejemplo, en <code>sexo</code>. Y, por lo tanto, los OR diferirán de los RR.</p>
+<p>Para calcular los RR, construimos la tabla de contingencia entre ambas variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>Tabla <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Diagnostico =</span> cleveland<span class="sc">$</span>diag, </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sexo =</span> cleveland<span class="sc">$</span>sexo)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(Tabla)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Sexo
+Diagnostico   0   1 Sum
+        0    72  92 164
+        1    25 114 139
+        Sum  97 206 303</code></pre>
+</div>
+</div>
+<p>Así las probabilidades de diagnóstico para hombres y mujeres son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(p.hombres <span class="ot">&lt;-</span> <span class="dv">114</span><span class="sc">/</span><span class="dv">206</span>, </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  p.mujeres <span class="ot">&lt;-</span> <span class="dv">25</span><span class="sc">/</span><span class="dv">97</span>, </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  RR <span class="ot">&lt;-</span> p.hombres <span class="sc">/</span> p.mujeres)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5533981 0.2577320 2.1471845</code></pre>
+</div>
+</div>
+<p>Mientras que el OR es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(odds.hombres <span class="ot">&lt;-</span> p.hombres <span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> p.hombres),</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  odds.mujeres <span class="ot">&lt;-</span> p.mujeres <span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> p.mujeres), </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  OR <span class="ot">&lt;-</span> odds.hombres <span class="sc">/</span> odds.mujeres)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2391304 0.3472222 3.5686957</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>glm.diag.sexo <span class="ot">&lt;-</span> <span class="fu">glm</span>(diag <span class="sc">~</span> sexo,</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data =</span> cleveland,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">family =</span> binomial)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(glm.diag.sexo))[<span class="st">"sexo1"</span>]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   sexo1 
+3.568696 </code></pre>
+</div>
+</div>
+<p>De nuevo, al no ser pequeña la probabilidad de diagnóstico, el OR es distinto (mayor) al RR.</p>
+</section>
+<section id="predicción" class="level4" data-number="3.4.2.6">
+<h4 data-number="3.4.2.6" class="anchored" data-anchor-id="predicción"><span class="header-section-number">3.4.2.6</span> Predicción</h4>
+<p>Con la función <code>predict()</code> se pueden obtener predicciones, dados nuevos valores de los predictores. El argumento <code>type</code> admite varias opciones: por defecto <code>type = "link"</code> genera el <em>logit</em> (<em>log odds</em>), <code>type = "response"</code> genera probabilidades del tipo <span class="math inline">\(P(Y = 1|X)\)</span>. Si no se proporcionan nuevos datos se calculan las predicciones para los datos utilizados para ajustar el modelo de regresión logística (<code>fitted.values</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>pred.diag.prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm.diag, <span class="at">type =</span> <span class="st">"response"</span>) <span class="co">#probabilidades</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>pred.diag.prob[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         1          2          3          4          5          6          7 
+0.15181263 0.99122791 0.99037412 0.15534739 0.04205422 0.14512306 0.99981411 
+         8          9         10 
+0.09995984 0.75135234 0.98779120 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>pred.diag.link <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm.diag, <span class="at">type =</span> <span class="st">"link"</span>) <span class="co">#predictor lineal</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>pred.diag.link[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3         4         5         6         7         8 
+-1.720455  4.727369  4.633628 -1.693262 -3.125831 -1.773375  8.590146 -2.197671 
+        9        10 
+ 1.105838  4.393314 </code></pre>
+</div>
+</div>
+<p>Como se puede apreciar probabilidades bajas se asocian a predictores negativos, mientras que probabilidades altas se asocian a predictores positivos. Para obtener una predicción concreta se deben proporcionar valores a las variables explicativas incluidas en el modelo ajustado:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>paciente1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">edad =</span> <span class="dv">50</span>, <span class="at">dep =</span> <span class="dv">3</span>, <span class="at">sexo =</span> <span class="st">"0"</span>, <span class="at">tdolor =</span> <span class="st">"1"</span>, <span class="at">dhosp =</span> <span class="dv">1</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>paciente2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">edad =</span> <span class="dv">50</span>, <span class="at">dep =</span> <span class="dv">3</span>, <span class="at">sexo =</span> <span class="st">"1"</span>, <span class="at">tdolor =</span> <span class="st">"1"</span>, <span class="at">dhosp =</span> <span class="dv">2</span>)</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>pacientes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">rbind</span>(paciente1, paciente2))</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(glm.diag,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">newdata =</span> pacientes,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"link"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2 
+-1.770740  0.493137 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(glm.diag,</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">newdata =</span> pacientes,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2 
+0.1454504 0.6208451 </code></pre>
+</div>
+</div>
+<p>La diferencia entre los dos pacientes se localiza en <code>sexo</code> y que uno de ellos tiene 1 día más de hospitalización, lo que tiene un gran impacto en la respuesta predicha, ya sea la predicción de su <em>log(odds)</em> o la de la probabilidad de ser diagnosticado/a con la enfermedad.</p>
+<p><strong>Intervalos de confianza</strong><br>
+Los intervalos de confianza para las predicciones se pueden obtener con la función <code>predict()</code>, utilizando el argumento <code>se.fit = TRUE</code>, que proporciona el error estándar de las predicciones. Con ello, se pueden construir los intervalos de confianza para el logit y para las probabilidades, aplicando la función logística a los límites del intervalo de confianza del logit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>pred.diag.link <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm.diag,</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">"link"</span>,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>ic.link <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  pred.diag.link<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> pred.diag.link<span class="sc">$</span>se.fit,</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>  pred.diag.link<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> pred.diag.link<span class="sc">$</span>se.fit</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ic.link)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]       [,2]
+1 -3.105031 -0.3358776
+2  3.485609  5.9691298
+3  3.383695  5.8835608
+4 -3.167044 -0.2194793
+5 -4.640017 -1.6116461
+6 -2.845787 -0.7009635</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>ic.prob <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(ic.link[, <span class="dv">1</span>]) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(ic.link[, <span class="dv">1</span>])),</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(ic.link[, <span class="dv">2</span>]) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(ic.link[, <span class="dv">2</span>]))</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ic.prob)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]      [,2]
+1 0.042900190 0.4168112
+2 0.970275510 0.9974501
+3 0.967191050 0.9972229
+4 0.040424927 0.4453494
+5 0.009565159 0.1663602
+6 0.054899479 0.3315986</code></pre>
+</div>
+</div>
+</section>
+<section id="clasificación.-curva-roc" class="level4" data-number="3.4.2.7">
+<h4 data-number="3.4.2.7" class="anchored" data-anchor-id="clasificación.-curva-roc"><span class="header-section-number">3.4.2.7</span> Clasificación. Curva ROC</h4>
+<p>Con las predicciones anteriores no se está realizando clasificación alguna. Para ello se debe escoger un valor umbral de probabilidad, o punto de corte, con el que clasificar, bien escogido arbitrariamente, bien obtenido por el análisis de la curva ROC. Aquí, se toma el valor de ejemplo mencionado en la parte teórica: 0.6.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>pred.diag <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"0"</span>, <span class="fu">length</span>(cleveland<span class="sc">$</span>diag))</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>punto.corte <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>pred.diag[pred.diag.prob <span class="sc">&gt;</span> punto.corte] <span class="ot">=</span> <span class="st">"1"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Matriz de confusión</strong><br>
+Ahora se pueden comparar estas predicciones con las etiquetas verdaderas de la variable <code>diag</code>, esto es, construir la matriz de confusión (que depende del punto de corte escogido)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(pred.diag, <span class="at">diag =</span> cleveland<span class="sc">$</span>diag))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         diag
+pred.diag   0   1 Sum
+      0   153  24 177
+      1    11 115 126
+      Sum 164 139 303</code></pre>
+</div>
+</div>
+<p>La clasificación es bastante satisfactoria, se han obtenido 153+115 aciertos (diagonal principal de la matriz de confusión) y sólo se han cometido 24+11 errores de clasificación, lo que supone una tasa de error de 35/303 (precisión de 268/303):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pred.diag <span class="sc">!=</span>  cleveland<span class="sc">$</span>diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1155116</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pred.diag <span class="sc">==</span>  cleveland<span class="sc">$</span>diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8844884</code></pre>
+</div>
+</div>
+<p>Vista la proporción, más de 1 de cada 10 casos clasificados erróneamente, los resultados no parecen tan satisfactorios. Aunque, sin duda, es mejor que un clasificador aleatorio:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>pred.diag.aleat <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">size =</span> <span class="fu">length</span>(cleveland<span class="sc">$</span>diag), </span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(pred.diag.aleat, cleveland<span class="sc">$</span>diag))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               
+pred.diag.aleat   0   1 Sum
+            0    73  68 141
+            1    91  71 162
+            Sum 164 139 303</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(pred.diag.aleat <span class="sc">==</span>  cleveland<span class="sc">$</span>diag)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5247525</code></pre>
+</div>
+</div>
+<p><strong>Sensibilidad y especificidad</strong><br>
+Además de la precisión (porcentaje total de aciertos) o la equivalente tasa de error, de la matriz de confusión se pueden obtener las métricas <em>sensibilidad</em> y <em>especificidad</em>, entre otras.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: lattice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Adjuntando el paquete: 'caret'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:DescTools':
+
+    MAE, RMSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="fu">table</span>(pred.diag, cleveland<span class="sc">$</span>diag),</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">positive =</span> <span class="st">"1"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+         
+pred.diag   0   1
+        0 153  24
+        1  11 115
+                                         
+               Accuracy : 0.8845         
+                 95% CI : (0.843, 0.9182)
+    No Information Rate : 0.5413         
+    P-Value [Acc &gt; NIR] : &lt; 2e-16        
+                                         
+                  Kappa : 0.7657         
+                                         
+ Mcnemar's Test P-Value : 0.04252        
+                                         
+            Sensitivity : 0.8273         
+            Specificity : 0.9329         
+         Pos Pred Value : 0.9127         
+         Neg Pred Value : 0.8644         
+             Prevalence : 0.4587         
+         Detection Rate : 0.3795         
+   Detection Prevalence : 0.4158         
+      Balanced Accuracy : 0.8801         
+                                         
+       'Positive' Class : 1              
+                                         </code></pre>
+</div>
+</div>
+<p><em>Nota: Es importante la indicación de la clase positiva, dado que el cálculo de la sensibilidad, especificidad y valores relaciones depende de ello.</em></p>
+<p>Los resultados arrojan unos valores de precisión, sensibilidad y especificidad buenos.</p>
+<blockquote class="blockquote">
+<p>Las referencias de valores “buenos” son subjetivas. Y sujetas al contexto. Habitualmente por encima del 80% son buenos datos. Pero hay que tener en cuenta los costes y riesgos de una mala clasificación (por ejemplo, dar un tratamiento médico cuando no hace falta, y no darlo cuando sí hace falta).</p>
+</blockquote>
+<p>Es importante indicar que son necesarias las distintas métricas, dado que un buen dato de precisión podría estar ocultando información muy importante. Con un ejemplo de un caso extremo se puede ilustrar. Se tienen diez pacientes, 2 de ellos están enfermos, y 8 están sanos. Si un modelo de regresión logística clasifica a todos los pacientes como sanos. Entonces, la precisión y la especificidad serían del 80% y el 100% respectivamente. Pero la sensibilidad sería del 0%, y el modelo sería prácticamente inútil para diagnosticar la enfermedad, o, en términos técnicos, la capacidad discriminante del modelo sería muy baja.</p>
+<p><strong>Curva ROC</strong><br>
+La manera habitual de seleccionar el punto de corte es acudir al análisis de la curva ROC.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Epi)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ROC</span>(<span class="at">form =</span> diag <span class="sc">~</span> ., <span class="at">data =</span> cleveland,</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot =</span> <span class="st">"ROC"</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La curva ROC asociada a nuestro modelo de regresión logística muestra esa idea de buen clasificador. La curva se encuentra claramente por encima de la diagonal, mostrando una calidad de clasificación mucho mejor que si se hiciera aleatoriamente. El AUC es de 0.942, que tiene sentido interpretar comparándolo con el de otros modelos, o métodos de clasificación. En la figura aparece, entre otras cosas fácilmente deducibles, el valor óptimo para el punto de corte, el que produce los valores indicados de sensibilidad, especificidad, etc. Con el siguiente código se puede comprobar que se obtienen los valores mostrados en la curva ROC anterior.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>pred.diag <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"0"</span>, <span class="fu">length</span>(cleveland<span class="sc">$</span>diag))</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>punto.corte <span class="ot">&lt;-</span> <span class="fl">0.554</span> <span class="co">#valor redondeado</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>pred.diag[pred.diag.prob <span class="sc">&gt;</span> punto.corte] <span class="ot">=</span> <span class="st">"1"</span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="fu">table</span>(pred.diag, cleveland<span class="sc">$</span>diag),</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">positive =</span> <span class="st">"1"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+         
+pred.diag   0   1
+        0 153  22
+        1  11 117
+                                          
+               Accuracy : 0.8911          
+                 95% CI : (0.8505, 0.9238)
+    No Information Rate : 0.5413          
+    P-Value [Acc &gt; NIR] : &lt; 2e-16         
+                                          
+                  Kappa : 0.7794          
+                                          
+ Mcnemar's Test P-Value : 0.08172         
+                                          
+            Sensitivity : 0.8417          
+            Specificity : 0.9329          
+         Pos Pred Value : 0.9141          
+         Neg Pred Value : 0.8743          
+             Prevalence : 0.4587          
+         Detection Rate : 0.3861          
+   Detection Prevalence : 0.4224          
+      Balanced Accuracy : 0.8873          
+                                          
+       'Positive' Class : 1               
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="otros-métodos-de-clasificación" class="level4" data-number="3.4.2.8">
+<h4 data-number="3.4.2.8" class="anchored" data-anchor-id="otros-métodos-de-clasificación"><span class="header-section-number">3.4.2.8</span> Otros métodos de clasificación</h4>
+<p>En el libro <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> se puede encontrar código de R para aplicar tanto regresión logística como otros métodos de clasificación al mismo conjunto de datos <code>Smarket</code>. Concretamente:</p>
+<ul>
+<li>Análisis Discriminante Lineal (<em>LDA: Linear Discriminant Analysis</em>), y su comparación con la regresión logística.</li>
+<li>Análisis Discriminante Cuadrático (<em>QDA: Quadratic Discriminant Analysis</em>)</li>
+<li>Naive Bayes</li>
+<li>KNN (<em>K vecinos más próximos</em>, <span class="math inline">\(K\)</span>-Nearest Neighbors)</li>
+</ul>
+<p>También se aplica KNN al conjunto de datos <code>Caravan</code>, comentando la necesidad del escalado de variables para aplicar este método, y comparando sus resultados con la regresión logística.</p>
+</section>
+</section>
+<section id="regresión-de-poisson" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="regresión-de-poisson"><span class="header-section-number">3.4.3</span> Regresión de Poisson</h3>
+<p>Se aprovecha el mismo conjunto de datos, <code>cleveland</code>, para ajustar una regresión de Poisson, aprovechando que la variable <code>dhosp</code> (número de días de hospitalización de un paciente) toma valores numéricos discretos y tiene sentido modelizarla mediante una distribución de Poisson. Se intentará encontrar el modelo de regresión de Poisson que mejor explique <code>dhosp</code> a partir del resto de variables incluidas en el conjunto de datos.</p>
+<p><strong>Análisis exploratorio</strong><br>
+Se visualiza la relación de cada una de las variables explicativas con la respuesta mediante la función <code>ggpairs()</code> del paquete <code>GGally</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(cleveland,</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">mapping =</span> ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour =</span> diag))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>De toda la salida anterior nos interesa focalizarnos en la última fila de gráficos, en los que <code>dhosp</code> se visualiza en el eje Y. El primer gráfico muestra indicios de que la variable <code>diag</code> influye en los días de hospitalización, al mostrar una distribución diferente de los gráficos de barras. Lo mismo parece suceder en el cuarto gráfico, en el que se tiene en el eje X la variable <code>sexo</code>, por lo que también parece indicar que influye en <code>dhosp</code>. Hay que tener en cuenta que al incluir como color la variable <code>diag</code>, este cuarto gráfico y el resto, son más difíciles de visualizar, el color aporta cierta distorsión. También en el quinto gráfico de la última linea, donde se tiene <code>tdolor</code> como variable explicativa, se aprecia distinta distribución de los diagramas de barras, especialmente del último valor de <code>tdolor</code> respecto al resto, aunque hay que hacer notar que la variable <code>tdolor</code> no está “balanceada”. En cuanto a las dos variables numéricas, <code>edad</code>y <code>dep</code>, las nubes de puntos sugieren una tendencia, pero con mucha dispersión en torno a ella.</p>
+<p>Hay que recordar que esta visualización “individual” de cada uno de los predictores frente a la respuesta, es una visión parcial del problema de regresión múltiple (sea regresión general o regresión generalizada).</p>
+<section id="ajuste" class="level4" data-number="3.4.3.1">
+<h4 data-number="3.4.3.1" class="anchored" data-anchor-id="ajuste"><span class="header-section-number">3.4.3.1</span> Ajuste</h4>
+<p>Se empieza considerando el modelo en formato de fórmula de <code>R</code>: <code>dhosp ~ .</code>. donde se manejan predictores de distinto tipo (<code>diag</code> es dicotómica, <code>edad</code> numérica/covariable, y <code>tdolor</code> categórica), lo que permite ilustrar las distintas interpretaciones de sus parámetros.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>glm.dhosp <span class="ot">&lt;-</span> <span class="fu">glm</span>(dhosp <span class="sc">~</span> .,</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> cleveland, </span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm.dhosp)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dhosp ~ ., family = "poisson", data = cleveland)
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -0.2168175  0.3324906  -0.652   0.5143    
+diag1        1.1138690  0.1127728   9.877   &lt;2e-16 ***
+edad         0.0005531  0.0049004   0.113   0.9101    
+dep         -0.0313456  0.0359078  -0.873   0.3827    
+sexo1        0.2141697  0.1033855   2.072   0.0383 *  
+tdolor2      0.1137591  0.2074925   0.548   0.5835    
+tdolor3      0.1145403  0.1896331   0.604   0.5458    
+tdolor4      0.1180416  0.1786624   0.661   0.5088    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 510.75  on 302  degrees of freedom
+Residual deviance: 322.48  on 295  degrees of freedom
+AIC: 985.63
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>La función <code>glm()</code> tiene implementada una función de enlace para cada distribución que se especifique, aunque existe la posibilidad de aportar otra función de enlace. Para <code>family = "poisson"</code> la función de enlace es el logaritmo (efectos multiplicativos).</p>
+</blockquote>
+<p>La salida de <code>summary()</code> muestra las estimaciones de los parámetros de regresión de Poisson para cada variable, sus errores estándar, el estadístico de Wald y los p-valores asociados.</p>
+<p>De aquí se puede concluir que, sólo los predictores <code>diag</code> y <code>sexo</code> son significativos (al 5%), confirmando lo intuido de modo parcial en el diagrama de dispersión, que <code>edad</code> no influye en la respuesta, y <code>tdolor</code> tampoco por el desbalanceo entre las categorías.</p>
+</section>
+<section id="interpretación" class="level4" data-number="3.4.3.2">
+<h4 data-number="3.4.3.2" class="anchored" data-anchor-id="interpretación"><span class="header-section-number">3.4.3.2</span> Interpretación</h4>
+<p>La interpretación de los parámetros se debe hacer sobre la exponencial de las estimaciones, para tener las mismas unidades que la respuesta, en este caso, días de hospitalización.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(glm.dhosp))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       diag1        edad         dep       sexo1     tdolor2 
+  0.8050769   3.0461210   1.0005533   0.9691406   1.2388328   1.1204822 
+    tdolor3     tdolor4 
+  1.1213578   1.1252909 </code></pre>
+</div>
+</div>
+<p>También decir que se predicen valores medios y que la interpretación de cada parámetro es <em>ceteris paribus</em>. Entrando en detalle, para las dos variables significativas, ambas de tipo dicotómico:</p>
+<ul>
+<li><p>El parámetro estimado para <code>diag1</code> es 1.1139 y su exponencial es 3.05. Por tanto, si se tiene <code>diag=1</code> en lugar de <code>diag=0</code> (categoría tomada como referencia, al aparecer <code>diag1</code> en la salida), el número medio de días de estancia en el hospital es 3.05 veces mayor.</p></li>
+<li><p>Para <code>sexo</code>, se expresa de otro modo equivalente: un hombre se espera que esté en el hospital 1.24 días por cada día que esté hospitalizada una mujer (<code>sexo=0</code> que es la categoría tomada como referencia).</p></li>
+</ul>
+<p>Aunque las otras variables no son significativas, si lo fueran:</p>
+<ul>
+<li><p>las variables <code>edad</code> y <code>dep</code> al ser numéricas, su interpretación se hace considerando el cambio de 1 unidad de su valor (o el cambio que sea de interés). Por ejemplo, para <code>edad</code>, para una diferencia de 1 año entre dos pacientes, el número medio de días en el hospital se ve multiplicado por 1.0006 (impacto ínfimo, también aunque la diferencia de edad fuese de 15 años -como en el ejemplo de regresión logística-: por cada día que esté hospitalizado el más joven, el de 15 años más, estará <span class="math inline">\(e^{15 \hat \beta_{edad}}=\)</span> 1.0083 días). Nótese que, al ser dicho valor tan próximo a 1 (o el valor del parámetro estimado tan cercano a 0), se tiene un indicio de no significatividad, el intervalo de confianza contendrá al 1 (el intervalo de confianza del parámetro contendrá al 0). Para la interpretación de <code>dep</code> también habría que tener en cuenta su pequeño rango de valores.</p></li>
+<li><p>Sobre la variable <code>tdolor</code>: al aparecer <code>tdolor2</code>, etc. se intuye que la categoría de referencia es <code>tdolor = 1</code>. Así que, de nuevo, la interpretación se hará expresando los días que, en media, estaría el paciente de cada categoría por cada día que estuviese un paciente de la categoría <code>tdolor=1</code>. Se puede observar que los pacientes de las categorías 2, 3 y 4 estarían, en torno a 1.12 días por cada día de los pacientes de la categoría 1. Todos aproximadamente el mismo tiempo y cercano a 1, lo que es indicio de que la variable no presenta diferencias significativas entre categorías, como se ha mencionado anteriormente.</p></li>
+</ul>
+<p>Vistos los resultados, se considera el modelo en el que se dejan sólo las variables significativas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>glm.dhosp.sig <span class="ot">&lt;-</span> <span class="fu">glm</span>(dhosp <span class="sc">~</span> diag <span class="sc">+</span> sexo,</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> cleveland,   </span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm.dhosp.sig)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dhosp ~ diag + sexo, family = "poisson", data = cleveland)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -0.09798    0.09895  -0.990   0.3221    
+diag1        1.09449    0.09361  11.692   &lt;2e-16 ***
+sexo1        0.20820    0.10133   2.055   0.0399 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 510.75  on 302  degrees of freedom
+Residual deviance: 323.80  on 300  degrees of freedom
+AIC: 976.95
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(glm.dhosp.sig))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       diag1       sexo1 
+   0.906665    2.987658    1.231461 </code></pre>
+</div>
+</div>
+<p>Nótese que las estimaciones cambian ligeramente respecto al primer modelo estimado (excepto el término independiente, que no es de interés).</p>
+</section>
+<section id="adecuación" class="level4" data-number="3.4.3.3">
+<h4 data-number="3.4.3.3" class="anchored" data-anchor-id="adecuación"><span class="header-section-number">3.4.3.3</span> Adecuación</h4>
+<p>Como en la regresión logística, se va a aplicar la función <code>anova()</code> para valorar la adecuación del modelo, de las variables incluidas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.dhosp, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model: poisson, link: log
+
+Response: dhosp
+
+Terms added sequentially (first to last)
+
+       Df Deviance Resid. Df Resid. Dev Pr(&gt;Chi)    
+NULL                     302     510.75             
+diag    1  182.581       301     328.17  &lt; 2e-16 ***
+edad    1    0.116       300     328.06  0.73356    
+dep     1    0.947       299     327.11  0.33047    
+sexo    1    4.166       298     322.94  0.04125 *  
+tdolor  3    0.467       295     322.48  0.92618    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.dhosp.sig, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model: poisson, link: log
+
+Response: dhosp
+
+Terms added sequentially (first to last)
+
+     Df Deviance Resid. Df Resid. Dev Pr(&gt;Chi)    
+NULL                   302     510.75             
+diag  1  182.581       301     328.17  &lt; 2e-16 ***
+sexo  1    4.369       300     323.80  0.03661 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>La conclusión es clara, en el primer modelo, al introducir las variables en ese orden, algunas no aportan al ajuste, lo que tiene un impacto en el AIC (véase en la salida de <code>summary()</code>). El segundo modelo es más apropiado, con un AIC ligeramente menor.</p>
+<p>Además, en los ajustes <code>glm.dhosp</code> y <code>glm.dhosp.sig</code> hay información sobre las <em>deviance</em> del modelo <em>Null</em> y la del modelo estimado, <em>Residual deviance</em>, con las que se puede realizar el contraste de comparación de modelos (el simple frente al elaborado) mencionado en la <a href="#sec-Adecuacion" class="quarto-xref"><span>Sección 3.2.3</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(glm.dhosp<span class="sc">$</span>deviance, glm.dhosp<span class="sc">$</span>df.residual, <span class="at">lower.tail =</span> F)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.130278</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(glm.dhosp.sig<span class="sc">$</span>deviance, glm.dhosp.sig<span class="sc">$</span>df.residual, <span class="at">lower.tail =</span> F)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1649776</code></pre>
+</div>
+</div>
+<p>Al ser los p-valores superiores a 0.05, ambos modelos se puede considerar que explican “mejor” (globalmente) que el modelo nulo, pero se ha visto que el segundo, con sólo variables significativas, es más adecuado.</p>
+</section>
+<section id="diagnosis" class="level4" data-number="3.4.3.4">
+<h4 data-number="3.4.3.4" class="anchored" data-anchor-id="diagnosis"><span class="header-section-number">3.4.3.4</span> Diagnosis</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glm.dhosp.sig)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+La interpretación de estos gráficos de diagnosis, ¿se asemejan más a los regresión lineal (gaussiana)? ¿O a los de regresión logística?</p>
+</blockquote>
+<p>Como en regresión logística, se debe comprobar si la interacción entre variables factor y covariables es significativa o no:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>glm.dhosp.int <span class="ot">&lt;-</span> <span class="fu">glm</span>(dhosp <span class="sc">~</span> edad <span class="sc">*</span> sexo <span class="sc">+</span> diag,</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> cleveland,   </span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.dhosp.sig, glm.dhosp.int, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: dhosp ~ diag + sexo
+Model 2: dhosp ~ edad * sexo + diag
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+1       300     323.80                     
+2       298     323.15  2  0.65322   0.7214</code></pre>
+</div>
+</div>
+</section>
+<section id="sobredispersión" class="level4" data-number="3.4.3.5">
+<h4 data-number="3.4.3.5" class="anchored" data-anchor-id="sobredispersión"><span class="header-section-number">3.4.3.5</span> Sobredispersión</h4>
+<p>El paquete <code>pscl</code> ofrece herramientas específicas para este tipo de análisis, incluyendo la función <code>odTest</code>, que permite evaluar la presencia de sobredispersión.</p>
+<p>Ahora bien, un primer indicador es observar la <em>residual deviance</em>, si es más grande que sus grados de libertad, se tiene sobredispersión, lo que afecta a los errores estándar que serán incorrectos, aunque las estimaciones de los parámetros seguirán siendo correctas.</p>
+<p>Si hubiese sobredispersión se recomienda reajustar el modelo, cambiando el argumento: <code>family = “quasipoisson”</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>glm.dhosp.over <span class="ot">&lt;-</span> <span class="fu">glm</span>(dhosp <span class="sc">~</span> diag <span class="sc">+</span> sexo,</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> cleveland,   </span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"quasipoisson"</span>)</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm.dhosp.over)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dhosp ~ diag + sexo, family = "quasipoisson", data = cleveland)
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.09798    0.09623  -1.018   0.3094    
+diag1        1.09449    0.09104  12.023   &lt;2e-16 ***
+sexo1        0.20820    0.09854   2.113   0.0354 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasipoisson family taken to be 0.945735)
+
+    Null deviance: 510.75  on 302  degrees of freedom
+Residual deviance: 323.80  on 300  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(glm.dhosp.sig))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       diag1       sexo1 
+   0.906665    2.987658    1.231461 </code></pre>
+</div>
+</div>
+<p>Si se compara este último resultado con el obtenido anteriormente para el mismo modelo y <code>family = "poisson"</code>, se observa que las estimaciones de los parámetros no cambian, pero las desviaciones típicas sí. Aunque no hay cambios en la significación de los efectos. Llegando a las mismas conclusiones que antes.</p>
+</section>
+<section id="predicción-1" class="level4" data-number="3.4.3.6">
+<h4 data-number="3.4.3.6" class="anchored" data-anchor-id="predicción-1"><span class="header-section-number">3.4.3.6</span> Predicción</h4>
+<p>Una vez comprobada la adecuación del modelo que presenta el mejor ajuste, se pueden proporcionar predicciones de la variable respuesta, en nuestro ejemplo, número <em>medio</em> de días de hospitalización.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>pacientes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">diag =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"1"</span>, <span class="st">"0"</span>, <span class="st">"0"</span>),</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sexo =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"0"</span>))</span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(glm.dhosp.sig, pacientes, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3        4 
+3.335788 2.708805 1.116523 0.906665 </code></pre>
+</div>
+</div>
+<p>Se han escogido adecuadamente los valores de las 2 variables explicativas para 4 <code>pacientes</code>: los pacientes 1 y 2 presentan enfermedad coronaria (<code>diag=1</code>) mientras que los pacientes 3 y 4 no; los pacientes 1 y 3 son hombres (<code>sexo=1</code>), mientras que el 2 y el 4 son mujeres. El resto de variables no se proporcionan, al no estar incluidas en el modelo. Las predicciones obtenidas indican que el paciente 1 (hombre con enfermedad coronaria) estará hospitalizado más días, en media, que el resto, seguido de cerca por la paciente 2 (mujer con enfermedad coronaria).</p>
+<p>También se pueden dibujar las predicciones de todo el conjunto de datos, de las 303 observaciones, que <code>glm()</code> ha guardado como <code>fitted.values</code>. Para el modelo <code>glm.dhosp.sig</code> sería:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>cleveland<span class="sc">$</span>hat <span class="ot">&lt;-</span> glm.dhosp.sig<span class="sc">$</span>fitted.values</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleveland, <span class="fu">aes</span>(<span class="at">x =</span> edad, <span class="at">y =</span> hat, <span class="at">colour =</span> diag)) <span class="sc">+</span></span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Edad"</span>, <span class="at">y =</span> <span class="st">"Días hospitalización"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Cap3-GLM_files/figure-html/glm-predictPois-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Predicciones de todo el conjunto de datos del modelo con sólo variables significativas (izquierda) y el modelo completo (derecha).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En el gráfico de la izquierda se visualiza la diferencia encontrada en las predicciones de los 4 pacientes calculados anteriormente. Mientras que en el gráfico de la derecha se aprecian “dispersiones” respecto a los valores horizontales predichos por <code>sexo</code> y <code>edad</code>, provocadas por el resto de variables no significativas incluidas en el modelo completo.</p>
+<blockquote class="blockquote">
+<p><strong>Pregunta</strong><br>
+Ajuste los datos mediante una regresión lineal múltiple ¿Obtiene alguna predicción negativa del número de días de hospitalización?</p>
+</blockquote>
+</section>
+</section>
+</section>
+<section id="resumen" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="resumen"><span class="header-section-number">3.5</span> Resumen</h2>
+</section>
+<section id="bibliografía" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="bibliografía"><span class="header-section-number">3.6</span> Bibliografía</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-CDRglm" class="csl-entry" role="listitem">
+Casero-Alonso, Víctor, y María Durbán. 2024. <span>«Modelos lineales generalizados»</span>. En <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/cap-glm.html">https://cdr-book.github.io/cap-glm.html</a>.
+</div>
+<div id="ref-CDR" class="csl-entry" role="listitem">
+Fernández-Avilés, Gema, y José-María Montero. 2024. <em>Fundamentos de Ciencia de Datos con R</em>. McGraw Hill. <a href="https://cdr-book.github.io/index.html">https://cdr-book.github.io/index.html</a>.
+</div>
+<div id="ref-ISLR2" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, y Robert Tibshirani. 2013. <em>An introduction to statistical learning: with applications in R</em>. 2nd ed. Vol. 103. Springer. <a href="https://www.statlearning.com/">https://www.statlearning.com/</a>.
+</div>
+<div id="ref-mccullagh1989glm" class="csl-entry" role="listitem">
+McCullagh, P., y J. A. Nelder. 1989. <em>Generalized Linear Models</em>. 2nd ed. Vol. 37. Monographs on Statistics y Applied Probability. Chapman; Hall.
+</div>
+<div id="ref-Pena2002" class="csl-entry" role="listitem">
+Peña, Daniel. 2002. <em>Regresión y diseño de experimentos</em>. Alianza Editorial.
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
