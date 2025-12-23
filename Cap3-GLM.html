@@ -221,12 +221,6 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Análisis de supervivencia o fiabilidad</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Cap5-Seleccion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Selección de variables</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -260,7 +254,7 @@ window.Quarto = {
   <li><a href="#regresión-de-poisson" id="toc-regresión-de-poisson" class="nav-link" data-scroll-target="#regresión-de-poisson"><span class="header-section-number">3.4.3</span> Regresión de Poisson</a></li>
   </ul></li>
   <li><a href="#resumen" id="toc-resumen" class="nav-link" data-scroll-target="#resumen"><span class="header-section-number">3.5</span> Resumen</a></li>
-  <li><a href="#bibliografía" id="toc-bibliografía" class="nav-link" data-scroll-target="#bibliografía"><span class="header-section-number">3.6</span> Bibliografía</a></li>
+  <li><a href="#bibliografía" id="toc-bibliografía" class="nav-link" data-scroll-target="#bibliografía">Bibliografía</a></li>
   </ul>
 </nav>
     </div>
@@ -286,14 +280,14 @@ window.Quarto = {
 </header>
 
 
-<p>(“2025-10-09”)</p>
+<p>(“2025-12-22”)</p>
 <style>
 body {text-align: justify}
 </style>
 <p>En el capítulo <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a> se ha introducido la idea de utilizar modelos estadísticos para intentar explicar, o predecir, una variable, a partir de otras que se supone influyen en su comportamiento. En dichos modelos lineales, la variable dependiente/respuesta considerada se supone continua, pero, en ocasiones, la variable dependiente es de otro tipo, discreta o categórica, y también se desea saber cómo influyen otras variables en ella. Por ejemplo:</p>
 <ul>
 <li>cómo varía el número de días de hospitalización, en función de la enfermedad, sexo, edad, etc.</li>
-<li>si se diagnostica a un paciente una enfermedad, o no, en función del sexo, valores de análisis en sangre, nivel de colesterol, etc.</li>
+<li>si se diagnostica a un paciente una enfermedad, o no, en función de su sexo, valores de análisis en sangre, nivel de colesterol, etc.</li>
 </ul>
 <p>Estos casos no se pueden abordar <em>correctamente</em> con el modelo de regresión lineal múltiple presentado, dado que la variable respuesta, al ser discreta, y sobre todo si es categórica, se alejan de la distribución Normal, que, como se ha visto, es un supuesto clave en regresión. Concretamente, algunas variables respuestas discretas se pueden modelizar mejor con una distribución de <em>Poisson</em>, como las variables que son <em>conteos</em> (<em>número de</em> … días de hospitalización, que sólo toman valores enteros no negativos). Las variables respuesta de tipo categórica <em>dicotómica</em> (como tener o no una enfermedad) se modelizan con una distribución de <em>Bernoulli</em>, muy alejada de la distribución Normal.</p>
 <p>Para abordar estos problemas con variable respuesta no continua, se introduce en este capítulo el <strong>modelo lineal generalizado (GLM)</strong>, que amplía el marco de la regresión lineal permitiendo que la variable dependiente siga cualquier distribución de probabilidad dentro de la <em>familia exponencial</em> (Normal, Binomial, Poisson, Gamma…). Además, este modelo admite que la varianza de los errores no sea constante (otro de los supuestos de la regresión lineal). Este capítulo se centra en dos escenarios concretos de GLM: la <strong>regresión logística</strong>, adecuada para variables respuesta binarias, y caso paradigmático de <em>modelo de clasificación (supervisada)</em>, y la <strong>regresión de Poisson</strong>, ideal para variables respuesta de tipo conteo.</p>
@@ -372,7 +366,7 @@ En <span class="citation" data-cites="mccullagh1989glm">McCullagh y Nelder (<a h
 <p>En los GLMs se utilizan estimadores de <em>máxima verosimilitud</em>, pues los estimadores de <em>mínimos cuadrados</em> no son eficientes al no tener normalidad en la variable respuesta.</p>
 </blockquote>
 <p>Según la formulación del modelo lineal generalizado: <span class="math display">\[E[Y] = g^{-1}(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k).\]</span> Concretamente, para la regresión logística: <span class="math display">\[ \text{logit}(p) = \log{ \Big(\dfrac{p}{1-p}  \Big)} = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k.\]</span> Al estimar el modelo como si fuese una regresión múltiple, el predictor lineal no proporcionará valores plausibles de la variable respuesta <span class="math inline">\(Y\)</span>, sino que proporciona valores de logit(<span class="math inline">\(p\)</span>), o log-odds, es decir, de la estimación del logaritmo del ratio (razón) entre la probabilidad de pertenecer al grupo de interés, <span class="math inline">\(p\)</span>, y la de no pertenecer a dicho grupo, <span class="math inline">\(1-p\)</span>, o, dicho en escala logarítmica, la diferencia entre pertenecer y no pertenecer al grupo. La ventaja de utilizar el logit, es que transforma los valores del predictor, que podrían estar en cualquier rango de valores, a valores para <span class="math inline">\(p\)</span>: <span class="math display">\[ p = \dfrac{1}{1+e^{-(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k)}},\]</span> que tienden a 0 cuando el predictor lineal tiende a <span class="math inline">\(-\infty\)</span> y a 1 cuando tiende a <span class="math inline">\(\infty\)</span>, por lo que la predicción es siempre un valor válido para una probabilidad. Si el predictor es <span class="math inline">\(0\)</span>, la probabilidad estimada es 0.5, y por tanto el odds es 1.</p>
-<p>La función logística, en la parte central de su dominio, es prácticamente lineal. Esto implica que para modelizar respuestas de probabilidad moderada, el modelo lineal y el logístico no diferirán mucho. La contrapartida es que la probabilidad es una función no lineal de los predictores, sobre todo cuando las probabilidades se aproximan a 0 ó a 1, y la interpretación de los parámetros estimados se complica.</p>
+<p>La función logística es prácticamente lineal en la parte central de su dominio. Esto implica que para modelizar respuestas de probabilidad moderada, el modelo lineal y el logístico no diferirán mucho. La contrapartida es que la probabilidad es una función no lineal de los predictores, sobre todo cuando las probabilidades se aproximan a 0 ó a 1, y la interpretación de los parámetros estimados se complica.</p>
 <blockquote class="blockquote">
 <p>Como se ha mencionado, existen otras posibles funciones enlace, como la inversa de la distribución normal tipificada que conduce al denominado modelo probit (muy utilizado en Economía), o tomar la inversa de la distribución uniforme. La curva de la función logística y la de la función probit son muy similares, pero la logística tiene colas más pesadas (véase la figura 14.1 de la página 642 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> o <a href="https://bookdown.org/j_morales/librostat/glmbinomial.html#representaci%C3%B3n-de-las-funciones-link">representación de las funciones link</a>).</p>
 </blockquote>
@@ -405,7 +399,7 @@ H_0 &amp;:&amp; \beta_i = 0 \\
 H_1 &amp;:&amp; \beta_i \neq 0 \\
 \end{eqnarray} \right\rbrace.\]</span> Y por otro lado, se contrasta si el modelo en su conjunto es adecuado. Existen distintas alternativas.</p>
 <p><strong>Contraste de razón de verosimilitudes</strong><br>
-Este contraste comparan la función de verosimilitud con y sin la variable asociada a dicho parámetro. Bajo el supuesto de que <span class="math inline">\(H_0\)</span> es cierta, la diferencia de <em>deviance</em> entre el modelo sin <span class="math inline">\(\beta_i\)</span> y con <span class="math inline">\(\beta_i\)</span> es: <span class="math display">\[D_0 - D_1 = -2L(\hat\beta_i^C) +2L(\hat\beta_i)=-2\dfrac{L(\hat\beta_i^C)}{L(\hat\beta_i)}\]</span> que se distribuye (asintóticamente) siguiendo una <span class="math inline">\(\chi^2\)</span> con 1 grado de libertad. De la última expresión se infiere el nombre del contraste… <em>razón de verosimilitudes</em>.</p>
+Este contraste compara la función de verosimilitud del modelo con la variable asociada a dicho parámetro frente al modelo sin ella. Bajo el supuesto de que <span class="math inline">\(H_0\)</span> es cierta, la diferencia de <em>deviance</em> entre el modelo sin <span class="math inline">\(\beta_i\)</span> y con <span class="math inline">\(\beta_i\)</span> es: <span class="math display">\[D_0 - D_1 = -2LL(\hat\beta_i^C) +2LL(\hat\beta_i)=-2\log \left( \dfrac{L(\hat\beta_i^C)}{L(\hat\beta_i)}\right)\]</span> que se distribuye (asintóticamente) siguiendo una <span class="math inline">\(\chi^2\)</span> con 1 grado de libertad. De la última expresión se infiere el nombre del contraste… <em>razón de verosimilitudes</em>.</p>
 <blockquote class="blockquote">
 <p>El resultado es extensible a un subconjunto de <span class="math inline">\(s\)</span> parámetros <span class="math inline">\(\beta_i\)</span>, siguiendo en tal caso una <span class="math inline">\(\chi^2\)</span> con <span class="math inline">\(s\)</span> grado de libertad. Concretamente, se puede aplicar a todos los parámetros del modelo, comparándolo entonces con el modelo nulo.</p>
 </blockquote>
@@ -431,7 +425,7 @@ H_1 &amp;:&amp; \hspace{1cm} \text{... no se ajusta...} \\
 </section>
 <section id="selección-de-variables" class="level3" data-number="3.2.4">
 <h3 data-number="3.2.4" class="anchored" data-anchor-id="selección-de-variables"><span class="header-section-number">3.2.4</span> Selección de variables</h3>
-<p>Hay situaciones en las que se dispone de numerosas variables explicativas que, en principio, podrían estar en el modelo y el objetivo es seleccionar cuáles de ellas realmente deben estar en el modelo, tanto a nivel estadístico como por el contexto del problema. En el <a href="Cap5-Seleccion.html" class="quarto-xref"><span>Capítulo 5</span></a> se detallan distintos métodos de selección de variables y distintos criterios para llevar a cabo la selección.</p>
+<p>Hay situaciones en las que se dispone de numerosas variables explicativas que, en principio, podrían estar en el modelo y el objetivo es seleccionar cuáles de ellas realmente deben estar en el modelo, tanto a nivel estadístico como por el contexto del problema. En el <span class="quarto-unresolved-ref">?sec-Seleccion</span> se detallan distintos métodos de selección de variables y distintos criterios para llevar a cabo la selección.</p>
 <p>En los modelos de regresión logística, además de las razones habituales para la selección de variables (multicolinealidad, etc.), es importante tener en cuenta que, si la proporción del evento de interés (<em>prevalencia</em>) es muy baja, pueden surgir problemas numéricos. Esto puede dar lugar a estimadores inestables, cuya magnitud depende en gran medida de los datos observados.</p>
 <blockquote class="blockquote">
 <p>“Encontrar un modelo adecuado es en parte ciencia, en parte métodos estadísticos, en parte experiencia y sobre todo sentido común.” (María Durbán)</p>
@@ -469,7 +463,7 @@ En regresión logística, existen varias métricas específicas para evaluar la 
 <blockquote class="blockquote">
 <p>La expresión <em>ceteris paribus</em> también se puede entender como estimaciones de <span class="math inline">\(\hat \beta_i\)</span> obtenidas <em>ajustando por los otros predictores</em> incluidos en el modelo.</p>
 </blockquote>
-<p>Al aplicar la exponencial a ambos términos se llega a: <span class="math display">\[\dfrac{p}{1-p} = \exp(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k) = \exp(\beta_0)\prod_{i = 1}^k \exp(\beta_i)^{X_i}.\]</span> La interpretación se hace a través de las funciones <span class="math inline">\(\exp(\hat\beta_i)\)</span> denominadas <strong>odds ratios</strong>. Indican cuánto se modifica la razón de probabilidades (la probabilidad de pertenecer al grupo de interés entre la de no pertenecer a dicho grupo) por unidad de cambio en la variable <span class="math inline">\(X_i\)</span>. Es decir, si se mantienen todas las variables en los mismos valores (<em>ceteris paribus</em>), menos una variable que cambia en 1 unidad de un individuo/elemento a otro, todas las exponenciales darán como resultado 1 excepto el término <span class="math inline">\(\exp(\hat\beta_i)\)</span>, y <span class="math inline">\(\exp(\hat\beta_0)\)</span> que no depende de las <span class="math inline">\(x_i\)</span> (si el cambio es en <span class="math inline">\(c\)</span> unidades, se tiene <span class="math inline">\(\exp(c\hat\beta_i)\)</span>). Y si cambian dos variables en una unidad, aparecen ambos términos multiplicándose. Así los efectos en el modelo de regresión logística son <strong>multiplicativos</strong>: si <span class="math inline">\(\exp(\hat{\beta}_i)&lt;1\)</span>, entonces disminuye la probabilidad de pertenecer al grupo de interés, aumentando dicha probabilidad cuando <span class="math inline">\(\exp (\hat{\beta}_i)&gt;1\)</span>, <em>ceteris paribus</em>.</p>
+<p>Al aplicar la exponencial a ambos términos se llega a: <span class="math display">\[\dfrac{p}{1-p} = \exp(\beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k) = \exp(\beta_0)\prod_{i = 1}^k \exp(\beta_i)^{X_i}.\]</span> La interpretación se hace a través de las funciones <span class="math inline">\(\exp(\hat\beta_i)\)</span> denominadas <strong>odds ratios</strong>. Indican cuánto se modifica la razón de probabilidades (la probabilidad de pertenecer al grupo de interés respecto a la de no pertenecer a dicho grupo) por unidad de cambio en la variable <span class="math inline">\(X_i\)</span>. Es decir, si se mantienen todas las variables en los mismos valores (<em>ceteris paribus</em>), menos una variable que cambia en 1 unidad de un individuo/elemento a otro, todas las exponenciales darán como resultado 1 excepto el término <span class="math inline">\(\exp(\hat\beta_i)\)</span>, y <span class="math inline">\(\exp(\hat\beta_0)\)</span> que no depende de las <span class="math inline">\(x_i\)</span> (si el cambio es en <span class="math inline">\(c\)</span> unidades, se tiene <span class="math inline">\(\exp(c\hat\beta_i)\)</span>). Y si cambian dos variables en una unidad, aparecen ambos términos multiplicándose. Así los efectos en el modelo de regresión logística son <strong>multiplicativos</strong>: si <span class="math inline">\(\exp(\hat{\beta}_i)&lt;1\)</span>, entonces disminuye la probabilidad de pertenecer al grupo de interés, aumentando dicha probabilidad cuando <span class="math inline">\(\exp (\hat{\beta}_i)&gt;1\)</span>, <em>ceteris paribus</em>.</p>
 <blockquote class="blockquote">
 <p>Que los efectos, de los <em>factores</em> o <em>covariables</em> sobre la respuesta, sean <strong>multiplicativos</strong> proviene del logaritmo (neperiano) que aparece en la función de enlace canónica asociada a la distribución Bernoulli. Este es otro punto en el que difiere de la regresión lineal, en la que los efectos son <strong>aditivos</strong>.</p>
 </blockquote>
@@ -647,7 +641,7 @@ Si la variable cualitativa tiene más de dos categorías, la solución se basa e
 </div>
 </div>
 </div>
-<p>La visualización de <code>pairs()</code> muestra los gráficos de dispersión de cada par de variables, sólo del panel superior para mostrar <code>diag</code> como variable respuesta (primera fila del primer gráfico de<code>pairs()</code>).</p>
+<p>La visualización de <code>pairs()</code> muestra los gráficos de dispersión de cada par de variables, sólo del panel superior para mostrar <code>diag</code> como variable respuesta (primera fila).</p>
 <blockquote class="blockquote">
 <p>Un detalle llamativo es que, a pesar de que <code>diag</code> toma valores 0 y 1, en los gráficos se muestra con valores 1 y 2. ¿Sabría cómo cambiarlo? Consulte <span class="citation" data-cites="CDRglm">Casero-Alonso y Durbán (<a href="#ref-CDRglm" role="doc-biblioref">2024</a>)</span>.</p>
 </blockquote>
@@ -698,7 +692,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </section>
 <section id="adecuación-del-modelo" class="level4" data-number="3.4.2.2">
 <h4 data-number="3.4.2.2" class="anchored" data-anchor-id="adecuación-del-modelo"><span class="header-section-number">3.4.2.2</span> Adecuación del modelo</h4>
-<p>En la salida del <code>summary()</code> también aparecen las <em>deviance</em> del modelo nulo y del ajustado, junto con sus grados de libertad. También el <em>AIC</em> del modelo ajustado (véase <a href="Cap5-Seleccion.html#sec-Criterios" class="quarto-xref"><span>Sección 5.2</span></a>). Estos valores nos permiten valorar la adecuación del modelo y compararlo con otros modelos.</p>
+<p>En la salida del <code>summary()</code> también aparecen las <em>deviance</em> del modelo nulo y del ajustado, junto con sus grados de libertad. También el <em>AIC</em> del modelo ajustado (véase <span class="quarto-unresolved-ref">?sec-Criterios</span>). Estos valores nos permiten valorar la adecuación del modelo y compararlo con otros modelos.</p>
 <p>Con los valores de <em>deviance</em> se puede realizar el contraste de razón de verosimilitudes (<a href="#sec-Adecuacion" class="quarto-xref"><span>Sección 3.2.3</span></a>), entre el modelo más elaborado y el modelo nulo, cuyo estadístico se sabe que se distribuye siguiendo una <span class="math inline">\(\chi^2\)</span>. Este contraste se obtiene en <code>R</code> con la función <code>anova()</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(glm.diag, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1230,7 +1224,7 @@ pred.diag   0   1
                                          </code></pre>
 </div>
 </div>
-<p><em>Nota: Es importante la indicación de la clase positiva, dado que el cálculo de la sensibilidad, especificidad y valores relaciones depende de ello.</em></p>
+<p><em>Nota: Es importante la indicación de la clase positiva, dado que el cálculo de la sensibilidad, especificidad y valores relacionados depende de ello.</em></p>
 <p>Los resultados arrojan unos valores de precisión, sensibilidad y especificidad buenos.</p>
 <blockquote class="blockquote">
 <p>Las referencias de valores “buenos” son subjetivas. Y sujetas al contexto. Habitualmente por encima del 80% son buenos datos. Pero hay que tener en cuenta los costes y riesgos de una mala clasificación (por ejemplo, dar un tratamiento médico cuando no hace falta, y no darlo cuando sí hace falta).</p>
@@ -1597,8 +1591,8 @@ Ajuste los datos mediante una regresión lineal múltiple ¿Obtiene alguna predi
 <section id="resumen" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="resumen"><span class="header-section-number">3.5</span> Resumen</h2>
 </section>
-<section id="bibliografía" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="bibliografía"><span class="header-section-number">3.6</span> Bibliografía</h2>
+<section id="bibliografía" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="bibliografía">Bibliografía</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

@@ -294,7 +294,7 @@ window.Quarto = {
 </header>
 
 
-<p>(“2025-10-31”)</p>
+<p>(“2025-12-22”)</p>
 <style>
 body {text-align: justify}
 </style>
@@ -315,7 +315,7 @@ body {text-align: justify}
 <section id="nociones-y-principios-básicos" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="nociones-y-principios-básicos"><span class="header-section-number">2.1</span> Nociones y principios básicos</h2>
 <p><strong>¿Qué es un experimento?</strong><br>
-Según la definición de la RAE, se trata de una “operación destinada a descubrir, comprobar o demostrar determinados fenómenos o principios científicos…”. Entre sus sinónimos se encuentran prueba y ensayo.</p>
+Según la definición de la RAE, se trata de una “operación destinada a descubrir, comprobar o demostrar determinados fenómenos o principios científicos…”. <a href="https://www.rae.es/diccionario-estudiante/experimento" target="_blank">Experimento (RAE)</a> Entre sus sinónimos se encuentran prueba y ensayo.</p>
 <p>Enlazándolo con el párrafo inicial del Capítulo, un experimento consiste en observar/medir el valor de la variable respuesta (cuantitativa), para distintos <em>niveles</em> (categorías) del factor o factores que previsiblemente influyen en dicha respuesta. Algunos ejemplos ilustrativos son:</p>
 <ul>
 <li>Medición del peso de jamones (kg), para distintos <em>niveles</em> del factor “genética”, y/o del factor “estación”, etc.</li>
@@ -340,10 +340,11 @@ Diseñar un experimento consiste en <em>determinar las condiciones experimentale
 En una sola palabra, por “costes”…<br>
 Un buen diseño de experimento permite ahorrar tiempo, recursos (…costes, en el sentido amplio de la palabra), y asegura un análisis correcto de los datos. Además, responde al principio de <em>“pensar antes de actuar”</em>.</p>
 <p>Como muestra, el ejemplo del motor mencionado arriba, es un ejemplo real en el que se propuso un diseño que permitió reducir en más del 90% el número de experimentos que debían hacerse, ayudando además a planificar correctamente el plan de experimentación y el análisis adecuado de los datos (véase <a href="#sec-fraccionado" class="quarto-xref"><span>Sección 2.6.3</span></a>).</p>
-<p>A continuación se muestran un par de ejemplos en esta línea de la importancia del diseño, ambos del profesor <a href="https://es.wikipedia.org/wiki/Jes%C3%BAs_L%C3%B3pez_Fidalgo">Jesús López Fidalgo</a>, que se detallan en un par de sus libros (<span class="citation" data-cites="FidalgoAZAR">López-Fidalgo (<a href="#ref-FidalgoAZAR" role="doc-biblioref">2015</a>)</span>, <span class="citation" data-cites="FidalgoDOE">Mina y Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span>).</p>
+<p>A continuación se muestran un par de ejemplos en esta línea de la importancia del diseño, ambos del profesor <a href="https://es.wikipedia.org/wiki/Jes%C3%BAs_L%C3%B3pez_Fidalgo">Jesús López Fidalgo</a>, que se detallan en un par de sus libros (<span class="citation" data-cites="FidalgoAZAR">López-Fidalgo (<a href="#ref-FidalgoAZAR" role="doc-biblioref">2015</a>)</span>, <span class="citation" data-cites="FidalgoDOE">Cía Mina y López-Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span>).</p>
 <section id="paradoja-de-simpson" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="paradoja-de-simpson"><span class="header-section-number">2.1.1</span> Paradoja de Simpson</h3>
 <p>A grandes rasgos, se tienen los resultados de un nuevo tratamiento, Fraudol, y del tratamiento habitual, Curamina:</p>
+<div style="width: 75%; margin: auto;">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -368,9 +369,11 @@ Un buen diseño de experimento permite ahorrar tiempo, recursos (…costes, en e
 </tr>
 </tbody>
 </table>
+</div>
 <p>Según estos datos, el Fraudol mejora los resultados de la Curamina. El experimento es balanceado, en el sentido de haber suministrado el tratamiento al mismo número de pacientes (40 en cada caso). Pero, si se desglosan los datos por sexo:</p>
 <ul>
 <li><p>para hombres:</p>
+<div style="width: 75%; margin: auto;">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -394,8 +397,10 @@ Un buen diseño de experimento permite ahorrar tiempo, recursos (…costes, en e
 <td>30%</td>
 </tr>
 </tbody>
-</table></li>
+</table>
+</div></li>
 <li><p>para mujeres:</p>
+<div style="width: 75%; margin: auto;">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -419,13 +424,14 @@ Un buen diseño de experimento permite ahorrar tiempo, recursos (…costes, en e
 <td>70%</td>
 </tr>
 </tbody>
-</table></li>
+</table>
+</div></li>
 </ul>
-<p>las conclusiones cambian, el Fraudol es peor en ambos grupos. A pesar de que el experimento también es balanceado por sexo (40 hombres y 40 mujeres).</p>
+<p>las conclusiones cambian, el Fraudol es peor en ambos grupos. A pesar de que el experimento también es balanceado por sexo (40 hombres y 40 mujeres), pero no dentro de cada tratamiento.</p>
 <p><strong>Moraleja</strong>: En algunas ocasiones, los factores no considerados pueden invertir las conclusiones.</p>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
-¿Es capaz de explicar la causa del cambio de conclusiones?</p>
+¿Es capaz de explicar la <em>causa</em> del cambio de conclusiones?</p>
 </blockquote>
 </section>
 <section id="diseño-de-la-balanza" class="level3" data-number="2.1.2">
@@ -434,16 +440,19 @@ Un buen diseño de experimento permite ahorrar tiempo, recursos (…costes, en e
 Esta pregunta encierra un problema de diseño del experimento para realizar las 2 pesadas. El diseño “intuitivo” consiste en tomar el primer objeto ponerlo en la balanza y poner los contrapesos en la otra balanza para estimar su peso. Y repetir el procedimiento con el segundo objeto.</p>
 <p>¿Existe un diseño mejor?<br>
 Sí, el diseño <em>óptimo</em> consiste en utilizar los 2 objetos en las 2 pesadas. En la primera pesada se ponen los 2 objetos juntos y se estima el peso conjunto, y en la segunda pesada se pone un objeto en cada balanza y se estima la diferencia de peso.</p>
-<p>¿Porqué es mejor?<br>
+<p>¿Por qué es mejor?<br>
 Porque la precisión del experimento es mayor, equivalentemente, el error de estimación es menor. Utilizamos el siguiente modelo para el peso: <span class="math display">\[y = P + \epsilon\]</span> donde <span class="math inline">\(y\)</span> es el peso que obtenemos con los contrapesos, <span class="math inline">\(P\)</span> es el peso real del objeto, y <span class="math inline">\(\epsilon\)</span> es el error de estimación, reflejo de la precisión del sistema de medida, para el que se puede suponer una distribución de probabilidad, <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span>. Con este modelo, con el diseño intuitivo obtendremos <span class="math inline">\(y_1\)</span> e <span class="math inline">\(y_2\)</span> como estimaciones de sus pesos reales, <span class="math inline">\(P_1\)</span> y <span class="math inline">\(P_2\)</span>. Y el error de tales estimaciones es <span class="math inline">\(\sigma\)</span>. Además, ambas estimaciones son independientes, y son las estimaciones máximo-verosímiles. Con el diseño <em>óptimo</em>, obtendremos <span class="math inline">\(y_3\)</span> e <span class="math inline">\(y_4\)</span> como estimaciones de <span class="math inline">\(P_1 + P_2\)</span> y de <span class="math inline">\(P_1-P_2\)</span> (por ejemplo). Por lo que, <span class="math display">\[ y_3 + y_4 = P_1 + P_2 + P_1 - P_2 \rightarrow \hat P_1 = \frac{y_3 + y_4}{2}\]</span> <span class="math display">\[ y_3 - y_4 = P_1 + P_2 - P_1 + P_2 \rightarrow \hat P_2 = \frac{y_3 - y_4}{2}\]</span> Y, teniendo en cuenta las propiedades de la varianza, <span class="math display">\[\text{var}(\hat P_1) = \text{var} \left(\frac{y_3 + y_4}{2} \right) = \frac{\text{var}(y_3) + \text{var}(y_4)}{4} = \frac{\sigma^2}{2} = \text{var}(\hat P_2) \]</span> Por lo que el error de estas estimaciones es <span class="math inline">\(\sigma/\sqrt 2\)</span>. Además, también son las estimaciones máximo-verosímiles, y, aunque parece contrario a la lógica, estas estimaciones son independientes, porque <span class="math inline">\(cov(\hat P_1, \hat P_2) = 0\)</span>, es decir que son incorreladas, y por normalidad, incorrelación implica independencia.</p>
 </section>
 <section id="sec-Ppios" class="level3" data-number="2.1.3">
 <h3 data-number="2.1.3" class="anchored" data-anchor-id="sec-Ppios"><span class="header-section-number">2.1.3</span> Principios básicos del DoE</h3>
 <p><strong>Aleatorización</strong><br>
-La aleatorización es la piedra angular de los métodos estadísticos. Por aleatorización se entiende, tanto la asignación de los tratamientos a las unidades experimentales donde se medirá la variable respuesta, como el orden en que se realizan las mediciones, en el sentido de que todas las unidades experimentales tienen la misma probabilidad de ser asignadas a un tratamiento, o de ser elegida en un orden concreto. De este modo se evita la dependencia entre observaciones, pues uno de los requisitos estadísticos es que las respuestas (o los errores) sean variables <em>aleatorias</em> independientes. Dicho de otro modo, la aleatorización permite justificar el uso de los procedimientos estadísticos habituales, como defendió Fisher: “La aleatorización es el único medio por el cual podemos garantizar la validez de los tests de significación, pues asegura que las causas desconocidas de variación actúen de manera imparcial sobre los tratamientos.” De hecho, desordenar los experimentos no es lo mismo que la asignación aleatoria. En <span class="citation" data-cites="FidalgoDOE">Mina y Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span> se comenta la distinción entre ambos, hablando del planteamiento de la catadora de té. Otra manera de verlo es con el lanzamiento de una moneda (justa). Al lanzarla 6 veces, o 10, cualquiera diría que la moneda es justa si salen 3 caras, o 5 caras, según sea el caso. Ahora bien, si salen primero las 3 caras y luego las 3 cruces, o las 5 caras y luego las 5 cruces, alguno sospecharía de que la moneda sea justa, cuando refleja una combinación aleatoria posible.</p>
+La aleatorización es la piedra angular de los métodos estadísticos. Por aleatorización se entiende, tanto la asignación de los tratamientos a las unidades experimentales donde se medirá la variable respuesta, como el orden en que se realizan las mediciones, en el sentido de que todas las unidades experimentales tienen la misma probabilidad de ser asignadas a un tratamiento, o de ser elegida en un orden concreto. De este modo se evita la dependencia entre observaciones, pues uno de los requisitos estadísticos es que las respuestas (o los errores) sean variables <em>aleatorias</em> independientes. Dicho de otro modo, la aleatorización permite justificar el uso de los procedimientos estadísticos habituales, como defendió Fisher: “La aleatorización es el único medio por el cual podemos garantizar la validez de los tests de significación, pues asegura que las causas desconocidas de variación actúen de manera imparcial sobre los tratamientos.” De hecho, desordenar los experimentos no es lo mismo que la asignación aleatoria. En <span class="citation" data-cites="FidalgoDOE">Cía Mina y López-Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span> se comenta la distinción entre ambos, hablando del planteamiento de la catadora de té. Otra manera de verlo es con el lanzamiento de una moneda (justa). Al lanzarla 6 veces, o 10, cualquiera diría que la moneda es justa si salen 3 caras, o 5 caras, según sea el caso. Ahora bien, si salen primero las 3 caras y luego las 3 cruces, o las 5 caras y luego las 5 cruces, alguno sospecharía de que la moneda sea justa, cuando refleja una combinación aleatoria posible.</p>
 <p>Así, la aleatorización ayuda a <em>promediar</em> los efectos de los factores que no se conocen o que no están bajo control. También a mitigar la posible <em>confusión</em> que se ha mostrado en la paradoja de Simpson. En el ejemplo de los helicópteros de papel, la asignación aleatoria se aplica tanto en los distintos factores (tipo de papel, clip, longitud, etc.), como en el proceso de construcción, y en el de medición de los tiempos de caída. De este modo, se reducen o evitan posibles sesgos.</p>
 <blockquote class="blockquote">
 <p>El uso de la aleatorización, la asignación de tratamientos a unidades experimentales, distingue los estudios experimentales de los observacionales (que suelen ser la mayoría).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>En ausencia de un orden natural (forzoso) la independencia se garantiza por aleatorización del orden y de la asignación.</p>
 </blockquote>
 <p><strong>Réplicas</strong><br>
 Una réplica es la realización de un experimento completo, con los mismos tratamientos, en unidades experimentales distintas, lo que implica que las observaciones son independientes. Permiten estimar correctamente la variabilidad de los resultados y proporciona una medida de la precisión del experimento. No hay que confundirla con la repetición de la medición para una misma unidad experimental, lo que supone dependencia entre las observaciones y, por tanto, un tratamiento estadístico distinto. Por ejemplo, son réplicas 2 helicópteros distintos con el mismo tratamiento (combinación de <em>niveles</em> de los factores) para los que se mide el tiempo de caída. Es repetición lanzar 2 veces el mismo helicóptero.</p>
@@ -455,7 +464,7 @@ El uso de bloques sirve para introducir en la experimentación factores controla
 Se añade aquí la <em>factorialización</em>, a los tres principios anteriores, siguiendo a <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>. El enfoque correcto para estudiar la influencia de varios factores es realizar un experimento factorial, que consiste en variar conjuntamente los factores considerados, en lugar de variar sólo uno cada vez. Una idea de su importancia se puede inferir al ver que aparece en los nombres de todos los diseños que se van a ver en este Capítulo.</p>
 <p>Para el ejemplo del helicóptero, si consideramos como factores la longitud del ala, su anchura y el uso (o no) del clip, el diseño factorial consistirá en combinar los distintos <em>niveles</em> de longitud de ala, con los distintos <em>niveles</em> de anchura y con el uso, o no, del clip.</p>
 <p><strong>Ortogonalidad</strong><br>
-<span class="citation" data-cites="FidalgoDOE">Mina y Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span> también incluye la <em>ortogonalidad</em> como principio considerado por Fisher. Con ella se busca que los estimadores no estén correlacionados, lo que ocurre cuando <span class="math inline">\(X^\top X\)</span> es diagonal (siendo <span class="math inline">\(X\)</span> la matriz del diseño). Pero esto no siempre es posible, bien por razones matemáticas, bien por razones prácticas. Si no se tiene la ortogonalidad, se podría conseguir aplicando transformaciones lineales al modelo, lo que implica que los nuevos parámetros perderían la interpretación real/física del modelo inicial.</p>
+<span class="citation" data-cites="FidalgoDOE">Cía Mina y López-Fidalgo (<a href="#ref-FidalgoDOE" role="doc-biblioref">2024</a>)</span> también incluye la <em>ortogonalidad</em> como principio considerado por Fisher. Con ella se busca que los estimadores no estén correlacionados, lo que ocurre cuando <span class="math inline">\(X^\top X\)</span> es diagonal (siendo <span class="math inline">\(X\)</span> la matriz del diseño). Pero esto no siempre es posible, bien por razones matemáticas, bien por razones prácticas. Si no se tiene la ortogonalidad, se podría conseguir aplicando transformaciones lineales al modelo, lo que implica que los nuevos parámetros perderían la interpretación real/física del modelo inicial.</p>
 </section>
 <section id="procedimiento-estadístico-de-un-experimento" class="level3" data-number="2.1.4">
 <h3 data-number="2.1.4" class="anchored" data-anchor-id="procedimiento-estadístico-de-un-experimento"><span class="header-section-number">2.1.4</span> Procedimiento estadístico de un experimento</h3>
@@ -482,24 +491,26 @@ Se añade aquí la <em>factorialización</em>, a los tres principios anteriores,
 </section>
 <section id="diseño-unifactorial" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="diseño-unifactorial"><span class="header-section-number">2.3</span> Diseño unifactorial</h2>
-<p>Es el caso más simple, un <em>único factor</em>, con 2 o más niveles distintos. El diseño consiste en <em>determinar</em> dichos niveles, genéricamente <span class="math inline">\(I\)</span> niveles, (por ejemplo, las distintas presiones de admisión en el caso del motor) y <em>distribuir</em> el número total de observaciones <span class="math inline">\(N\)</span> entre dichos niveles, tomando <span class="math inline">\(n_i\)</span> observaciones en cada uno de los <span class="math inline">\(I\)</span> niveles distintos del factor, de modo que <span class="math inline">\(\sum_{i=1}^I n_i = N\)</span>.<br>
-Si <span class="math inline">\(n_i = n, \forall i \in I\)</span>, se habla de diseño balanceado.</p>
+<p>Es el caso más simple, un <em>único factor</em>, digamos A, con 2 o más niveles distintos. El diseño consiste en <em>determinar</em> dichos niveles, genéricamente <span class="math inline">\(a\)</span> niveles, (por ejemplo, las distintas presiones de admisión en el caso del motor) y <em>distribuir</em> el número total de observaciones <span class="math inline">\(N\)</span> entre dichos niveles, tomando <span class="math inline">\(n_i\)</span> observaciones en cada uno de los <span class="math inline">\(a\)</span> niveles distintos del factor, de modo que <span class="math inline">\(\sum_{i=1}^a n_i = N\)</span>. Si <span class="math inline">\(n_i = n, \forall i \in a\)</span>, se habla de diseño balanceado.</p>
 <section id="anova-unifactorial" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="anova-unifactorial"><span class="header-section-number">2.3.1</span> ANOVA unifactorial</h3>
 <p>Se puede encontrar con las siguientes denominaciones: ANOVA de 1 factor, ANOVA univariante, ANOVA de una vía… (One-way ANOVA). Su aplicación más extendida es la de comparación de medias de varios grupos.</p>
 <blockquote class="blockquote">
 <p>Es habitual en los libros (véase <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>, etc.) introducir el ANOVA como “ampliación” del procedimiento inferencial de comparación de dos muestras (visto en la asignatura Estadística I). De hecho, cuando hay un único <em>factor</em>, con 2 niveles distintos, el resultado del contraste ANOVA es equivalente al resultado del contraste t de Student.</p>
 </blockquote>
-<p>En este caso la formulación como modelo lineal es ligeramente distinta (pero equivalente) al del modelo de regresión lineal: <span class="math display">\[ y_{ij} = \mu + \tau_i + \epsilon_{ij}, \qquad i=1,\ldots,I; \; j=1,\ldots,n_i,\]</span> donde <span class="math inline">\(y_{ij}\)</span> son las respuestas obtenidas como resultado del experimento para la observación <span class="math inline">\(j\)</span> del nivel <span class="math inline">\(i\)</span> del factor, con <span class="math inline">\(I\)</span> niveles posibles y <span class="math inline">\(n_i\)</span> respuestas en cada nivel, teniendo <span class="math inline">\(\sum_{i=1}^I n_i = N\)</span> respuestas en total ; <span class="math inline">\(\mu\)</span> es la media global de dichas respuestas, común a todos los niveles, <span class="math inline">\(\tau_i\)</span> es el <em>efecto</em> del nivel <span class="math inline">\(i\)</span> del factor respecto de <span class="math inline">\(\mu\)</span> (efecto del tratamiento i-ésimo: parámetro que mide su influencia en la respuesta media, <span class="math inline">\(\tau_i = \mu_i - \mu\)</span>, donde <span class="math inline">\(\mu_i\)</span> es la media de cada nivel) y <span class="math inline">\(\epsilon_{ij}\)</span> es el error aleatorio asociado a cada respuesta. Con este planteamiento se tiene la restricción: <span class="math inline">\(\sum_{i=1}^I\tau_i = 0\)</span>.</p>
+<p>En este caso la formulación como modelo lineal es ligeramente distinta (pero equivalente) al del modelo de regresión lineal. De hecho, hay distintas formulaciones, el denominado <strong>modelo de los efectos</strong> se define como: <span class="math display">\[ y_{ij} = \mu + \tau_i + \epsilon_{ij}, \qquad i=1,\ldots,a; \; j=1,\ldots,n_i,\]</span> donde <span class="math inline">\(y_{ij}\)</span> son las respuestas obtenidas como resultado del experimento para la observación <span class="math inline">\(j\)</span> del nivel <span class="math inline">\(i\)</span> del factor, con <span class="math inline">\(a\)</span> niveles posibles y <span class="math inline">\(n_i\)</span> respuestas en cada nivel, teniendo <span class="math inline">\(\sum_{i=1}^a n_i = N\)</span> respuestas en total ; <span class="math inline">\(\mu\)</span> es la media global de dichas respuestas, común a todos los niveles, <span class="math inline">\(\tau_i\)</span> es el <em>efecto</em> del nivel <span class="math inline">\(i\)</span> del factor respecto de <span class="math inline">\(\mu\)</span> (efecto del tratamiento i-ésimo: parámetro que mide su influencia en la respuesta media, <span class="math inline">\(\tau_i = \mu_i - \mu\)</span>, donde <span class="math inline">\(\mu_i\)</span> es la media de cada nivel) y <span class="math inline">\(\epsilon_{ij}\)</span> es el error aleatorio asociado a cada respuesta. Con este planteamiento se tiene la restricción: <span class="math inline">\(\sum_{i=1}^a\tau_i = 0\)</span>.</p>
 <blockquote class="blockquote">
 <p>La analogía con el modelo de regresión es directa, <span class="math inline">\(\mu\)</span> es el equivalente a <span class="math inline">\(\beta_0\)</span>, y <span class="math inline">\(\tau_i\)</span> es el equivalente a <span class="math inline">\(\beta_i\)</span> de una variable categórica dicotómica <em>dummy</em>.</p>
 </blockquote>
-<p>Un modelo alternativo, pero equivalente, al modelo planteado es: <span class="math display">\[y_{ij} = \mu_i + \epsilon_{ij}, \qquad i=1,\ldots,I; \; j=1,\ldots,n_i.\]</span> A este modelo se le denomina <strong>modelo de las medias</strong>, mientras que al anterior, que es más utilizado en la práctica, se le denomina <strong>modelo de los efectos</strong>.</p>
+<p>Otra formulación alternativa, pero equivalente, al modelo planteado es el <strong>modelo de las medias</strong>: <span class="math display">\[y_{ij} = \mu_i + \epsilon_{ij}, \qquad i=1,\ldots,a; \; j=1,\ldots,n_i.\]</span></p>
+<blockquote class="blockquote">
+<p>En la práctica es más utilizado el <em>modelo de los efectos</em> que el <em>modelo de las medias</em>. Pero en <code>R</code> al aplicar la función <code>summary()</code> se obtiene un <em>pseudo</em> modelo de las medias.</p>
+</blockquote>
 <p>Los supuestos habituales sobre el error son los mismos que en el modelo de regresión:</p>
 <ul>
 <li>Esperanza nula: <span class="math inline">\(E[\epsilon_{ij}] = 0 \quad \forall i, j\)</span>,</li>
 <li>Varianza constante: <span class="math inline">\(Var[\epsilon_{ij}] = \sigma^2 \quad \forall i, j\)</span>,</li>
-<li>Independencia: <span class="math inline">\(E[\epsilon_{ij} \epsilon_{rk}] = 0\)</span> si <span class="math inline">\(i \ne r\)</span> o <span class="math inline">\(j \ne k\)</span> (equivalente a la incorrelación en distribuciones normales),</li>
+<li>Independencia: <span class="math inline">\(E[\epsilon_{ij} \epsilon_{rk}] = 0\)</span> si <span class="math inline">\(i \ne r\)</span> o <span class="math inline">\(j \ne k\)</span> (en distribuciones normales, incorrelación implica independencia),</li>
 <li>Distribución normal.</li>
 </ul>
 </section>
@@ -510,8 +521,8 @@ Si <span class="math inline">\(n_i = n, \forall i \in I\)</span>, se habla de di
 <li><span class="math inline">\(\hat \mu = \bar y_{\cdot\cdot} = \frac{1}{N} \sum_{i,j} y_{ij},\)</span></li>
 <li><span class="math inline">\(\hat \tau_i = \hat \mu_i - \hat \mu\)</span> siendo <span class="math inline">\(\hat \mu_i = \bar y_{i\cdot}= \frac{1}{n_i} \sum_{j=1}^{n_i} y_{ij},\)</span></li>
 </ul>
-<p>dado que ahora el modelo depende de las <span class="math inline">\(I\)</span> medias <span class="math inline">\(\mu_i\)</span> y de <span class="math inline">\(\sigma^2\)</span>, siendo la función de log-verosimilitud en este caso: <span class="math display">\[ \log f(\mathbf{\mu}, \sigma^2)= -\frac{N}{2}\log \sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^I \sum_{j=1}^{n_i}(y_{ij}-\mathbf{\mu})^2,\]</span> donde <span class="math inline">\(\mu\)</span> es el vector de medias <span class="math inline">\((\mu_1, \ldots, \mu_I)\)</span>.</p>
-<p>En este caso, los residuos se obtienen como <span class="math inline">\(\hat \epsilon_{ij} = y_{ij} - \bar y_{i\cdot}\)</span> y se cumple que para cada nivel <span class="math inline">\(i\)</span>: <span class="math inline">\(\sum_{j=1}^{n_i}\hat \epsilon_{ij}=0\)</span>. Por lo que se tienen <span class="math inline">\(I\)</span> ecuaciones de restricción entre los residuos, lo que da lugar a los <span class="math inline">\(N-I\)</span> grados de libertad con los que se calculan dichos residuos.</p>
+<p>dado que ahora el modelo depende de las <span class="math inline">\(a\)</span> medias <span class="math inline">\(\mu_i\)</span> y de <span class="math inline">\(\sigma^2\)</span>, siendo la función de log-verosimilitud en este caso: <span class="math display">\[ \log f(\mathbf{\mu}, \sigma^2)= -\frac{N}{2}\log \sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^a \sum_{j=1}^{n_i}(y_{ij}-\mu_i)^2,\]</span> donde <span class="math inline">\(\mu\)</span> es el vector de medias <span class="math inline">\((\mu_1, \ldots, \mu_a)\)</span>.</p>
+<p>En este caso, los residuos se obtienen como <span class="math inline">\(\hat \epsilon_{ij} = y_{ij} - \bar y_{i\cdot}\)</span> y se cumple que para cada nivel <span class="math inline">\(i\)</span>: <span class="math inline">\(\sum_{j=1}^{n_i}\hat \epsilon_{ij}=0\)</span>. Por lo que se tienen <span class="math inline">\(a\)</span> ecuaciones de restricción entre los residuos, lo que da lugar a los <span class="math inline">\(N-a\)</span> grados de libertad con los que se calculan dichos residuos.</p>
 <p>Como en regresión, se pueden deducir las distribuciones de los estimadores:</p>
 <ul>
 <li><span class="math inline">\(\hat \mu \sim N(\mu, \sigma^2/N)\)</span></li>
@@ -522,14 +533,14 @@ Si <span class="math inline">\(n_i = n, \forall i \in I\)</span>, se habla de di
 <h3 data-number="2.3.3" class="anchored" data-anchor-id="contraste-anova-unifactorial"><span class="header-section-number">2.3.3</span> Contraste ANOVA unifactorial</h3>
 <p>En este caso, el contraste de hipótesis (ANOVA) a realizar se enuncia así: <span class="math display">\[ \left.
 \begin{array}{l}
-H_0:  \tau_1 = \ldots = \tau_I = 0 \\
+H_0:  \tau_1 = \ldots = \tau_a = 0 \\
 H_1:  \text{Al menos un } \tau_i \neq 0
 \end{array}
 \right\}
 \quad \equiv \quad
 \left.
 \begin{array}{l}
-H_0:  \mu_1 = \ldots = \mu_I \\
+H_0:  \mu_1 = \ldots = \mu_a \\
 H_1:  \text{Al menos una } \mu_i \text{ es distinta.}
 \end{array}
 \right\} \]</span> Como en regresión, se plantea el modelo más sencillo posible <span class="math inline">\((H_0: \tau_i = 0, \forall i)\)</span>, esto es, <span class="math inline">\(\hat y_{ij}= \mu\)</span>, que intentamos falsar.</p>
@@ -539,36 +550,36 @@ Para resolver el contraste planteado, se compara la respuesta media de los disti
 <p>En regresión la partición de la variabilidad total consta de la explicada por el modelo y la debida a los residuos. Por lo que la analogía y el papel de cada parte es claro.</p>
 </blockquote>
 <p><span class="math display">\[SC_{Total} = SC_{factor} + SC_{residual},\]</span></p>
-<p><span class="math display">\[\sum_{i=1}^I \sum_{j=1}^{n_i} (y_{ij}-\bar y_{\cdot\cdot})^2 =
-\sum_{i=1}^I n_i(\bar y_{i \cdot}-\bar y_{\cdot\cdot})^2 +
-\sum_{i=1}^I \sum_{j=1}^{n_i} (y_{ij}-\bar y_{i \cdot})^2,
+<p><span class="math display">\[\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij}-\bar y_{\cdot\cdot})^2 =
+\sum_{i=1}^a n_i(\bar y_{i \cdot}-\bar y_{\cdot\cdot})^2 +
+\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij}-\bar y_{i \cdot})^2,
 \]</span> <span class="math display">\[
-\sum_{i=1}^{I} \sum_{j=1}^{n_i} (y_{ij} - \bar y_{\cdot\cdot})^2 =
-\sum_{i=1}^{I} n_i \hat \tau_i^2 +
-\sum_{i=1}^{I} \sum_{j=1}^{n_i} \hat \epsilon_{ij}^2.\]</span></p>
-<p>Esto es, <span class="math inline">\(SC_{Total}\)</span> es la suma de cuadrados entre las respuestas y el gran promedio, <span class="math inline">\(SC_{factor}\)</span> es igual a la suma de cuadrados <strong>entre</strong> los promedios de los <span class="math inline">\(I\)</span> tratamientos y el gran promedio (los efectos <span class="math inline">\(\tau_i\)</span>), y <span class="math inline">\(SC_{residual}\)</span> es la suma de cuadrados de las diferencias de las respuestas <strong>dentro</strong> de los tratamientos y el promedio de los tratamientos (los errores).</p>
+\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij} - \bar y_{\cdot\cdot})^2 =
+\sum_{i=1}^a n_i \hat \tau_i^2 +
+\sum_{i=1}^a \sum_{j=1}^{n_i} \hat \epsilon_{ij}^2.\]</span></p>
+<p>Esto es, <span class="math inline">\(SC_{Total}\)</span> es la suma de cuadrados entre las respuestas y el gran promedio, <span class="math inline">\(SC_{factor}\)</span> es igual a la suma de cuadrados <strong>entre</strong> los promedios de los <span class="math inline">\(a\)</span> tratamientos y el gran promedio (los efectos <span class="math inline">\(\tau_i\)</span>), y <span class="math inline">\(SC_{residual}\)</span> es la suma de cuadrados de las diferencias de las respuestas <strong>dentro</strong> de los tratamientos y el promedio de los tratamientos (los errores).</p>
 <blockquote class="blockquote">
 <p>Para demostrar la igualdad anterior, se pueden ver los residuos como las distancias verticales, como en regresión. Pero aquí las “cuentas” de la demostración son más claras: <span class="math display">\[\begin{eqnarray}
-2\sum_{i=1}^I \sum_{j=1}^{n_i} (y_{ij}- \bar y_{i\cdot})(\bar y_{i\cdot} - \bar y_{\cdot\cdot}) &amp;=&amp;
-2\sum_{i=1}^I (\bar y_{i\cdot} - \bar y_{\cdot\cdot}) \sum_{j=1}^{n_i} (y_{ij}- \bar y_{i\cdot}) \\
-&amp;=&amp; 2\sum_{i=1}^I (\bar y_{i\cdot} - \bar y_{\cdot\cdot})  (n_i\bar y_{i\cdot}- n_i\bar y_{i\cdot}) = 0
+2\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij}- \bar y_{i\cdot})(\bar y_{i\cdot} - \bar y_{\cdot\cdot}) &amp;=&amp;
+2\sum_{i=1}^a (\bar y_{i\cdot} - \bar y_{\cdot\cdot}) \sum_{j=1}^{n_i} (y_{ij}- \bar y_{i\cdot}) \\
+&amp;=&amp; 2\sum_{i=1}^a (\bar y_{i\cdot} - \bar y_{\cdot\cdot})  (n_i\bar y_{i\cdot}- n_i\bar y_{i\cdot}) = 0
 \end{eqnarray}\]</span></p>
 </blockquote>
 <blockquote class="blockquote">
 <p>Es habitual expresar la identidad anterior de esta otra manera: VT = VE + VNE, donde VT es la Variabilidad Total, VE la Variabilidad Explicada y VNE es la Variabilidad No Explicada.<br>
-También es habitual denominar ambas variabilidades como la variabiliadad <em>entre</em> grupos y <em>dentro</em> de los grupos (como se ha señalado en el texto).</p>
+También es habitual denominar ambas variabilidades como la variabilidad <em>entre</em> grupos y <em>dentro</em> de los grupos (como se ha señalado en el texto).</p>
 </blockquote>
 <p>Se puede demostrar (véase <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, apartado 2.4.2, o <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>, apartado 3.3.2, que invoca el teorema de Cochran) que sus distribuciones de probabilidad son:</p>
 <ul>
-<li><span class="math inline">\(\dfrac{SC_{factor}}{\sigma^2} \sim \chi^2_{I - 1} \quad \text{si } H_0 \text{ es cierta}\)</span></li>
-<li><span class="math inline">\(\dfrac{SC_{residual}}{\sigma^2} \sim \chi^2_{N - I}\)</span>.</li>
+<li><span class="math inline">\(\dfrac{SC_{factor}}{\sigma^2} \sim \chi^2_{a - 1} \quad \text{si } H_0 \text{ es cierta}\)</span></li>
+<li><span class="math inline">\(\dfrac{SC_{residual}}{\sigma^2} \sim \chi^2_{N - a}\)</span>.</li>
 </ul>
-<p>Por lo tanto, estas sumas de cuadrados tienen <span class="math inline">\(I-1\)</span> y <span class="math inline">\(N-I\)</span> grados de libertad, respectivamente. Y, la suma de cuadrados media (varianza) de cada caso es:</p>
-<p><span class="math display">\[SCM_{factor}=\frac{SC_{factor}}{I-1} \quad \text{  y  } \quad
-SCM_{residual}=\frac{SC_{residual}}{N-I}.\]</span></p>
+<p>Por lo tanto, estas sumas de cuadrados tienen <span class="math inline">\(a-1\)</span> y <span class="math inline">\(N-a\)</span> grados de libertad, respectivamente. Y, la suma de cuadrados media (varianza) de cada caso es:</p>
+<p><span class="math display">\[SCM_{factor}=\frac{SC_{factor}}{a-1} \quad \text{  y  } \quad
+SCM_{residual}=\frac{SC_{residual}}{N-a}.\]</span></p>
 <p><strong>Estadístico del contraste</strong><br>
 El estadístico consiste en comparar los dos componentes: <span class="math display">\[\frac{\text{Efecto del factor sobre Y}}{\text{Error aleatorio}}=
-\frac{\text{Varianza debida al factor}}{\text{Varianza residual}}=\frac{SCM_{factor}}{SCM_{residual}}=F\]</span> que sigue una distribución F con <span class="math inline">\(I-1\)</span> y <span class="math inline">\(N-I\)</span> grados de libertad, bajo <span class="math inline">\(H_0\)</span>, dado que es un cociente de distribuciones <span class="math inline">\(\chi^2\)</span>. Para falsar dicha hipótesis, interesa que la varianza debida al factor sea mucho mayor, cuanto más grande mejor, que la varianza residual.</p>
+\frac{\text{Varianza debida al factor}}{\text{Varianza residual}}=\frac{SCM_{factor}}{SCM_{residual}}=F\]</span> que sigue una distribución F con <span class="math inline">\(a-1\)</span> y <span class="math inline">\(N-a\)</span> grados de libertad, bajo <span class="math inline">\(H_0\)</span>, dado que es un cociente de distribuciones <span class="math inline">\(\chi^2\)</span>. Para falsar dicha hipótesis, interesa que la varianza debida al factor sea mucho mayor, cuanto más grande mejor, que la varianza residual.</p>
 </section>
 <section id="tabla-anova-unifactorial" class="level3" data-number="2.3.4">
 <h3 data-number="2.3.4" class="anchored" data-anchor-id="tabla-anova-unifactorial"><span class="header-section-number">2.3.4</span> Tabla ANOVA unifactorial</h3>
@@ -585,17 +596,17 @@ El estadístico consiste en comparar los dos componentes: <span class="math disp
 </thead>
 <tbody>
 <tr class="odd">
-<td>Factor</td>
-<td><span class="math inline">\(I-1\)</span></td>
+<td>Factor A</td>
+<td><span class="math inline">\(a-1\)</span></td>
 <td><span class="math inline">\(SC_f\)</span></td>
-<td><span class="math inline">\(SC_f/I-1\)</span></td>
+<td><span class="math inline">\(SC_f/(a-1)\)</span></td>
 <td><span class="math inline">\(SCM_f/SCM_r\)</span></td>
 </tr>
 <tr class="even">
 <td>Error</td>
-<td><span class="math inline">\(N-I\)</span></td>
+<td><span class="math inline">\(N-a\)</span></td>
 <td><span class="math inline">\(SC_r\)</span></td>
-<td><span class="math inline">\(SC_r/N-I\)</span></td>
+<td><span class="math inline">\(SC_r/(N-a)\)</span></td>
 <td></td>
 </tr>
 <tr class="odd">
@@ -619,14 +630,14 @@ El estadístico consiste en comparar los dos componentes: <span class="math disp
 </section>
 <section id="estimación-de-sigma2" class="level3" data-number="2.3.5">
 <h3 data-number="2.3.5" class="anchored" data-anchor-id="estimación-de-sigma2"><span class="header-section-number">2.3.5</span> Estimación de <span class="math inline">\(\sigma^2\)</span></h3>
-<p>El estimador de máxima verosimilitud de <span class="math inline">\(\sigma^2\)</span> es: <span class="math display">\[\hat{\sigma}^2 = \frac{1}{N} \sum_{i=1}^{I} \sum_{j=1}^{n_i} (y_{ij} - \bar y_{i\cdot})^2 = \sum_{i=1}^{I} \frac{n_i}{N} S_i^2\]</span> que resulta ser sesgado: <span class="math inline">\(E[\hat{\sigma}^2] = \frac{N - I}{N} \sigma^2\)</span>, pues <span class="math inline">\(\frac{N \hat{\sigma}^2}{\sigma^2} \sim \chi^2_{N - I}\)</span> (véanse los detalles en el apartado 2.3.2 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>).</p>
-<p>Por ello, como en regresión, se utiliza la varianza residual (que es insesgada): <span class="math display">\[S_R^2 = \frac{N\hat \sigma^2}{N - I} =\frac{SC_r}{N-I}= SCM_r.\]</span></p>
+<p>El estimador de máxima verosimilitud de <span class="math inline">\(\sigma^2\)</span> es: <span class="math display">\[\hat{\sigma}^2 = \frac{1}{N} \sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij} - \bar y_{i\cdot})^2 = \sum_{i=1}^a \frac{n_i}{N} S_i^2\]</span> que resulta ser sesgado: <span class="math inline">\(E[\hat{\sigma}^2] = \frac{N - a}{N} \sigma^2\)</span>, pues <span class="math inline">\(\frac{N \hat{\sigma}^2}{\sigma^2} \sim \chi^2_{N - a}\)</span> (véanse los detalles en el apartado 2.3.2 de <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>).</p>
+<p>Por ello, como en regresión, se utiliza la varianza residual (que es insesgada): <span class="math display">\[S_R^2 = \frac{N\hat \sigma^2}{N - a} =\frac{SC_r}{N-a}= SCM_r.\]</span></p>
 <p>De este modo, una manera alternativa de interpretar el contraste ANOVA anterior es observar que <span class="math display">\[E(SCM_{residual})=\sigma^2 \qquad \text{y} \qquad
-E(SCM_{factor})=\sigma^2 + \frac{\sum^I n_i\tau_i^2}{I-1}.\]</span></p>
+E(SCM_{factor})=\sigma^2 + \frac{\sum^a n_i\tau_i^2}{a-1}.\]</span></p>
 <blockquote class="blockquote">
 <p>Véase <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apéndice 2B) o <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span> (apartado 3.3.1) para los detalles.</p>
 </blockquote>
-<p>Esto es, <span class="math inline">\(SCM_{residual}\)</span> estima <span class="math inline">\(\sigma^2\)</span> y, <span class="math inline">\(SCM_{factor}\)</span> también, si no hay diferencias en las medias de los <span class="math inline">\(I\)</span> tratamientos (<span class="math inline">\(\tau_i=0\)</span>). En cambio, si hay diferencias, <span class="math inline">\(SCM_{factor}&gt;SCM_{residual}\)</span>. Y se podrá falsar la hipótesis nula.</p>
+<p>Esto es, <span class="math inline">\(SCM_{residual}\)</span> estima <span class="math inline">\(\sigma^2\)</span> y, <span class="math inline">\(SCM_{factor}\)</span> también, si no hay diferencias en las medias de los <span class="math inline">\(a\)</span> tratamientos (<span class="math inline">\(\tau_i=0\)</span>, esto es, bajo <span class="math inline">\(H_0\)</span>). En cambio, si hay diferencias, <span class="math inline">\(SCM_{factor}&gt;SCM_{residual}\)</span>. Y se podrá falsar la hipótesis nula.</p>
 </section>
 <section id="diagnosis" class="level3" data-number="2.3.6">
 <h3 data-number="2.3.6" class="anchored" data-anchor-id="diagnosis"><span class="header-section-number">2.3.6</span> Diagnosis</h3>
@@ -638,15 +649,15 @@ E(SCM_{factor})=\sigma^2 + \frac{\sum^I n_i\tau_i^2}{I-1}.\]</span></p>
 <ul>
 <li>Normalidad: <a href="https://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm">Shapiro-Wilk</a></li>
 <li>Homogeneidad de varianzas: <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm">Bartlett</a> (que requiere normalidad) o <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm">Levene</a>: <span class="math display">\[\left. \begin{eqnarray}
-H_0 &amp;:&amp; \sigma_1 = \ldots = \sigma_I \\
+H_0 &amp;:&amp; \sigma_1 = \ldots = \sigma_a \\
 H_1 &amp;:&amp; \text{Al menos una } \sigma_i \text{ es distinta}
 \end{eqnarray} \right\}.\]</span></li>
-<li>Independencia: <a href="https://en.wikipedia.org/wiki/Durbin%E2%80%93Watson_statistic">Durbin-Watson</a>, o contrastes de rachas</li>
+<li>Independencia (<em>temporal</em>): <a href="https://en.wikipedia.org/wiki/Durbin%E2%80%93Watson_statistic">Durbin-Watson</a>, o contrastes de rachas</li>
 </ul>
 <section id="desviaciones-de-los-supuestos-iniciales" class="level4" data-number="2.3.6.1">
 <h4 data-number="2.3.6.1" class="anchored" data-anchor-id="desviaciones-de-los-supuestos-iniciales"><span class="header-section-number">2.3.6.1</span> Desviaciones de los supuestos iniciales</h4>
 <p>Cuando los datos <em>no siguen una distribución normal</em>, el contraste de la F suele seguir siendo bastante fiable, especialmente en muestras grandes, gracias al teorema central del límite. Esto es debido a que el contraste de la F se puede justificar como una aproximación del <em>contraste de permutaciones</em>, que no requiere normalidad (véase <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>, apartado 3.3.2). Por ello, <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apartado 2.6.2 y apéndice 2C) afirma que el ANOVA es una técnica <em>robusta</em>. Sin embargo, la estimación de la varianza residual (<span class="math inline">\(\sigma^2\)</span>) puede ser deficiente, lo que afecta la precisión de los intervalos de confianza y otros cálculos asociados con ella.</p>
-<p>Si las <em>varianzas no son homogéneas</em>, el test F puede seguir siendo válido bajo ciertas condiciones, como que el tamaño de los grupos no difiera demasiado (por ejemplo, si <span class="math inline">\(\max(n_i) &lt; 2 \cdot \min(n_i)\)</span>). En caso contrario, el contraste pierde robustez y la estimación de <span class="math inline">\(\sigma^2\)</span> deja de tener sentido, ya que no representa adecuadamente la variabilidad común.</p>
+<p>Si las <em>varianzas no son homogéneas</em>, el test F puede seguir siendo válido bajo ciertas condiciones, como que el tamaño de los grupos sea similar, que no difiera demasiado (por ejemplo, si <span class="math inline">\(\max(n_i) &lt; 2 \cdot \min(n_i)\)</span>). Si la heterocedasticidad es severa y hay un marcado desbalanceo, el contraste pierde robustez y la estimación de <span class="math inline">\(\sigma^2\)</span> deja de tener sentido, ya que no representa adecuadamente la variabilidad común.</p>
 <p>Cuando las <em>observaciones no son independientes</em>, la base del análisis se rompe. En este escenario, ni el test F ni las estimaciones asociadas son fiables, porque se viola el supuesto fundamental del modelo ANOVA. Esto puede ocurrir, por ejemplo, en datos agrupados o con correlación temporal.</p>
 <blockquote class="blockquote">
 <p>Hay que señalar que, en ocasiones, los datos son medidas repetidas, lo que incumple el supuesto de independencia entre medidas (observaciones), pero, los datos se podrían analizar acudiendo al <em>ANOVA de medidas repetidas</em> (véase <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>, apartado 15.4)</p>
@@ -660,16 +671,16 @@ H_1 &amp;:&amp; \text{Al menos una } \sigma_i \text{ es distinta}
 H_0 &amp;:&amp; \mu_i = \mu_j \\
 H_1 &amp;:&amp; \mu_i \neq \mu_j
 \end{eqnarray} \right\}.\]</span> Que, como es sabido de la mencionada asignatura Estadística I, se resuelve con el estadístico:</p>
-<p><span class="math display">\[\dfrac{(\bar y_{i\cdot} - \bar y_{\cdot j}) - (\mu_i - \mu_j)}{S_R \sqrt{\frac{1}{n_i}+\frac{1}{n_j}} }\]</span> que sigue una distribución <span class="math inline">\(t\)</span> de Student con <span class="math inline">\(N-I\)</span> grados de libertad.</p>
-<p>Las múltiples comparaciones “inflan” el <em>error de tipo I</em> (Falsar <span class="math inline">\(H_0\)</span> cuando en realidad es cierta -<a href="https://dle.rae.es/?id=HYpXyKp" target="_blank">Falsar (RAE)</a>: en la ciencia, desmentir una hipótesis o una teoría mediante pruebas o experimentos-), porque es probable que en un porcentaje elevado de las comparaciones, las diferencias sean el resultado del error aleatorio. Visto de otro modo, si se toma el valor habitual de 0.05 como nivel de significación para de una de las posibles comparaciones, se tiene <span class="math display">\[P \left( |\bar y_{i\cdot} - \bar y_{\cdot j}| \leq t_{n-I,\alpha/2}S_R \sqrt{\frac{1}{n_i}+\frac{1}{n_j}} \right) = 0.95.\]</span></p>
+<p><span class="math display">\[\dfrac{(\bar y_{i\cdot} - \bar y_{j \cdot}) - (\mu_i - \mu_j)}{S_R \sqrt{\frac{1}{n_i}+\frac{1}{n_j}} }\]</span> que sigue una distribución <span class="math inline">\(t\)</span> de Student con <span class="math inline">\(N-a\)</span> grados de libertad.</p>
+<p>Las múltiples comparaciones “inflan” el <em>error de tipo I</em> (Falsar <span class="math inline">\(H_0\)</span> cuando en realidad es cierta -<a href="https://dle.rae.es/?id=HYpXyKp" target="_blank">Falsar (RAE)</a>: en la ciencia, desmentir una hipótesis o una teoría mediante pruebas o experimentos-), porque es probable que en un porcentaje elevado de las comparaciones, las diferencias sean el resultado del error aleatorio. Visto de otro modo, si se toma el valor habitual de 0.05 como nivel de significación para de una de las posibles comparaciones, se tiene <span class="math display">\[P \left( |\bar y_{i\cdot} - \bar y_{j \cdot}| \leq t_{n-a,\alpha/2}S_R \sqrt{\frac{1}{n_i}+\frac{1}{n_j}} \right) = 0.95.\]</span></p>
 <p>Así, la probabilidad de que se cumplan la hipótesis de igualdad en <span class="math inline">\(c\)</span> comparaciones, si fuesen independientes, sería <span class="math inline">\(0.95^{c}\)</span>. Basta tener un factor con 3 niveles para tener 3 comparaciones y que dicha probabilidad baje a <span class="math inline">\(0.95^3=\)</span> 0.857. Con 4 niveles sería 6 comparaciones: <span class="math inline">\(0.95^6=\)</span> 0.735, etc.</p>
 <p>Por ello, es necesario realizar una corrección del nivel de significación <span class="math inline">\(\alpha\)</span> para que el <em>error de tipo I global</em> no sea demasiado grande. Se han propuesto distintos métodos de comparaciones múltiples, corrigiendo de distintas maneras las comparaciones.</p>
 <ul>
-<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc473.htm">Método de <strong>Bonferroni</strong></a><strong>:</strong> Se ajusta el nivel de significación <span class="math inline">\(\alpha\)</span> por <span class="math inline">\(\alpha/c\)</span>, donde <span class="math inline">\(c\)</span> es el número de comparaciones. Este método está pensado para realizar un número de comparaciones fijado a priori. Intenta asegurar que el nivel de confianza simultáneo no sea demasiado pequeño. Usa <span class="math inline">\(S_R^2\)</span> para estimar <span class="math inline">\(\sigma^2\)</span> por lo que el estadístico sigue una distribución t con <span class="math inline">\(N − I\)</span> grados de libertad.</p></li>
-<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc471.htm">Método de <strong>Tukey</strong></a><strong>:</strong> Tukey propuso un procedimiento para el que el nivel de significación global es exactamente <span class="math inline">\(\alpha\)</span> cuando el diseño es balanceado y es a lo sumo <span class="math inline">\(\alpha\)</span> cuando no. Este procedimiento está pensado cuando resulta de interés realizar todas las comparaciones posibles. <span class="math display">\[\hat \tau_i - \hat \tau_j \pm \frac{q_{I,gl}}{\sqrt 2} \sqrt{SCM_{residual} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}\]</span> donde <span class="math inline">\(q_{I,gl}\)</span> es la distribución del rango studentizado: <span class="math inline">\(R/\hat \sigma\)</span> siendo <span class="math inline">\(R=\max_i \bar y_{i\cdot} - \min_i \bar y_{i\cdot}, ~ i=1, \ldots, I\)</span>, y los grados de libertad son los necesarios para estimar <span class="math inline">\(\sigma\)</span>.</p>
-<p>Es el que se destacan <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span> y <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>, por ser el más sencillo de entender (Faraway lo ilustra con un ejemplo utilizando <code>R</code>, calculando percentiles de <span class="math inline">\(q_{I,gl}\)</span>). Puede llegar a ser muy conservativo si el diseño es muy desbalanceado, en el sentido de rechazar la igualdad sólo si existe una gran evidencia, y porque el error de tipo II pude ser elevado. Esto se debe a que asume el peor escenario al considerar la mayor diferencia.</p></li>
+<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc473.htm">Método de <strong>Bonferroni</strong></a><strong>:</strong> Se ajusta el nivel de significación <span class="math inline">\(\alpha\)</span> por <span class="math inline">\(\alpha/c\)</span>, donde <span class="math inline">\(c\)</span> es el número de comparaciones. Este método está pensado para realizar un número de comparaciones fijado a priori. Intenta asegurar que el nivel de confianza simultáneo no sea demasiado pequeño. Usa <span class="math inline">\(S_R^2\)</span> para estimar <span class="math inline">\(\sigma^2\)</span> por lo que el estadístico sigue una distribución t con <span class="math inline">\(N − a\)</span> grados de libertad.</p></li>
+<li><p><a href="http://www.itl.nist.gov/div898/handbook/prc/section4/prc471.htm">Método de <strong>Tukey</strong></a><strong>:</strong> Tukey propuso un procedimiento para el que el nivel de significación global es exactamente <span class="math inline">\(\alpha\)</span> cuando el diseño es balanceado y es a lo sumo <span class="math inline">\(\alpha\)</span> cuando no. Este procedimiento está pensado cuando resulta de interés realizar todas las comparaciones posibles. Los intervalos de confianza para diseños desbalanceados (debido a Tukey y Kramer) son: <span class="math display">\[\hat \tau_i - \hat \tau_j \pm \frac{q_{a,gl}}{\sqrt 2} \sqrt{SCM_{residual} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}\]</span> donde <span class="math inline">\(q_{a,gl}\)</span> es la distribución del rango studentizado: <span class="math inline">\(R/\hat \sigma\)</span> siendo <span class="math inline">\(R=\max_i \bar y_{i\cdot} - \min_i \bar y_{i\cdot}, ~ i=1, \ldots, a\)</span>, y los grados de libertad son los necesarios para estimar <span class="math inline">\(\sigma\)</span>.</p>
+<p>Es el que se destacan <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span> y <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>, por ser el más sencillo de entender (Faraway lo ilustra con un ejemplo utilizando <code>R</code>, calculando percentiles de <span class="math inline">\(q_{a,gl}\)</span>). Puede llegar a ser muy conservativo si el diseño es muy desbalanceado, en el sentido de rechazar la igualdad sólo si existe una gran evidencia, y porque el error de tipo II pude ser elevado. Esto se debe a que asume el peor escenario al considerar la mayor diferencia.</p></li>
 <li><p>Método de la Diferencia Significativa Mínima (LSD) de <strong>Fisher</strong>: Basado en el estadístico F, consiste en realizar todas las comparaciones t posibles pero realizando una corrección en el cálculo de la desviación típica. Esto aumenta la potencia del contraste pero no realiza una corrección por comparaciones múltiples.<br>
-La LSD, consiste en: <span class="math display">\[LSD=t_{\frac{\alpha}{2},N-I}\sqrt{SCM_{residual} \left(\frac{1}{n_i}+\frac{1}{n_j}\right)}.\]</span></p></li>
+La LSD, consiste en: <span class="math display">\[LSD=t_{\frac{\alpha}{2},N-a}\sqrt{SCM_{residual} \left(\frac{1}{n_i}+\frac{1}{n_j}\right)}.\]</span></p></li>
 </ul>
 <section id="cuál-de-los-métodos-de-comparación-múltiples-es-mejor" class="level4" data-number="2.3.7.1">
 <h4 data-number="2.3.7.1" class="anchored" data-anchor-id="cuál-de-los-métodos-de-comparación-múltiples-es-mejor"><span class="header-section-number">2.3.7.1</span> ¿Cuál de los métodos de comparación múltiples es mejor?</h4>
@@ -685,27 +696,30 @@ La LSD, consiste en: <span class="math display">\[LSD=t_{\frac{\alpha}{2},N-I}\s
 <p>En ocasiones, el factor perturbador es conocido, pero no es controlable. En tal caso, la mejor solución es aplicar el principio de <em>aleatorización</em>, que también “protege” de factores perturbadores desconocidos. Otra opción, si es controlable, es mantenerlo fijo (condiciones de experimentación homogéneas, por ejemplo isotérmicas). Así se vuelve al caso del diseño unifactorial.</p>
 <p><strong>Diseño y modelo</strong><br>
 Si se dispone de <span class="math inline">\(a\)</span> tratamientos (niveles del tratamiento) y <span class="math inline">\(b\)</span> bloques (niveles del factor perturbador), el diseño por bloques completo, consiste en tomar una muestra para cada combinación de tratamiento y bloque.</p>
-<p>El modelo estadístico es:</p>
+<p>El modelo estadístico (sin réplicas) es:</p>
 <p><span class="math display">\[y_{ij}=\mu+\tau_i+\beta_j+\epsilon_{ij}, \qquad i=1, \ldots, a; j=1, \ldots, b,\]</span> que lleva aparejadas las siguientes restricciones:</p>
 <ul>
-<li><span class="math inline">\(\sum_{i=1}^I \tau_i = 0, y\)</span></li>
-<li><span class="math inline">\(\sum_{j=1}^J \beta_j = 0.\)</span></li>
+<li><span class="math inline">\(\sum_{i=1}^a \tau_i = 0\)</span>, y</li>
+<li><span class="math inline">\(\sum_{j=1}^b \beta_j = 0\)</span>.</li>
 </ul>
 <p>Los estimadores son los habituales:</p>
 <ul>
 <li><span class="math inline">\(\hat \tau_i = \bar y_{i\cdot} - \bar y\)</span>,<br>
 </li>
 <li><span class="math inline">\(\hat \beta_j = \bar y_{\cdot j} - \bar y\)</span>, y</li>
-<li><span class="math inline">\(S_R^2 = \frac{1}{(I - 1)(J - 1)} \sum_{i=1}^I \sum_{j=1}^J \hat \epsilon_{ij}^2\)</span></li>
+<li><span class="math inline">\(S_R^2 = \frac{1}{(a - 1)(b - 1)} \sum_{i=1}^a \sum_{j=1}^b \hat \epsilon_{ij}^2\)</span></li>
 </ul>
 <p>siendo, en este caso, los residuos: <span class="math inline">\(\hat \epsilon_{ij} = y_{ij} - \hat \mu - \hat \tau_i - \hat \beta_j = y_{ij} - \bar y_{i\cdot} - \bar y_{\cdot j} + \bar y\)</span>.</p>
 <p>Sus correspondientes distribuciones son:</p>
 <ul>
-<li><span class="math inline">\(\hat \tau_i \sim N\left(\tau_i, \frac{(I - 1)\sigma^2}{n}\right)\)</span>,</li>
-<li><span class="math inline">\(\hat \beta_j \sim N\left(\beta_j, \frac{(J - 1)\sigma^2}{n}\right)\)</span>, y</li>
-<li><span class="math inline">\(\frac{(I - 1)(J - 1) S_R^2}{\sigma^2} \sim \chi^2_{(I - 1)(J - 1)}\)</span>.</li>
+<li><span class="math inline">\(\hat \tau_i \sim N\left(\tau_i, \frac{(a - 1)\sigma^2}{ab}\right)\)</span>,</li>
+<li><span class="math inline">\(\hat \beta_j \sim N\left(\beta_j, \frac{(b - 1)\sigma^2}{ab}\right)\)</span>, y</li>
+<li><span class="math inline">\(\frac{(a - 1)(b - 1) S_R^2}{\sigma^2} \sim \chi^2_{(a - 1)(b - 1)}\)</span>.</li>
 </ul>
 <p>(véase <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span>, apartado 3.3.3).</p>
+<blockquote class="blockquote">
+<p>Con <span class="math inline">\(r\)</span> réplicas por celda, las varianzas se dividen por <span class="math inline">\(r\)</span>.</p>
+</blockquote>
 <p><strong>Contraste y Suma de cuadrados</strong><br>
 Estamos interesados solo en el contraste de hipótesis sobre los efectos <span class="math inline">\(\tau_i\)</span>. <span class="math display">\[  \left.\begin{array}{l}
 H_0: \tau_i = 0 \quad \forall i \\
@@ -874,9 +888,9 @@ ar\sum_{j=1}^b (\bar y_{\cdot j \cdot}-\bar y_{\cdot \cdot \cdot})^2+ \\
 <p><strong>Tipo I (secuencial)</strong><br>
 Se calcula la suma de cuadrados en el <em>orden</em> en que los factores entran al modelo, por lo que importa el orden en el que se escriban los factores en el modelo. Así, tras calcular la suma de cuadrados determinada por el primer factor, la del segundo factor se calcula a partir de la suma de cuadrados residual del primero, y así sucesivamente. De este modo, la suma de cuadrados no es “simétrica”. Este tipo es útil para modelos jerárquicos, cuando el orden de los factores tiene un sentido práctico.</p>
 <p><strong>Tipo II</strong><br>
-Con este tipo, cada factor se evalúa <em>ajustando por los otros factores</em>, pero sin ajustar por interacciones. Es decir, la suma de cuadrados de un factor se obtiene como diferencia entre la suma de cuadrados del modelo con y sin dicho factor (sin interacciones). Es útil cuando las interacciones no son significativas, y los diseños son balanceados. Produce una suma de cuadrados más equilibrada que la de Tipo I.</p>
+Con este tipo, cada factor se evalúa <em>ajustando por los otros factores</em>, pero sin ajustar por interacciones. Es decir, la suma de cuadrados de un factor se obtiene como diferencia entre la suma de cuadrados del modelo con y sin dicho factor (sin interacciones). Es útil cuando las interacciones no son significativas, y los diseños son balanceados. O cuando se desea evaluar sólo efectos principales, sin interacciones, aunque haya desbalanceo. Produce una suma de cuadrados más equilibrada que la de Tipo I.</p>
 <p><strong>Tipo III</strong><br>
-Se calcula para cada factor <em>ajustando por todos los demás factores y sus interacciones</em>. Su ventaja es que no depende del orden y es aplicable a diseños no balanceados, aunque es más difícil de interpretar que las anteriores. Es el tipo más usado en software estadístico (aunque en <code>R</code> no está implementado en la función <code>anova()</code>, hay que acudir a paquetes específicos).</p>
+Se calcula para cada factor <em>ajustando por todos los demás factores y sus interacciones</em>. Su ventaja es que no depende del orden y es aplicable a diseños no balanceados, aunque es más difícil de interpretar que las anteriores. Es el preferible si existen interacciones, por lo que es el tipo más usado en software estadístico (aunque en <code>R</code> no está implementado en la función <code>anova()</code>, hay que acudir a paquetes específicos).</p>
 </section>
 <section id="una-sola-réplica" class="level3" data-number="2.5.2">
 <h3 data-number="2.5.2" class="anchored" data-anchor-id="una-sola-réplica"><span class="header-section-number">2.5.2</span> Una sola réplica</h3>
@@ -894,7 +908,7 @@ Se calcula para cada factor <em>ajustando por todos los demás factores y sus in
 </blockquote>
 <section id="diseño-trifactorial" class="level3" data-number="2.6.1">
 <h3 data-number="2.6.1" class="anchored" data-anchor-id="diseño-trifactorial"><span class="header-section-number">2.6.1</span> Diseño trifactorial</h3>
-<p>Solo se presenta aquí como es la Tabla ANOVA para un diseño factorial completo con tres factores (y réplicas).</p>
+<p>Solo se presenta aquí como es la Tabla ANOVA para un diseño factorial <em>completo</em> con tres factores (y réplicas).</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 27%">
@@ -982,8 +996,7 @@ Se calcula para cada factor <em>ajustando por todos los demás factores y sus in
 <section id="diseños-2k" class="level3" data-number="2.6.2">
 <h3 data-number="2.6.2" class="anchored" data-anchor-id="diseños-2k"><span class="header-section-number">2.6.2</span> Diseños <span class="math inline">\(2^k\)</span></h3>
 <p>En ocasiones, los factores considerados tienen sólo dos niveles (alto y bajo, 1 y 0, etc.), o se puede reducir su estudio a sólo dos niveles. Se puede acudir entonces a <strong>diseños factoriales a 2 niveles</strong>, también denominados <strong>diseños <span class="math inline">\(2^k\)</span></strong>, por el número de experimentos que involucran (donde <span class="math inline">\(k\)</span> es el número de factores considerados). No es objetivo de este material profundizar en ellos. Un par de buenas referencias para su estudio detallado son <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> y <span class="citation" data-cites="MontgomeryDOE">Montgomery (<a href="#ref-MontgomeryDOE" role="doc-biblioref">2008</a>)</span>.</p>
-<p>Sólo mencionar aquí que, estos diseños son especialmente útiles y eficientes, cuando se tienen muchos factores y se desea estudiar su efecto simultáneo sobre la respuesta, especialmente cuando se dispone de recursos limitados. Permiten estimar los efectos principales de cada factor y las interacciones entre ellos (a diferencia de los diseños unifactoriales), utilizando un número reducido de experimentos en comparación con otros diseños experimentales. Destacan por su simplicidad, por lo que, en la práctica se utilizan a modo de cribado (<em>screening</em>), es decir, para identificar los factores realmente significativos sobre el fenómeno estudiado (que suelen ser pocos).<br>
-Dicho de otro modo, permiten explorar muchos factores con un número reducido de experimentos, cambiando el objetivo, en lugar construir un modelo detallado, se busca identificar los factores relevantes para estudios posteriores.</p>
+<p>Sólo mencionar aquí que, estos diseños son especialmente útiles y eficientes, cuando se tienen muchos factores y se desea estudiar su efecto simultáneo sobre la respuesta, especialmente cuando se dispone de recursos limitados. Permiten estimar los efectos principales de cada factor y las interacciones entre ellos (a diferencia de los diseños unifactoriales), utilizando un número reducido de experimentos en comparación con otros diseños experimentales. Destacan por su simplicidad, por lo que, en la práctica se utilizan a modo de cribado (<em>screening</em>), es decir, para identificar los factores realmente significativos sobre el fenómeno estudiado (que suelen ser pocos). Dicho de otro modo, permiten explorar muchos factores con un número reducido de experimentos, cambiando el objetivo, en lugar construir un modelo detallado, se busca identificar los factores relevantes para estudios posteriores.</p>
 </section>
 <section id="sec-fraccionado" class="level3" data-number="2.6.3">
 <h3 data-number="2.6.3" class="anchored" data-anchor-id="sec-fraccionado"><span class="header-section-number">2.6.3</span> Diseños factoriales fraccionados</h3>
@@ -1437,7 +1450,7 @@ F-statistic:  4217 on 3 and 9 DF,  p-value: 1.761e-14</code></pre>
 </div>
 </div>
 <p>No parece haber incumplimiento notorio, ni de homocedasticidad ni de normalidad. La independencia se tiene de partida, por ser helicópteros distintos y haber aleatorizado su construcción y medición.</p>
-<p>Para contrastar la homogeneidad de varianzas, acudimos al test de Barlett:</p>
+<p>Para contrastar la homogeneidad de varianzas, acudimos al test de Bartlett:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(tiempos <span class="sc">~</span> ala, </span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> heli3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1518,8 +1531,7 @@ data:  heli3$tiempos and heli3$ala
 
 P value adjustment method: bonferroni </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ScheffeTest</span>(<span class="at">x=</span><span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">ScheffeTest</span>(<span class="at">x=</span><span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   Posthoc multiple comparisons of means: Scheffe Test 
@@ -1534,8 +1546,7 @@ $ala
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>lsd <span class="ot">&lt;-</span> <span class="fu">LSD.test</span>(anova.h3, <span class="st">"ala"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>lsd <span class="ot">&lt;-</span> agricolae<span class="sc">::</span><span class="fu">LSD.test</span>(anova.h3, <span class="st">"ala"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Study: anova.h3 ~ "ala"
@@ -2098,6 +2109,9 @@ Obtenga los tres tipos de suma de cuadrados del diseño balanceado cuando se inc
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-FidalgoDOE" class="csl-entry" role="listitem">
+Cía Mina, Álvaro, y Jesús López-Fidalgo. 2024. <em>Introducción al diseño de experimentos</em>. Pamplona, España: Ediciones Universidad de Navarra.
+</div>
 <div id="ref-Faraway" class="csl-entry" role="listitem">
 Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.
 </div>
@@ -2106,9 +2120,6 @@ López-Fidalgo, Jesús. 2015. <em>El azar no existe</em>. electrolibris.
 </div>
 <div id="ref-FidalgoOED" class="csl-entry" role="listitem">
 ———. 2023. <em>Optimal Experimental Design: A Concise Introduction for Researchers</em>. Vol. 226. Lecture Notes en Statistics. Springer.
-</div>
-<div id="ref-FidalgoDOE" class="csl-entry" role="listitem">
-Mina, Álvaro Cía, y Jesús López Fidalgo. 2024. <em>Introducción al diseño de experimentos</em>. Pamplona, España: Ediciones Universidad de Navarra.
 </div>
 <div id="ref-MontgomeryDOE" class="csl-entry" role="listitem">
 Montgomery, Douglas C. 2008. <em>Design and Analysis of Experiments</em>. Seventh. Wiley.
