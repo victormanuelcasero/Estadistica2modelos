@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>2&nbsp; Diseño de experimentos – Estadística II: modelos</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,10 +95,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ffd282cb318059e0bcb130885a47f5dc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +113,7 @@ div.csl-indent {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "Sin resultados",
+    "search-no-results-text": "No se han encontrado resultados",
     "search-matching-documents-text": "documentos encontrados",
     "search-copy-link-title": "Copiar el enlace en la búsqueda",
     "search-hide-matches-text": "Ocultar resultados adicionales",
@@ -126,7 +128,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -139,7 +141,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -219,6 +221,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./Cap4-Superv.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Análisis de supervivencia o fiabilidad</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cap5-Seleccion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Selección de variables</span></span></a>
   </div>
 </li>
     </ul>
@@ -485,7 +493,7 @@ Se añade aquí la <em>factorialización</em>, a los tres principios anteriores,
 </section>
 <section id="modelo-anova" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="modelo-anova"><span class="header-section-number">2.2</span> Modelo ANOVA</h2>
-<p>La herramienta para el <em>análisis</em> de los modelos de diseño de experimentos es el modelo de <strong>ANálisis de la VArianza</strong>, modelo <strong>ANOVA</strong> (que ha aparecido, brevemente, en regresión, en la <a href="Cap1-LM.html#sec-SC" class="quarto-xref"><span>Sección 1.2.7</span></a>). Así, <em>para cada tipo de diseño experimental, existe un modelo ANOVA asociado</em>, que permite estimar adecuadamente los efectos de los factores y contrastar hipótesis sobre los mismos.</p>
+<p>La herramienta para el <em>análisis</em> de los modelos de diseño de experimentos es el modelo de <strong>ANálisis de la VArianza</strong>, modelo <strong>ANOVA</strong> (que ha aparecido, brevemente, en regresión, en la <a href="Cap1-LM.html#sec-SC" class="quarto-xref"><span>Sección 1.2.5.1</span></a>). Así, <em>para cada tipo de diseño experimental, existe un modelo ANOVA asociado</em>, que permite estimar adecuadamente los efectos de los factores y contrastar hipótesis sobre los mismos.</p>
 <p>El modelo ANOVA es un modelo lineal que permite modelizar (de forma aproximada, como es sabido) el comportamiento de una variable respuesta cuantitativa, <span class="math inline">\(Y\)</span>, mediante un función lineal de uno o varios <em>factores</em>, <span class="math inline">\(X_1, \ldots, X_k\)</span>. Se basa en descomponer toda la variabilidad de la respuesta en diferentes componentes estimables, debidos al factor o factores considerados y al error aleatorio inherente en cualquier proceso de medición. Esta descomposición se denomina <em>suma de cuadrados</em>.</p>
 <p>A continuación, se van a ir detallando los casos más sencillos de diseño experimental.</p>
 </section>
@@ -545,7 +553,7 @@ H_1:  \text{Al menos una } \mu_i \text{ es distinta.}
 \end{array}
 \right\} \]</span> Como en regresión, se plantea el modelo más sencillo posible <span class="math inline">\((H_0: \tau_i = 0, \forall i)\)</span>, esto es, <span class="math inline">\(\hat y_{ij}= \mu\)</span>, que intentamos falsar.</p>
 <p><strong>Suma de cuadrados</strong><br>
-Para resolver el contraste planteado, se compara la respuesta media de los distintos <em>niveles</em> que conforman los factores, a través de la información proporcionada por la varianza, de aquí el nombre de ANOVA. Dicho análisis se deriva de la partición de la variabilidad total en los dos componentes ya mencionados en la <a href="Cap1-LM.html#sec-SC" class="quarto-xref"><span>Sección 1.2.7</span></a>, y que aquí son: la variabilidad debida a los efectos de los factores (tratamiento) y la variabilidad debida a los residuos.</p>
+Para resolver el contraste planteado, se compara la respuesta media de los distintos <em>niveles</em> que conforman los factores, a través de la información proporcionada por la varianza, de aquí el nombre de ANOVA. Dicho análisis se deriva de la partición de la variabilidad total en los dos componentes ya mencionados en la <a href="Cap1-LM.html#sec-SC" class="quarto-xref"><span>Sección 1.2.5.1</span></a>, y que aquí son: la variabilidad debida a los efectos de los factores (tratamiento) y la variabilidad debida a los residuos.</p>
 <blockquote class="blockquote">
 <p>En regresión la partición de la variabilidad total consta de la explicada por el modelo y la debida a los residuos. Por lo que la analogía y el papel de cada parte es claro.</p>
 </blockquote>
@@ -1094,7 +1102,7 @@ Más adelante se ven diseños bifactoriales, trifactoriales,… donde se manejan
 </blockquote>
 <p>Dotamos a los datos anteriores de la estructura necesaria para trabajar con ellos en <code>R</code>. Los datos en el orden aleatorio de lanzamiento/medición son:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.97</span>, <span class="fl">3.23</span>, <span class="fl">3.09</span>, <span class="fl">2.65</span>, <span class="fl">2.78</span>, <span class="fl">3.21</span>, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tiempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.97</span>, <span class="fl">3.23</span>, <span class="fl">3.09</span>, <span class="fl">2.65</span>, <span class="fl">2.78</span>, <span class="fl">3.21</span>, </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>             <span class="fl">2.59</span>, <span class="fl">3.14</span>, <span class="fl">3.17</span>, <span class="fl">3.12</span>, <span class="fl">3.32</span>, <span class="fl">2.76</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ala <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"12 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"8 cm"</span>, <span class="st">"8 cm"</span>, <span class="st">"16 cm"</span>, </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"8 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"16 cm"</span>, <span class="st">"8 cm"</span>)</span>
@@ -1102,15 +1110,15 @@ Más adelante se ven diseños bifactoriales, trifactoriales,… donde se manejan
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ala <span class="ot">&lt;-</span> <span class="fu">factor</span>(ala, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"8 cm"</span>, <span class="st">"12 cm"</span>, <span class="st">"16 cm"</span>))</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Estructura de data.frame</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>heli3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tiempos, ala)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>heli2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tiempos, ala)[ala <span class="sc">!=</span> <span class="st">"12 cm"</span>, ]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>heli2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tiempos, ala)[ala <span class="sc">!=</span> <span class="st">"12 cm"</span>, ]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Realizamos un resumen gráfico y numérico de los datos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli2)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Añade los valores de los 4 experimentos</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli2, </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1118,10 +1126,10 @@ Más adelante se ven diseños bifactoriales, trifactoriales,… donde se manejan
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>medias <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli2<span class="sc">$</span>tiempos, heli2<span class="sc">$</span>ala, mean)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>varzas <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli2<span class="sc">$</span>tiempos, heli2<span class="sc">$</span>ala, var)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varzas)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varzas)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              8 cm 12 cm  16 cm
 medias 2.695000000    NA 3.2100
@@ -1130,10 +1138,10 @@ varzas 0.008166667    NA 0.0062</code></pre>
 </div>
 <p>A la vista del análisis descriptivo (gráfico y numérico) parece haber claras diferencias entre el tiempo de caída de los 2 niveles. ¿Son significativas dichas diferencias? Entramos en el terreno inferencial. Aplicamos el análisis ANOVA, que como bien se sabe, compara medias considerando las varianzas. La hipótesis de partida, hipótesis nula, <span class="math inline">\(H_0\)</span>, es la de <em>NO</em> influencia, las medias de ambos tratamientos son la misma, <span class="math inline">\(\mu_{8} = \mu_{16}\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>anova.h2 <span class="ot">&lt;-</span> <span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>anova.h2 <span class="ot">&lt;-</span> <span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> heli2)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 ala          1 0.5305  0.5305   73.84 0.000137 ***
@@ -1147,7 +1155,7 @@ Como se sabe, el p-valor es la probabilidad de que, siendo las medias poblaciona
 <p><strong>Eficacia del contraste ANOVA</strong><br>
 Se menciona en la parte teórica que, la eficacia del contraste aumenta si aumenta <span class="math inline">\(n_i\)</span>. Para ilustrarlo, añadimos un par de observaciones más de cada nivel del factor, concretamente añadimos 2 veces la media de cada nivel, lo que no aumenta la varianza:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tiempos_mas2 <span class="ot">&lt;-</span> <span class="fu">c</span>(tiempos, <span class="fl">2.695</span>, <span class="fl">2.695</span>, <span class="fl">3.21</span>, <span class="fl">3.21</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tiempos_mas2 <span class="ot">&lt;-</span> <span class="fu">c</span>(tiempos, <span class="fl">2.695</span>, <span class="fl">2.695</span>, <span class="fl">3.21</span>, <span class="fl">3.21</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ala_mas2 <span class="ot">&lt;-</span> <span class="fu">c</span>(ala, <span class="st">"1"</span>, <span class="st">"1"</span>, <span class="st">"3"</span>, <span class="st">"3"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ala_mas2 <span class="ot">&lt;-</span> <span class="fu">factor</span>(ala_mas2,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
@@ -1157,7 +1165,7 @@ Se menciona en la parte teórica que, la eficacia del contraste aumenta si aumen
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparativa gráfica</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli2)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos_mas2 <span class="sc">~</span> ala_mas2, <span class="at">data =</span> heli2_mas2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos_mas2 <span class="sc">~</span> ala_mas2, <span class="at">data =</span> heli2_mas2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1165,11 +1173,11 @@ Se menciona en la parte teórica que, la eficacia del contraste aumenta si aumen
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>anova.h2_mas2 <span class="ot">&lt;-</span> <span class="fu">aov</span>(tiempos_mas2 <span class="sc">~</span> ala_mas2, </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> heli2_mas2)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2_mas2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2_mas2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 ala_mas2     1 0.7957  0.7957   184.6 9.01e-08 ***
@@ -1187,9 +1195,9 @@ Pruebe como afecta el cambiar los 2 tiempos añadidos a cada nivel, cuando dismi
 <p><strong>Comparación con <span class="math inline">\(t\)</span> de Student</strong><br>
 Al ser una comparación de dos medias, surge la duda de aplicar el contraste <span class="math inline">\(t\)</span> de Student de dos muestras independientes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(tiempos <span class="sc">~</span> ala, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(tiempos <span class="sc">~</span> ala, </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> heli2, </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="co">#Supuesto del ANOVA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="co">#Supuesto del ANOVA</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Two Sample t-test
@@ -1213,10 +1221,10 @@ En la tabla ANOVA se puede ver todos los cálculos intermedios para la obtenció
 <p><strong>Como modelo lineal</strong><br>
 <em>Nota técnica: La función <code>aov()</code> ya hace una llamada a la función <code>lm()</code></em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>anova.h2.ml <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>anova.h2.ml <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> heli2)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h2.ml)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h2.ml)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1227,8 +1235,8 @@ Residuals  6 0.04310 0.00718
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2.ml)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h2.ml)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1261,11 +1269,11 @@ F-statistic: 73.84 on 1 and 6 DF,  p-value: 0.0001365</code></pre>
 <h4 data-number="2.8.1.2" class="anchored" data-anchor-id="comparación-de-3-niveles"><span class="header-section-number">2.8.1.2</span> Comparación de 3 niveles</h4>
 <p>Primero el análisis descriptivo:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagrama de caja</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3) </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Añade los valores de los 4 experimentos</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3, </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">vertical =</span> T, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">add =</span> T) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1273,13 +1281,13 @@ F-statistic: 73.84 on 1 and 6 DF,  p-value: 0.0001365</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen numérico directo: mu_i y sigma^2_i</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>medias <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, mean)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>varzas <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, var)</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Efecto del tratamiento i-ésimo: tau_i</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>efecto <span class="ot">&lt;-</span> <span class="fu">tapply</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala, mean) <span class="sc">-</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(heli3<span class="sc">$</span>tiempos)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varzas, efecto)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(medias, varzas, efecto)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               8 cm    12 cm  16 cm
 medias  2.695000000 3.102500 3.2100
@@ -1299,10 +1307,10 @@ efecto -0.307500000 0.100000 0.2075</code></pre>
 </div>
 <p>Para el análisis inferencial, se sabe que realizar las comparaciones por pares, aplicando contrastes de la t de Student, no resuelve el problema de forma global. Hay que acudir al contraste ANOVA. Aplicamos la función <code>lm()</code> y obtenemos la tabla ANOVA:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>anova.h3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>anova.h3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> ala, </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> heli3)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1319,8 +1327,8 @@ La misma que antes, el ala influye en el tiempo de caída.</p>
 <p>Al haber 3 niveles se debe mirar si todas las medias son distintas entre sí o sólo hay algunas medias distintas: comparaciones múltiples (se ve más adelante).</p>
 <p>Exploramos la salida del <code>summary()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo lineal estimado</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1346,7 +1354,7 @@ F-statistic: 34.34 on 2 and 9 DF,  p-value: 6.134e-05</code></pre>
 <p>Se puede apreciar que hay diferencias significativas entre las alas de 8 y 12 cm, y entre las de 8 y 16cm, pero no viene información de la comparación entre las alas de 12 y 16 cm -&gt; ¡comparaciones múltiples!</p>
 <p>La causa de que aparezcan esas comparaciones, y no otras, se debe a la codificación de la matriz de diseño (heredada de <code>contrasts()</code>)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(anova.h3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   (Intercept) ala12 cm ala16 cm
 1            1        1        0
@@ -1367,7 +1375,7 @@ attr(,"contrasts")
 attr(,"contrasts")$ala
 [1] "contr.treatment"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(heli3<span class="sc">$</span>ala)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(heli3<span class="sc">$</span>ala)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      12 cm 16 cm
 8 cm      0     0
@@ -1378,10 +1386,10 @@ attr(,"contrasts")$ala
 <p><strong>Modelo de las medias</strong><br>
 Se puede ajustar el modelo sin término independiente, que proporciona las estimaciones del <em>modelo de las medias</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>anova.h3.origen <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> ala, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>anova.h3.origen <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> ala, </span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> heli3)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla ANOVA</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h3.origen)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(anova.h3.origen)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1392,7 +1400,7 @@ Residuals  9   0.077   0.009
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h3.origen)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova.h3.origen)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1423,8 +1431,8 @@ F-statistic:  4217 on 3 and 9 DF,  p-value: 1.761e-14</code></pre>
 <h4 data-number="2.8.1.3" class="anchored" data-anchor-id="diagnosis-1"><span class="header-section-number">2.8.1.3</span> Diagnosis</h4>
 <p>Antes de seguir con el análisis inferencial se deben validar las hipótesis del modelo ANOVA. Se puede acudir a la función <code>plot()</code>, aplicada al objeto de tipo <code>lm</code>, como ya hicimos con los modelos de regresión.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(anova.h3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1435,9 +1443,9 @@ F-statistic:  4217 on 3 and 9 DF,  p-value: 1.761e-14</code></pre>
 </div>
 <p>Pero “sobran” gráficos… Con la fila de arriba de gráficos es suficiente, y mejor si aparecen bandas de confianza:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">residualPlot</span>(anova.h3)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(anova.h3))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(anova.h3))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1452,8 +1460,8 @@ F-statistic:  4217 on 3 and 9 DF,  p-value: 1.761e-14</code></pre>
 <p>No parece haber incumplimiento notorio, ni de homocedasticidad ni de normalidad. La independencia se tiene de partida, por ser helicópteros distintos y haber aleatorizado su construcción y medición.</p>
 <p>Para contrastar la homogeneidad de varianzas, acudimos al test de Bartlett:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(tiempos <span class="sc">~</span> ala, </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> heli3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> heli3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Bartlett test of homogeneity of variances
@@ -1464,7 +1472,7 @@ Bartlett's K-squared = 0.24536, df = 2, p-value = 0.8845</code></pre>
 </div>
 <p>Para contrastar la normalidad, acudimos al test de Shapiro (recomendable con muestras pequeñas):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(anova.h3))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(anova.h3))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -1475,7 +1483,7 @@ W = 0.96575, p-value = 0.8616</code></pre>
 </div>
 <p>Para contrastar la independencia, acudimos al test de Durbin-Watson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">DurbinWatsonTest</span>(anova.h3)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">DurbinWatsonTest</span>(anova.h3)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Durbin-Watson test
@@ -1491,8 +1499,8 @@ alternative hypothesis: true autocorrelation is greater than 0</code></pre>
 <h4 data-number="2.8.1.4" class="anchored" data-anchor-id="comparaciones-múltiples"><span class="header-section-number">2.8.1.4</span> Comparaciones múltiples</h4>
 <p>De entre los distintos contrastes de comparaciones múltiples (véase <a href="#sec-comp-multiples" class="quarto-xref"><span>Sección 2.3.7</span></a>), se utiliza el de <em>Tukey</em>, que tiene implementada una visualización gráfica muy intuitiva de las comparaciones:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>( heli3.tukey <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(<span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data =</span> heli3)) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>( heli3.tukey <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(<span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data =</span> heli3)) )</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -1505,7 +1513,7 @@ $ala
 16 cm-8 cm  0.5150  0.33194552 0.6980545 0.0000680
 16 cm-12 cm 0.1075 -0.07555448 0.2905545 0.2792751</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(heli3.tukey)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(heli3.tukey)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1517,8 +1525,8 @@ $ala
 <p>De la tabla, y sobre todo visualmente del gráfico, se deduce que existen diferencias significativas (controlando el nivel de significación global de todos los contrastes) en el tiempo de caída en la comparación de helicópteros con ala 8 vs.&nbsp;12 cm, y en los helicópteros con ala 8 vs.&nbsp;16 cm, dado que el intervalo de confianza de la diferencia de medias de tiempos de caída entre cada par de alas no contiene el valor 0. Por el contrario, no se puede decir que los helicópteros con ala 12 tengan diferencias significativas en sus tiempos de caída respecto a los de ala 16 cm. De este hecho se puede inferir que el efecto de la longitud del ala no parece lineal (por ser la longitud del ala una variable continua).</p>
 <p>Otras opciones de comparaciones múltiples:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.t.test</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala,</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="at">p.adjust =</span> <span class="st">"bonferroni"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.t.test</span>(heli3<span class="sc">$</span>tiempos, heli3<span class="sc">$</span>ala,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="at">p.adjust =</span> <span class="st">"bonferroni"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pairwise comparisons using t tests with pooled SD 
@@ -1531,7 +1539,7 @@ data:  heli3$tiempos and heli3$ala
 
 P value adjustment method: bonferroni </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">ScheffeTest</span>(<span class="at">x=</span><span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">ScheffeTest</span>(<span class="at">x=</span><span class="fu">aov</span>(tiempos <span class="sc">~</span> ala, <span class="at">data =</span> heli3))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   Posthoc multiple comparisons of means: Scheffe Test 
@@ -1546,7 +1554,7 @@ $ala
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>lsd <span class="ot">&lt;-</span> agricolae<span class="sc">::</span><span class="fu">LSD.test</span>(anova.h3, <span class="st">"ala"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>lsd <span class="ot">&lt;-</span> agricolae<span class="sc">::</span><span class="fu">LSD.test</span>(anova.h3, <span class="st">"ala"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Study: anova.h3 ~ "ala"
@@ -1578,7 +1586,7 @@ Treatments with the same letter are not significantly different.
 12 cm  3.1025      a
 8 cm   2.6950      b</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lsd)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lsd)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1593,7 +1601,7 @@ Treatments with the same letter are not significantly different.
 <h3 data-number="2.8.2" class="anchored" data-anchor-id="diseños-bifactoriales"><span class="header-section-number">2.8.2</span> Diseños bifactoriales</h3>
 <p>Planteamos un diseño bifactorial para comparar el efecto de 2 factores en la variable respuesta (tiempo de caída). Supongamos que interesan, tanto el efecto de la longitud de ala, <code>long</code>, como el efecto de la anchura de ala, <code>anch</code>, en el tiempo de caída. Considerando 2 niveles para la anchura: 4 y 6 cm, se podría definir un diseño factorial con la combinación de los 3 niveles de la longitud de ala definidos anteriormente y los 2 de la anchura. Esto llevaría a 6 (<span class="math inline">\(3 \times 2\)</span>) tratamientos distintos, de las que se podrían hacer réplicas (o no). Si se realizan 2 réplicas de cada tratamiento, se tienen 12 helicópteros de los que se mide su tiempo de caída.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DoE.base)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DoE.base)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Cargando paquete requerido: grid</code></pre>
 </div>
@@ -1624,13 +1632,13 @@ Adjuntando el paquete: 'DoE.base'</code></pre>
 
     lengths</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>( Dis.bifactorial <span class="ot">&lt;-</span> <span class="fu">fac.design</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>),</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">factor.names =</span> <span class="fu">list</span>(</span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">long =</span> <span class="fu">c</span>(<span class="st">"8cm"</span>, <span class="st">"12cm"</span>, <span class="st">"16cm"</span>),</span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">anch =</span> <span class="fu">c</span>(<span class="st">"4cm"</span>, <span class="st">"6cm"</span>)),</span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">randomize =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>                                <span class="at">replications =</span> <span class="dv">2</span>) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>                                <span class="at">replications =</span> <span class="dv">2</span>) )</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>creating full factorial with 6 runs ...</code></pre>
 </div>
@@ -1652,10 +1660,10 @@ class=design, type= full factorial
 NOTE: columns run.no and run.no.std.rp  are annotation, 
  not part of the data frame</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>tiempos2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.87</span>, <span class="fl">2.03</span>, <span class="fl">3.74</span>, <span class="fl">1.33</span>, <span class="fl">4.49</span>, <span class="fl">2.52</span>, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>tiempos2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.87</span>, <span class="fl">2.03</span>, <span class="fl">3.74</span>, <span class="fl">1.33</span>, <span class="fl">4.49</span>, <span class="fl">2.52</span>, </span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>              <span class="fl">1.61</span>, <span class="fl">3.46</span>, <span class="fl">2.30</span>, <span class="fl">4.48</span>, <span class="fl">4.06</span>, <span class="fl">2.65</span>)</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>( Dis.bifactorial.R <span class="ot">&lt;-</span> <span class="fu">add.response</span>(Dis.bifactorial, </span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">response =</span> tiempos2) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">response =</span> tiempos2) )</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   run.no run.no.std.rp long anch Blocks tiempos2
 1       1           5.1 12cm  6cm     .1     3.87
@@ -1683,9 +1691,9 @@ NOTE: columns run.no and run.no.std.rp  are annotation,
 ¿Bajo que supuesto se utiliza este modelo? ¿Qué variable tiene sentido considerar bloque?</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mod.bifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">+</span> anch, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mod.bifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">+</span> anch, </span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> Dis.bifactorial.R)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1697,7 +1705,7 @@ Residuals  8  2.1722  0.2715
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.bifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.bifact)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1723,9 +1731,9 @@ F-statistic: 13.94 on 3 and 8 DF,  p-value: 0.001526</code></pre>
 </div>
 <p>Un complemento gráfico:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> long, <span class="at">data =</span> Dis.bifactorial.R)</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1733,8 +1741,8 @@ F-statistic: 13.94 on 3 and 8 DF,  p-value: 0.001526</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, <span class="at">data =</span> Dis.bifactorial.R)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1745,9 +1753,9 @@ F-statistic: 13.94 on 3 and 8 DF,  p-value: 0.001526</code></pre>
 </div>
 <p>¿Y el análisis de residuos?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">residualPlot</span>(mod.bifact)</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(mod.bifact))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(mod.bifact))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1768,9 +1776,9 @@ F-statistic: 13.94 on 3 and 8 DF,  p-value: 0.001526</code></pre>
 </blockquote>
 <p>Aquí se tiene que el factor <code>long</code> no es significativo, con una <span class="math inline">\(SC\)</span> pequeña… ¿es buena idea quitarlo del modelo?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>mod.anch <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> anch, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>mod.anch <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> anch, </span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> Dis.bifactorial.R)</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.anch)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.anch)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1792,13 +1800,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </blockquote>
 <p>Se cambian (estratégicamente) algunos tiempos de caída:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>tiempos2bis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.87</span>, <span class="fl">2.03</span>, <span class="fl">4.49</span>, <span class="fl">1.33</span>, <span class="fl">3.74</span>, <span class="fl">2.52</span>, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>tiempos2bis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.87</span>, <span class="fl">2.03</span>, <span class="fl">4.49</span>, <span class="fl">1.33</span>, <span class="fl">3.74</span>, <span class="fl">2.52</span>, </span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.61</span>, <span class="fl">4.48</span>, <span class="fl">2.30</span>, <span class="fl">3.46</span>, <span class="fl">4.06</span>, <span class="fl">2.65</span>)</span>
 <span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>Dis.bifactorial.Rbis <span class="ot">&lt;-</span> <span class="fu">add.response</span>(Dis.bifactorial, </span>
 <span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">response =</span> tiempos2bis)</span>
 <span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2bis <span class="sc">~</span> long, <span class="at">data =</span> Dis.bifactorial.Rbis)</span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2bis <span class="sc">~</span> anch, <span class="at">data =</span> Dis.bifactorial.Rbis)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(tiempos2bis <span class="sc">~</span> anch, <span class="at">data =</span> Dis.bifactorial.Rbis)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1806,9 +1814,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>mod.bifact.bis <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2bis <span class="sc">~</span> long <span class="sc">+</span> anch, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>mod.bifact.bis <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2bis <span class="sc">~</span> long <span class="sc">+</span> anch, </span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> Dis.bifactorial.Rbis)</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact.bis)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact.bis)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1837,9 +1845,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Con este tipo de diseños se intenta responder a dos tipos de preguntas: ¿Qué efectos tienen el factor A y el factor B sobre la respuesta? ¿Existe algún tratamiento del factor A que produzca de manera regular una mejor respuesta independientemente del factor B? ¿Cuál es la mejor combinación de los factores A y B?</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>mod.bifact.interacc <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>mod.bifact.interacc <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos2 <span class="sc">~</span> long <span class="sc">*</span> anch, </span>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> Dis.bifactorial.R)</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact.interacc)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.bifact.interacc)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1852,13 +1860,13 @@ Residuals  6  0.1414  0.0236
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(Dis.bifactorial.R<span class="sc">$</span>long, </span>
 <span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>                 Dis.bifactorial.R<span class="sc">$</span>anch, </span>
 <span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>                 Dis.bifactorial.R<span class="sc">$</span>tiempos2)</span>
 <span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(Dis.bifactorial.R<span class="sc">$</span>anch, </span>
 <span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>                 Dis.bifactorial.R<span class="sc">$</span>long, </span>
-<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>                 Dis.bifactorial.R<span class="sc">$</span>tiempos2)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>                 Dis.bifactorial.R<span class="sc">$</span>tiempos2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1870,9 +1878,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Sabiendo de la tabla ANOVA que el ancho es significativo, influye en el tiempo de caída, y que la interacción entre la longitud y la anchura es significativa (aunque la longitud no lo sea), la interpretación de la influencia del ancho no es independiente de la longitud. Así, los gráficos permiten afirmar que la anchura 6 cm produce siempre mayores tiempos de caída, para cualquier nivel de longitud, siendo la mejor combinación 16 cm de longitud y 6 cm de anchura.</p>
 <p><strong>Análisis de residuos</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">"s"</span>)</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">residualPlot</span>(mod.bifact.interacc)</span>
-<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(mod.bifact.interacc))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(mod.bifact.interacc))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1893,20 +1901,20 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h3 data-number="2.8.3" class="anchored" data-anchor-id="diseño-trifactorial-1"><span class="header-section-number">2.8.3</span> Diseño trifactorial</h3>
 <p>Si las 12 mediciones anteriores procedieran de un diseño factorial con 3 variables, por ejemplo, añadiendo el factor “clip” a los 2 anteriores, tendríamos sólo una observación por tratamiento, es decir sin réplicas. Esto implicaría que no se pueden estimar todos los parámetros del modelo completo (nos quedamos sin grados de libertad), pero sí se pueden estimar modelos con inferior número de parámetros, como el modelo de efectos principales:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">3</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">3</span>)</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>Dis.trifact <span class="ot">&lt;-</span> <span class="fu">fac.design</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">factor.names =</span> <span class="fu">list</span>(</span>
 <span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">long =</span> <span class="fu">c</span>(<span class="st">"8cm"</span>, <span class="st">"12cm"</span>, <span class="st">"16cm"</span>),</span>
 <span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">anch =</span> <span class="fu">c</span>(<span class="st">"4cm"</span>, <span class="st">"6cm"</span>),</span>
 <span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">clip =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Si"</span>)),</span>
-<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">randomize =</span> T )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">randomize =</span> T )</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>creating full factorial with 12 runs ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>tiempos3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.26</span>, <span class="fl">2.56</span>, <span class="fl">2.60</span>, <span class="fl">2.33</span>, <span class="fl">2.48</span>, <span class="fl">2.55</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>tiempos3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.26</span>, <span class="fl">2.56</span>, <span class="fl">2.60</span>, <span class="fl">2.33</span>, <span class="fl">2.48</span>, <span class="fl">2.55</span>,</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>              <span class="fl">2.68</span>, <span class="fl">2.44</span>, <span class="fl">2.71</span>, <span class="fl">2.37</span>, <span class="fl">2.43</span>, <span class="fl">2.53</span>)</span>
 <span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>( Dis.trifact.R <span class="ot">&lt;-</span> <span class="fu">add.response</span>(Dis.trifact, </span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">response =</span> tiempos3) )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">response =</span> tiempos3) )</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   long anch clip tiempos3
 1   8cm  4cm   No     2.26
@@ -1923,9 +1931,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 12 12cm  6cm   No     2.53
 class=design, type= full factorial </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>mod.trifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>mod.trifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Dis.trifact.R)</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1938,7 +1946,7 @@ Residuals  7 0.018733 0.002676
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.trifact)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.trifact)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1971,10 +1979,10 @@ F-statistic: 17.45 on 4 and 7 DF,  p-value: 0.0009563</code></pre>
 <h4 data-number="2.8.3.1" class="anchored" data-anchor-id="tipos-de-sumas-de-cuadrados-1"><span class="header-section-number">2.8.3.1</span> Tipos de sumas de cuadrados</h4>
 <p>Obtenemos los diferentes tipos de sumas de cuadrados:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>mod.trifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>mod.trifact <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Dis.trifact.R)</span>
 <span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="co"># anova() sólo utiliza el tipo I de suma de cuadrados</span></span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact) </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1987,8 +1995,8 @@ Residuals  7 0.018733 0.002676
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># car::Anova() NO calcula la suma de cuadrados de tipo I</span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact, <span class="at">type =</span> <span class="st">"II"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># car::Anova() NO calcula la suma de cuadrados de tipo I</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact, <span class="at">type =</span> <span class="st">"II"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -2001,7 +2009,7 @@ Residuals 0.018733  7
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact, <span class="at">type =</span> <span class="st">"III"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type III tests)
 
@@ -2019,10 +2027,10 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Aunque la tabla ANOVA de tipo III presenta un aspecto ligeramente distinto a las otras dos, los p-valores son exactamente los mismos… Cuando el diseño es balanceado y no se ha perdido información experimental.</p>
 <p>Mostremos como afecta, con un diseño desbalanceado, por haber perdido alguna medición:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>Dis.trifact.R.desb <span class="ot">&lt;-</span> Dis.trifact.R[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">7</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>Dis.trifact.R.desb <span class="ot">&lt;-</span> Dis.trifact.R[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">7</span>)]</span>
 <span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>mod.trifact.desb <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">+</span> anch <span class="sc">+</span> clip, </span>
 <span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Dis.trifact.R.desb)</span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact.desb) <span class="co"># type I </span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod.trifact.desb) <span class="co"># type I </span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -2035,7 +2043,7 @@ Residuals  5 0.012313 0.002463
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"II"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"II"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -2048,7 +2056,7 @@ Residuals 0.012313  5
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"III"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type III tests)
 
@@ -2065,9 +2073,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Para ver la diferencia entre las sumas de cuadrados de tipo II y III se debe considerar un modelo con interacciones.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>mod.trifact.desb <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">*</span> anch <span class="sc">+</span> clip, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>mod.trifact.desb <span class="ot">&lt;-</span> <span class="fu">lm</span>(tiempos3 <span class="sc">~</span> long <span class="sc">*</span> anch <span class="sc">+</span> clip, </span>
 <span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Dis.trifact.R.desb)</span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"II"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"II"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -2081,7 +2089,7 @@ Residuals 0.009350  3
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod.trifact.desb, <span class="at">type =</span> <span class="st">"III"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type III tests)
 
@@ -2108,18 +2116,18 @@ Obtenga los tres tipos de suma de cuadrados del diseño balanceado cuando se inc
 <h2 class="unnumbered anchored" data-anchor-id="bibliografía">Bibliografía</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-FidalgoDOE" class="csl-entry" role="listitem">
-Cía Mina, Álvaro, y Jesús López-Fidalgo. 2024. <em>Introducción al diseño de experimentos</em>. Pamplona, España: Ediciones Universidad de Navarra.
+Cía Mina, Álvaro, y Jesús López-Fidalgo. 2024. <em>Introducción al diseño de experimentos</em>. Ediciones Universidad de Navarra.
 </div>
 <div id="ref-Faraway" class="csl-entry" role="listitem">
 Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.
 </div>
 <div id="ref-FidalgoAZAR" class="csl-entry" role="listitem">
-López-Fidalgo, Jesús. 2015. <em>El azar no existe</em>. electrolibris.
+López-Fidalgo, Jesús. 2015. <em>El azar no existe</em>. Electrolibris.
 </div>
 <div id="ref-FidalgoOED" class="csl-entry" role="listitem">
-———. 2023. <em>Optimal Experimental Design: A Concise Introduction for Researchers</em>. Vol. 226. Lecture Notes en Statistics. Springer.
+López-Fidalgo, Jesús. 2023. <em>Optimal Experimental Design: A Concise Introduction for Researchers</em>. Vol. 226. Lecture Notes en Statistics. Springer.
 </div>
 <div id="ref-MontgomeryDOE" class="csl-entry" role="listitem">
 Montgomery, Douglas C. 2008. <em>Design and Analysis of Experiments</em>. Seventh. Wiley.
@@ -2182,13 +2190,14 @@ Peña, Daniel. 2002. <em>Regresión y diseño de experimentos</em>. Alianza Edit
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

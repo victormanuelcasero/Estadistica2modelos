@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Estadística II: modelos</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -25,7 +28,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -58,10 +60,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ffd282cb318059e0bcb130885a47f5dc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,7 +78,7 @@ div.csl-indent {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "Sin resultados",
+    "search-no-results-text": "No se han encontrado resultados",
     "search-matching-documents-text": "documentos encontrados",
     "search-copy-link-title": "Copiar el enlace en la búsqueda",
     "search-hide-matches-text": "Ocultar resultados adicionales",
@@ -205,7 +207,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Fecha de publicación</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">1 de octubre de 2025</p>
+      <p class="date">1 de septiembre de 2026</p>
     </div>
   </div>
   
@@ -289,13 +291,13 @@ Se agradece cualquier comunicación al respecto para su corrección.</p>
 <h2 class="anchored" data-anchor-id="agradecimientos">Agradecimientos</h2>
 <p>Aunque el contenido de este material es fruto de mi experiencia docente, deseo expresar un agradecimiento especial a tres personas. En primer lugar, a mi compañero, y sin embargo amigo, <em>Licesio J. Rodríguez-Aragón</em> (UCLM), por haber compartido generosamente sus valiosos materiales y comentarios, que han sido fundamentales en la elaboración de este trabajo. En segundo lugar, a mi colega y también amiga <em>María Durbán</em> (UC3M), con quien he tenido la fortuna de colaborar en varios capítulos de libros sobre distintos temas de esta asignatura, y con quien he mantenido un diálogo constante y enriquecedor que me ha permitido profundizar y aprender sobre ellos. En tercer lugar, pero por ello no menos importante, a mi compañero, y por supuesto amigo, <em>Sergio Pozuelo Campos</em> (UCLM), que ha leído el material con gran detalle y dedicación, lo que ha dado lugar a conversaciones muy estimulantes y esclarecedoras sobre diversos aspectos del contenido.</p>
 <p>También quiero agradecer a los compañeros del Área de Estadística del Departamento de Matemáticas de la UCLM. En particular, a <em>Mariano Amo Salas</em>, por sus aportaciones, especialmente al apartado de análisis de supervivencia; y a <em>Irene García Camacha</em>, por su apoyo y sugerencias en la docencia del Grado en Matemáticas.</p>
-<p>También debo mencionar a <em>Juan Manuel Rodríguez Díaz</em> (USAL), compañero de grupo de investigación, por facilitarme sus materiales sobre modelos lineales y diseño de experimentos, que me han aportado numerosas ideas. Finalmente, agradezco a los autores de las referencias biblográficas que se citan (destaco a <em>Román Salmerón Gómez</em> -rnoremlas-), así como a los desarrolladores de los paquetes de <code>R</code> utilizados, por su trabajo y dedicación.</p>
+<p>También debo mencionar a <em>Juan Manuel Rodríguez Díaz</em> (USAL), compañero de grupo de investigación, por facilitarme sus materiales sobre modelos lineales y diseño de experimentos, que me han aportado numerosas ideas; y por sus comentarios para mejorar esta versión que estás leyendo ahora. También agradezco a Víctor Manuel Moreno los valiosos comentarios que me ha hecho llegar para enriquecer los dos primeros temas de este material. Finalmente, agradezco a los autores de las referencias biblográficas que se citan (destaco a <em>Román Salmerón Gómez</em> -rnoremlas-), así como a los desarrolladores de los paquetes de <code>R</code> utilizados, por su trabajo y dedicación.</p>
 </section>
 <section id="bibliografía" class="level2">
 <h2 class="anchored" data-anchor-id="bibliografía">Bibliografía</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Faraway" class="csl-entry" role="listitem">
 Faraway, Julian J. 2004. <em>Linear Models with <span>R</span></em>. Chapman &amp;amp; Hall/CRC.
 </div>
@@ -370,13 +372,14 @@ Rivas López, María Jesús, y Jesús López Fidalgo. 2000. <em>Análisis de sup
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
