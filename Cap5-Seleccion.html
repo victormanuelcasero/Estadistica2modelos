@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -94,10 +97,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -127,7 +130,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -286,148 +289,158 @@ window.Quarto = {
 </header>
 
 
-<p>(“2026-09-01”)</p>
+<p>(“2026-09-23”)</p>
 <style>
 body {text-align: justify}
 </style>
-<p>Cuando en un contexto de regresión se dispone de un elevado número de variables explicativas, es posible que algunas de ellas no estén correlacionadas con la variable respuesta o que su relación no resulte estadísticamente significativa. También puede surgir el problema de la multicolinealidad, con una o varias variables explicativas que aportan información redundante respecto a otras explicativas (véase <a href="Cap1-LM.html#sec-Multicolinealidad" class="quarto-xref"><span>Sección 1.3.5</span></a>). En estos casos, resulta deseable identificar un subconjunto de variables que <em>expliquen</em> adecuadamente la respuesta y/o que permitan generar mejores <em>predicciones</em> que el modelo completo. Estas circunstancias justifican la necesidad de realizar una selección apropiada de variables.</p>
-<p>La tarea de generar y evaluar todos los modelos posibles que combinan subconjuntos de variables puede ser ingente: con <span class="math inline">\(k\)</span> variables, el número de modelos posibles es <span class="math inline">\(2^k\)</span>. Por ello, en la práctica se recurre a seleccionar un conjunto reducido de modelos candidatos, entre los cuales se elige el “mejor”. Esta elección puede basarse en los enfoques <em>explicativo</em> o <em>predictivo</em>, como se ha mencionado. Aunque algunos de los métodos que se van a estudiar también se utilizan con fines explicativos, en este capítulo se presta especial atención al enfoque predictivo, que es el más habitual en la práctica, pues es el utilizado en <em>Machine Learning</em>. Por ello, la comparación entre modelos se basará principalmente en su capacidad para predecir observaciones no utilizadas durante la estimación del modelo. El análisis de residuos, estudiado en el <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a>, continúa siendo útil como herramienta complementaria de diagnóstico, pero no constituye aquí el criterio de selección.</p>
-<p>Esta selección de variables es especialmente útil cuando el número de variables es mayor que el número de observaciones (<span class="math inline">\(k &gt; n\)</span>), situación común en algunos campos científicos, como la genómica, el tratamiento de imágenes médicas, etc. Es más, con más variables que observaciones es imposible estimar de forma única todos los parámetros del modelo completo.</p>
+<p>Cuando en el planteamiento de un modelo de regresión se dispone de un elevado número de variables explicativas, es posible que algunas de ellas apenas estén relacionadas con la variable respuesta o que su aportación no resulte estadísticamente significativa. También pueden surgir problemas de <em>multicolinealidad</em>, cuando varias variables explicativas aportan información redundante (véase <a href="Cap1-LM.html#sec-Multicolinealidad" class="quarto-xref"><span>Sección 1.3.5</span></a>). En estas situaciones, puede ser conveniente identificar un subconjunto de variables que <em>explique</em> adecuadamente la respuesta o que permita generar mejores <em>predicciones</em> que el modelo completo. Esta es la finalidad de los procedimientos de <em>selección de variables</em>.</p>
+<p>La tarea de generar y evaluar todos los modelos posibles que combinan subconjuntos de variables puede ser ingente: con <span class="math inline">\(k\)</span> variables explicativas, el número de modelos posibles es <span class="math inline">\(2^k\)</span>. Como su evaluación exhaustiva puede resultar computacionalmente costosa, se recurre a procedimientos que generan un conjunto más reducido de modelos candidatos, entre los cuales se elige el “mejor”. Esta elección puede basarse en los enfoques <em>explicativo</em> o <em>predictivo</em>, como se ha mencionado. En este capítulo se presta especial atención al enfoque predictivo, el utilizado en <em>Machine Learning</em> (<em>Aprendizaje Automático</em>). Por ello, los modelos se compararán principalmente evaluando su capacidad para predecir observaciones no utilizadas durante la estimación del modelo (<em>fuera de muestra</em>). No obstante, algunos de los métodos que se van a estudiar también se utilizan con fines explicativos. En ese caso, el análisis de residuos (presentado en el <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a>) continúa siendo una herramienta útil de diagnóstico para valorar la adecuación del modelo, pero no constituye aquí el criterio de selección.</p>
+<p>Esta selección de variables es especialmente útil en problemas con alta dimensión, cuando el número de variables, y con ello el número de parámetros a estimar del modelo, es mayor que el número de observaciones (<span class="math inline">\(p &gt; k &gt; n\)</span>), situación común en algunos campos científicos, como la genómica, el tratamiento de imágenes médicas, etc. Es más, con más variables que observaciones es imposible estimar de forma única todos los parámetros del modelo completo.</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: en este capítulo, <span class="math inline">\(k\)</span> denota el número de variables explicativas originales y <span class="math inline">\(p\)</span> el número total de parámetros estimables del modelo. Si todas las variables explicativas son cuantitativas y no se incluyen interacciones, entonces <span class="math inline">\(p=k+1\)</span> (por el término independiente). Sin embargo, un <em>factor</em>, una interacción, etc. pueden generar varios parámetros.</p>
+</blockquote>
 <p>Dos buenas referencias para este capítulo son <span class="citation" data-cites="CDRDurban">Durbán (<a href="#ref-CDRDurban" role="doc-biblioref">2024</a>)</span> y <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span>. También se puede encontrar información en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> y <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span>.</p>
 <section id="métodos-de-selección" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="métodos-de-selección"><span class="header-section-number">5.1</span> Métodos de selección</h2>
-<p>Se han desarrollado distintos procedimientos de selección <em>automática</em> de variables explicativas, que permitan obtener un modelo de regresión óptimo (desde alguna perspectiva).</p>
-<p>Uno de los métodos más utilizados, por su simplicidad y eficacia, es la <strong>regresión paso a paso</strong> (<em>stepwise regression</em>). Este método permite construir el modelo de forma progresiva, evaluando el impacto de cada variable. Se basa en añadir, o eliminar, variables explicativas al modelo en función de su contribución estadística, evaluada mediante algún criterio (se describen en el siguiente apartado). Este método surge como una alternativa computacionalmente menos costosa al método de <strong>selección del mejor subconjunto</strong> (<em>Best Subset Selection</em>). Este último método evalúa (exhaustivamente) todas las combinaciones posibles de modelos con un número fijo de variables (por ejemplo, todos los modelos con 4 variables, de las <span class="math inline">\(k\)</span> variables disponibles, son <span class="math inline">\({k \choose 4}\)</span>, o con 5 variables son <span class="math inline">\({k \choose 5}\)</span>, etc.).</p>
-<p>Otro conjunto de métodos, ampliamente utilizados, son los <strong>métodos de regularización</strong>, que penalizan la complejidad del modelo para evitar el <em>sobreajuste</em>. Dicho de otro modo, reducen el impacto de las variables menos relevantes. En este capítulo se estudian las regresiones <strong>Ridge</strong> y <strong>Lasso</strong>.</p>
-<p>Estos métodos suelen combinarse con una técnica de evaluación muy extendida en <em>Machine Learning</em>: la <strong>validación cruzada</strong>. Esta permite comparar los modelos alcanzados con los métodos anteriores, evaluando su rendimiento predictivo mediante procedimientos como la <strong>validación cruzada k-fold</strong>. Se basan en el enfoque de datos de entrenamiento y validación, que consiste en calcular el error de predicción sobre la partición de los datos reservados para validación, mientras que el resto de datos se utiliza para el entrenamiento/ajuste del modelo.</p>
-<p>Otra opción habitual es reducir la dimensión del problema, la dimensión de las variables explicativas. No es estrictamente un método de selección, sino que el objetivo es proyectar las <span class="math inline">\(k\)</span> variables explicativas en un subespacio de dimensión más pequeña (mediante componentes principales: combinaciones lineales de las variables explicativas originales).</p>
-<p>Por último, hay que mencionar los <em>métodos basados en árboles</em>. Pertenecen a este grupo las técnicas de <em>Árboles de decisión</em>, <em>Random Forests</em>, y <em>Gradient Boosting</em>, entre otros. Hay que comentar que estos no son métodos de regresión lineal, aunque ayudan a identificar variables relevantes, pues suelen proporcionar medidas de la importancia de las variables, lo que permite al usuario elegir qué variables seleccionar.</p>
-<p>De los métodos citados, en el capítulo se estudian los 3 primeros grupos.</p>
+<p>Se han desarrollado distintos procedimientos de selección <em>automática</em> de variables explicativas, que permiten obtener el mejor modelo de regresión (desde alguna perspectiva).</p>
+<p>Uno de los métodos más utilizados, por su simplicidad y eficacia, es la <strong>selección paso a paso</strong> (<em>stepwise</em>). Este método permite obtener el modelo óptimo de forma progresiva, evaluando el impacto de cada variable. Se basa en añadir, o eliminar, variables explicativas al modelo en función de su contribución estadística, evaluada mediante algún criterio (se describen en el siguiente apartado). Este método surge como una alternativa computacionalmente menos costosa al método de <strong>selección del mejor subconjunto</strong> (<em>Best Subset Selection</em>). Este último método evalúa (exhaustivamente) todas las combinaciones posibles de modelos con un número fijo de variables (por ejemplo, todos los modelos con 4 variables, de las <span class="math inline">\(k\)</span> variables disponibles, son <span class="math inline">\({k \choose 4}\)</span>, o con 5 variables son <span class="math inline">\({k \choose 5}\)</span>, etc.).</p>
+<p>Otro conjunto de métodos, ampliamente utilizados, lo constituyen los <strong>métodos de regularización</strong>, que penalizan la complejidad del modelo para reducir el riesgo de <em>sobreajuste</em>. Dicho de otro modo, contraen los coeficientes asociados a las variables menos relevantes. En este capítulo se estudian las regresiones <strong>Ridge</strong> y <strong>Lasso</strong>.</p>
 <blockquote class="blockquote">
-<p>Nota: La selección automática de variables mediante cualquiera de los procedimientos descritos debe realizarse siempre considerando el contexto y la lógica del problema. Es posible que el método seleccione variables cuya influencia en la respuesta carezca de sentido práctico. Esto puede deberse, entre otras razones, a la realización de numerosos contrastes de significación. A medida que aumenta el número de contrastes, también lo hace la probabilidad de obtener resultados estadísticamente significativos por azar. Por ejemplo, con un nivel de significación del 5%, se espera, en promedio, que 5 de cada 100 contrastes conduzcan al rechazo de la hipótesis nula, incluso si esta es cierta.</p>
+<p><strong>Nota</strong>: Se habla de <em>sobreajuste</em> cuando un modelo se adapta excesivamente a los datos utilizados para estimarlo y pierde capacidad para predecir correctamente nuevas observaciones.</p>
+</blockquote>
+<p>Estos métodos suelen combinarse con una técnica de evaluación muy extendida en <em>Machine Learning</em>: la <strong>validación cruzada</strong>. Esta permite comparar los modelos obtenidos con los métodos anteriores, evaluando su rendimiento predictivo mediante procedimientos como la <strong>validación cruzada k-fold</strong>.</p>
+<p>Otras opciones habituales son: por un lado, reducir la dimensión del espacio de variables explicativas. No es estrictamente un método de selección, sino que el objetivo es proyectar las <span class="math inline">\(k\)</span> variables explicativas en un subespacio de dimensión más pequeña (mediante componentes principales: combinaciones lineales de las variables explicativas originales). Por otro lado, acudir a <em>métodos basados en árboles</em>. Pertenecen a este grupo las técnicas de <em>Árboles de decisión</em>, <em>Random Forests</em> y <em>Gradient Boosting</em>, entre otros. Hay que comentar que estos no son métodos de regresión lineal, aunque ayudan a identificar variables relevantes, pues proporcionan medidas de la importancia de las variables que permiten al usuario elegir qué variables seleccionar.</p>
+<p>De los métodos citados, en este capítulo se estudian los 3 primeros grupos.</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: la selección automática de variables mediante cualquiera de los procedimientos descritos debe realizarse siempre considerando el contexto y la lógica del problema. Es posible que el método seleccione variables cuya asociación con la respuesta carezca de sentido práctico. Esto puede deberse, entre otras razones, a la realización de numerosos contrastes de significación. A medida que aumenta el número de contrastes, también lo hace la probabilidad de obtener resultados estadísticamente significativos por azar. Por ejemplo, con un nivel de significación del 5%, se espera, en promedio, que 5 de cada 100 contrastes conduzcan al rechazo de la hipótesis nula, incluso si esta es cierta.</p>
 </blockquote>
 </section>
 <section id="sec-Criterios" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="sec-Criterios"><span class="header-section-number">5.2</span> Criterios de selección</h2>
 <p>Para elegir qué modelo es “mejor” de entre los candidatos se acude a criterios de selección.</p>
 <blockquote class="blockquote">
-<p>Nota: el término “mejor modelo” se utilizará en relación con un criterio previamente fijado; diferentes criterios pueden seleccionar modelos distintos como mejor modelo.</p>
+<p><strong>Nota</strong>: el término “mejor modelo” se utilizará en relación con un criterio previamente fijado; diferentes criterios pueden seleccionar modelos distintos como mejor modelo.</p>
 </blockquote>
-<p>Los criterios pueden estar basados, bien en la bondad del ajuste del modelo a los datos (tienden a escoger modelos sobreajustados, con más parámetros de los necesarios); o bien en la capacidad predictiva del modelo. En la práctica se utilizan principalmente:</p>
+<p>Los criterios pueden estar basados, bien en la bondad de ajuste del modelo a los datos (tienden a escoger modelos sobreajustados, con más parámetros de los necesarios); o bien en la capacidad predictiva del modelo. En la práctica se utilizan principalmente:</p>
 <ul>
 <li><strong>AIC (Akaike Information Criterion)</strong></li>
 <li><strong>BIC (Bayesian Information Criterion)</strong></li>
 <li><strong><span class="math inline">\(C_p\)</span> de Mallows</strong></li>
 </ul>
 <p>Aunque los tres permiten comparar modelos candidatos, responden a motivaciones distintas: AIC y <span class="math inline">\(C_p\)</span> están estrechamente relacionados con el rendimiento predictivo esperado, mientras que BIC aplica una penalización mayor y tiende a elegir modelos más parsimoniosos.</p>
-<p>Estos tres criterios (y otros) se pueden expresar en una forma general, que refleja un balance entre la calidad del ajuste del modelo (medida por la varianza residual) y su complejidad (basada en el número de parámetros). Concretamente (omitiendo constantes comunes a todos los modelos candidatos):</p>
-<p><span class="math display">\[\text{Criterio} = n \cdot \log(\hat{\sigma}^2) + \lambda(p),\]</span></p>
+<p>Estos tres criterios (y otros) se pueden expresar en una forma general, que refleja un balance entre la calidad del ajuste del modelo (medida por la varianza residual) y su complejidad (basada en el número de parámetros). Concretamente (omitiendo constantes comunes a todos los modelos candidatos): <span class="math display">\[\text{Criterio} = n \cdot \log(\hat{\sigma}^2) + \operatorname{pen}(p),\]</span></p>
 <p>donde:</p>
 <ul>
 <li><span class="math inline">\(n\)</span>: número de observaciones,<br>
 </li>
-<li><span class="math inline">\(\hat{\sigma}^2\)</span>: estimación MV de la varianza residual del modelo considerado,</li>
-<li><span class="math inline">\(\lambda(p)\)</span>: penalización por complejidad del modelo, que depende de <span class="math inline">\(p\)</span>, el número de parámetros a estimar (incluyendo la constante), y que varía según el criterio:
+<li><span class="math inline">\(\hat{\sigma}^2\)</span>: estimación MV de la varianza residual del modelo considerado, es decir, <span class="math inline">\(RSS_p/n\)</span> (<em>RSS: Residual Sum of Squares</em>). No debe confundirse con la varianza residual insesgada <span class="math inline">\(\hat{S}_R^2=RSS_p/(n−p)\)</span>.</li>
+<li><span class="math inline">\(\operatorname{pen}(p)\)</span>: penalización por complejidad del modelo, que depende de <span class="math inline">\(p\)</span>, el número de parámetros a estimar (incluyendo la constante), y que varía según el criterio:
 <ul>
-<li>Para AIC: <span class="math inline">\(\lambda(p) = 2p\)</span>,</li>
-<li>Para BIC: <span class="math inline">\(\lambda(p) = \log(n)p\)</span>,</li>
-<li>Para <span class="math inline">\(C_p\)</span>: se reestructura como penalización sobre <span class="math inline">\(\text{RSS}_p\)</span>, la suma de cuadrados de los residuos del modelo con <span class="math inline">\(p\)</span> parámetros y la estimación de la varianza del error del modelo completo <span class="math inline">\(\hat{\sigma}^2_{\text{full}}\)</span>: <span class="math display">\[C_p = \frac{\text{RSS}_p}{\text{RSS}_k} - n + 2p.\]</span></li>
+<li>Para AIC: <span class="math inline">\(\operatorname{pen}(p) = 2p\)</span>,</li>
+<li>Para BIC: <span class="math inline">\(\operatorname{pen}(p) = \log(n)p\)</span>,</li>
+<li>Para <span class="math inline">\(C_p\)</span>: se reestructura como penalización sobre <span class="math inline">\(\text{RSS}_p\)</span>, la suma de cuadrados de los residuos del modelo con <span class="math inline">\(p\)</span> parámetros y la estimación de la varianza del error del modelo completo <span class="math inline">\(\hat{\sigma}^2_{\text{full}}\)</span>: <span class="math display">\[C_p = \frac{\text{RSS}_p}{\hat{\sigma}^2_{\text{full}}} - n + 2p,\]</span> donde <span class="math inline">\(\hat{\sigma}^2_{\text{full}}=\dfrac{\text{RSS}_{\text{full}}}{n-p_{\text{full}}}.\)</span></li>
 </ul></li>
 </ul>
 <blockquote class="blockquote">
-<p>Nota: Una deducción muy detallada del estadístico <span class="math inline">\(C_p\)</span> de Mallows puede encontrarse en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apartado 11.3.2 y Apéndice 11A). Donde se demuestra que, bajo determinadas condiciones, minimizar el criterio <span class="math inline">\(C_p\)</span> es equivalente a minimizar el criterio AIC.</p>
+<p><strong>Nota</strong>: una deducción muy detallada del estadístico <span class="math inline">\(C_p\)</span> de Mallows puede encontrarse en <span class="citation" data-cites="Pena2002">Peña (<a href="#ref-Pena2002" role="doc-biblioref">2002</a>)</span> (apartado 11.3.2 y Apéndice 11A), donde se demuestra que, bajo determinadas condiciones, minimizar el criterio <span class="math inline">\(C_p\)</span> es equivalente a minimizar el criterio AIC.</p>
 </blockquote>
-<p>Con la penalización basada en el número de parámetros se busca combatir modelos sobreajustados. El criterio BIC penaliza más la complejidad que AIC cuando el tamaño muestral es “grande” (basta <span class="math inline">\(n \geq 8\)</span> dado que <span class="math inline">\(\log(8) &gt; 2\)</span>), por lo que BIC es un método más parsimonioso, tiende a proporcionar modelos más simples (más cuanto mayor sea <span class="math inline">\(n\)</span>).</p>
+<p>Con la penalización basada en el número de parámetros se busca combatir modelos sobreajustados. El criterio BIC penaliza más la complejidad que AIC cuando el tamaño muestral es “grande” (basta <span class="math inline">\(n \geq 8\)</span> dado que <span class="math inline">\(\log(8) &gt; 2\)</span>), por lo que BIC es un criterio más parsimonioso, tiende a proporcionar modelos más simples (más cuanto mayor sea <span class="math inline">\(n\)</span>).</p>
 <p>Estos criterios son medidas relativas, se utilizan para comparaciones entre modelos, que podrían ser todos “malos”. <strong>El modelo preferido es el que tenga menor valor del criterio.</strong></p>
 <blockquote class="blockquote">
 <p>¡Ojo! Los criterios indicados no permiten una comparación válida entre modelos cuya variable respuesta difiere.</p>
 </blockquote>
-<p>También existen otros criterios basados en medidas de bondad del ajuste del modelo, tales como el <strong>coeficiente de determinación (R<span class="math inline">\(^2\)</span>)</strong> o la <strong>varianza residual</strong>. Sin embargo, estos criterios únicamente permiten comparaciones, en igualdad de condiciones, entre modelos que poseen el mismo número de parámetros, por lo que su uso debe realizarse con cautela.</p>
+<p>También existen otros criterios basados en medidas de bondad del ajuste del modelo, tales como el <strong>coeficiente de determinación (R<span class="math inline">\(^2\)</span>)</strong> o la <strong>varianza residual</strong>. Sin embargo, estos criterios únicamente permiten comparaciones, en igualdad de condiciones, entre modelos que poseen el mismo número de parámetros.</p>
 </section>
 <section id="sec-Stepwise" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="sec-Stepwise"><span class="header-section-number">5.3</span> Selección paso a paso</h2>
-<p>El método de <em>regresión paso a paso</em> tiene dos variantes:</p>
+<p>El método de <em>selección paso a paso</em> tiene dos variantes:</p>
 <ol type="1">
-<li><p>Selección <strong>hacia adelante</strong> (<em>forward</em>): se parte del <strong>modelo nulo</strong> —que sólo incluye la constante, sin variables explicativas— y se van incorporando variables explicativas, una a una. En cada paso se añade la variable que más “mejore” el modelo previo, hasta alcanzar, o bien un <strong>modelo maximal</strong> propuesto (con aquellas variables que se consideren oportunas), o bien el modelo completo (que incluye todas las variables).</p>
+<li><p>Selección <strong>hacia adelante</strong> (<em>forward</em>): se parte del <strong>modelo nulo</strong> —que sólo incluye la constante, sin variables explicativas— y se van incorporando variables explicativas, una a una. En cada paso se añade la variable que más “mejore” (según el criterio escogido: AIC, BIC, etc.) el modelo previo, hasta alcanzar, o bien un <strong>modelo maximal</strong> propuesto (con aquellas variables que se consideren oportunas), o bien el modelo completo (que incluye todas las variables).</p>
 <blockquote class="blockquote">
-<p>Nota: Para la explicación subsiguiente se consideran, sin pérdida de generalidad, modelos sencillos, con variables explicativas que añaden un único parámetro al modelo. Podrían plantearse modelos más generales: con factores que pueden añadir varios parámetros; con interacciones, etc. A efectos prácticos, se mantendría la idea de seleccionar la variable o interacción que más “mejore” el modelo previo.</p>
+<p><strong>Nota</strong>: para la explicación subsiguiente se consideran, sin pérdida de generalidad, modelos sencillos, con variables explicativas que añaden un único parámetro al modelo. Podrían plantearse modelos más generales: con factores que pueden añadir varios parámetros; con interacciones, etc. A efectos prácticos, se mantendría la idea de seleccionar la variable o interacción que más “mejore” el modelo previo.</p>
 </blockquote>
 <p><strong>En formato algoritmo</strong><br>
-Siendo <span class="math inline">\(k\)</span> el número máximo de variables a considerar, bien sea del modelo maximal o del completo.</p>
+Sea <span class="math inline">\(k\)</span> el número máximo de variables a considerar, bien sea del modelo maximal o del completo.</p>
 <p>Paso 1. Sea <span class="math inline">\(M_0\)</span> el <em>modelo nulo</em>.</p>
-<p>Paso 2. Para <span class="math inline">\(i = 0, 1, \dots, k - 1\)</span> , de los <span class="math inline">\(k - i\)</span> modelos que se obtienen al añadir una variable explicativa adicional a las ya incluidas en <span class="math inline">\(M_i\)</span>, seleccionamos el mejor, y lo denotamos por <span class="math inline">\(M_{i+1}\)</span>.</p>
-<p>Paso 3. El proceso finaliza escogiendo uno de los <span class="math inline">\(k+1\)</span> modelos (<span class="math inline">\(M_0, \ldots, M_k\)</span>) según uno de los criterios mencionados: AIC, BIC, etc.</p>
-<p>La ventaja computacional es que, cuanto mayor es el número de variables disponibles, <span class="math inline">\(k\)</span>, el número de modelos a evaluar, <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span>, es menor que en la selección del mejor subconjunto, <span class="math inline">\(2^k\)</span>. Pero presenta una desventaja, no garantiza el mejor modelo posible de todos (por ejemplo, si existe multicolinealidad).</p></li>
-<li><p>Selección <strong>hacia atrás</strong> (<em>backward</em>): se parte del <em>modelo maximal</em> (o el modelo completo), y se van eliminando, una a una, la variable cuya eliminación suponga una menor pérdida en la estimación del modelo (mejor valor del criterio adoptado). El proceso finaliza eligiendo de entre los <span class="math inline">\(k+1\)</span> modelos, el de menor AIC, o BIC,… etc.</p>
-<p>Como la selección <em>hacia adelante</em>, la selección <em>hacia atrás</em> evalúa <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span> modelos (ventaja computacional frente a otros métodos), pero no garantiza encontrar el mejor modelo. Además, se añade la limitación (que puede ser importante) de necesitar un número de observaciones mayor que el número de parámetros del modelo, <span class="math inline">\(n &gt; p\)</span>, de modo que el modelo completo (o, en su caso, el maximal considerado) pueda estimarse (además, la matriz de diseño debe tener rango completo). En contraste, la selección <em>hacia adelante</em> sí puede utilizarse incluso cuando <span class="math inline">\(n &lt; p\)</span>, lo que le otorga una ventaja competitiva, pues le convierte en un método viable cuando <span class="math inline">\(p\)</span> es muy grande.</p></li>
+<p>Paso 2. Para <span class="math inline">\(i = 0, 1, \dots, k - 1\)</span>, de los <span class="math inline">\(k - i\)</span> modelos que se obtienen al añadir una variable explicativa adicional a las ya incluidas en <span class="math inline">\(M_i\)</span>, seleccionamos el mejor (según criterio adoptado) y lo denotamos por <span class="math inline">\(M_{i+1}\)</span>.</p>
+<p>Paso 3. El proceso finaliza escogiendo uno de los <span class="math inline">\(k+1\)</span> modelos (<span class="math inline">\(M_0, \ldots, M_k\)</span>), de nuevo según el criterio escogido.</p>
+<p>La ventaja computacional es que, cuanto mayor es el número de variables disponibles, <span class="math inline">\(k\)</span>, el número de modelos a evaluar, <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span>, es menor que en la selección del mejor subconjunto, <span class="math inline">\(2^k\)</span>. Pero presenta una desventaja: no garantiza encontrar el mejor modelo entre todos los posibles (por ejemplo, si existe multicolinealidad).</p></li>
 </ol>
-<p>Algunos paquetes de software incluyen también la <em>selección bidireccional</em>, combinación de ambos enfoques, permitiendo tanto la inclusión como la eliminación de variables en cada iteración, según su contribución al modelo. Obviamente es el procedimiento más versátil de los tres, y puede ofrecer resultados más parecidos a la selección del mejor subconjunto (aunque depende del criterio, etc.), con menor coste computacional.</p>
+<blockquote class="blockquote">
+<p><strong>Nota</strong>: las funciones de <code>R</code> que implementan selección stepwise no suelen recorrer todos esos pasos (como veremos). El procedimiento se detiene cuando la modificación considerada (variable a añadir o a eliminar) no produce una mejora en el valor del criterio.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><p>Selección <strong>hacia atrás</strong> (<em>backward</em>): se parte del <em>modelo maximal</em> (o el modelo completo) y se eliminan, una a una, las variables explicativas cuya exclusión suponga una menor pérdida en la estimación del modelo (mejor valor del criterio adoptado). El proceso finaliza eligiendo, de entre los <span class="math inline">\(k+1\)</span> modelos, el de menor valor de AIC, BIC, etc.</p>
+<p>Como la selección <em>hacia adelante</em>, la selección <em>hacia atrás</em> evalúa <span class="math inline">\(1 + \frac{k(k + 1)}{2}\)</span> modelos (ventaja computacional frente a otros métodos), pero no garantiza encontrar el mejor modelo. Además, se añade la limitación (que puede ser importante) de necesitar un número de observaciones mayor que el número de parámetros del modelo, <span class="math inline">\(n &gt; p\)</span>, de modo que el modelo completo (o, en su caso, el maximal considerado) pueda estimarse (además, la <em>matriz de diseño</em> debe tener rango completo). En contraste, la selección <em>hacia adelante</em> sí puede utilizarse incluso cuando <span class="math inline">\(n &lt; p\)</span>, lo que le otorga una ventaja competitiva, pues lo convierte en un método viable cuando <span class="math inline">\(p\)</span> es muy grande.</p></li>
+</ol>
+<p>Algunos paquetes de software incluyen también la <em>selección bidireccional</em>, combinación de ambos enfoques, permitiendo tanto la inclusión como la eliminación de variables en cada iteración, según su contribución al modelo. Es el procedimiento más versátil de los tres, puesto que permite tanto incorporar como eliminar términos. Puede ofrecer resultados similares a la selección del mejor subconjunto, con menor coste computacional (aunque dependerá del punto de partida y del criterio utilizado).</p>
 </section>
 <section id="selección-por-regularización" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="selección-por-regularización"><span class="header-section-number">5.4</span> Selección por regularización</h2>
-<p>Los métodos de selección basados en <em>regularización</em> (denominados en inglés <em>Shrinkage</em> -contracción-) se basan en modificar el procedimiento de estimación de mínimos cuadrados de los parámetros añadiendo un término de <em>penalización</em> sobre su magnitud. Los parámetros estimados se contraen hacia cero (se regularizan), en comparación con las estimaciones por mínimos cuadrados, provocando una disminución en la varianza de los parámetros estimados del modelo. Buscan mejorar la capacidad predictiva del modelo y controlar su sobreajuste. Por el contrario, pueden no seleccionar las variables de forma explícita como sí hacen los métodos anteriores. Estos métodos pueden aplicarse también en contextos de alta dimensión, en los que el ajuste ordinario del modelo completo no es único.</p>
+<p>Los métodos de selección basados en <em>regularización</em> (denominados en inglés <em>Shrinkage</em> -contracción-) se basan en modificar el procedimiento de estimación de mínimos cuadrados (MC) de los parámetros (véase <a href="Cap1-LM.html#sec-MC" class="quarto-xref"><span>Sección 1.2.2</span></a>), añadiendo un término de <em>penalización</em> sobre su magnitud. Las estimaciones de los parámetros se <em>contraen</em> hacia cero (se regularizan), en comparación con las estimaciones MC, provocando una disminución en la varianza de los parámetros estimados del modelo. Buscan así mejorar la capacidad predictiva del modelo y controlar su sobreajuste, pero pueden no seleccionar las variables de forma explícita, como sí hacen los métodos anteriores. Estos métodos pueden aplicarse también en contextos de alta dimensión, en los que el ajuste ordinario del modelo completo no es único.</p>
 <p>En este capítulo vamos a ver los dos más utilizados: <strong>regresión Ridge</strong> y <strong>regresión Lasso</strong>.</p>
 <section id="sec-RegRidge" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="sec-RegRidge"><span class="header-section-number">5.4.1</span> Regresión Ridge</h3>
-<p>En este método se añade como término de penalización la suma de los cuadrados de los parámetros (el cuadrado de la norma <span class="math inline">\(\ell_2\)</span>). Puede no llegar a realizar una selección <em>efectiva</em> de variables, es decir, no llegar a eliminar las variables menos relevantes, pero contrae su impacto (al reducir las estimaciones de los parámetros).</p>
+<p>En este método se añade como término de penalización la suma de los cuadrados de los parámetros (el cuadrado de la norma <span class="math inline">\(\ell_2\)</span>). Generalmente no llega a realizar una selección <em>efectiva</em> de variables, es decir, no llega a eliminar las variables menos relevantes, pero contrae su impacto (al reducir la magnitud de las estimaciones de los parámetros).</p>
 <p>Su objetivo es minimizar la siguiente función: <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} \beta_j^2 = \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{k} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{k} \beta_j^2,\]</span></p>
 <p>donde:</p>
 <ul>
-<li>RSS es la suma de cuadrados de los residuos,</li>
-<li><span class="math inline">\(\lambda\)</span> es el parámetro de penalización, un hiperparámetro ajustable/elegible, que controla la intensidad de la penalización. Si <span class="math inline">\(\lambda = 0\)</span> no hay penalización y los estimadores son los de mínimos cuadrados.</li>
+<li><span class="math inline">\(\text{RSS}\)</span> es la suma de cuadrados de los residuos,</li>
+<li><span class="math inline">\(\lambda\)</span> es el parámetro de penalización, un hiperparámetro ajustable/elegible, que controla la intensidad de la penalización. Si <span class="math inline">\(\lambda = 0\)</span> no hay penalización y se tienen los estimadores MC.</li>
 <li><span class="math inline">\(\beta_j\)</span> son los parámetros del modelo (excepto <span class="math inline">\(\beta_0\)</span>).</li>
 </ul>
 <blockquote class="blockquote">
-<p>Nota: A la vista de la fórmula, el procedimiento no es invariante a la escala de los predictores, a diferencia del estimador de mínimos cuadrados ordinarios (que modifica coherentemente los parámetros ante cambios de escala, pero mantiene invariantes los valores ajustados). Por ello, es necesario estandarizar las variables para aplicar <em>regresión Ridge</em>.<br>
+<p><strong>Nota</strong>: a la vista de la fórmula, el procedimiento no es “invariante” a la escala de los predictores, a diferencia del estimador MCO (que modifica coherentemente los parámetros ante cambios de escala de los predictores, manteniendo invariantes los valores ajustados). Por ello, es necesario estandarizar las variables para aplicar <em>regresión Ridge</em>.<br>
 Y nótese que no se penaliza el término independiente.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p><strong>Tarea</strong> Demostrar la <em>invarianza de escala</em> de los estimadores de mínimos cuadrados.</p>
+<p><strong>Tarea</strong><br>
+Demuestre la <em>“invarianza de escala”</em> de los estimadores de mínimos cuadrados.</p>
 </blockquote>
 </section>
 <section id="regresión-lasso" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="regresión-lasso"><span class="header-section-number">5.4.2</span> Regresión Lasso</h3>
 <p>El método <strong>Lasso (Least Absolute Shrinkage and Selection Operator)</strong> penaliza mediante la suma de los valores absolutos de los parámetros (es decir, considera una norma <span class="math inline">\(\ell_1\)</span>). Minimiza: <span class="math display">\[\text{RSS} + \lambda \sum_{j=1}^{k} |\beta_j|. \]</span> Tiene la propiedad de forzar algunos parámetros a ser exactamente cero, cuando el parámetro <span class="math inline">\(\lambda\)</span> es suficientemente grande, lo que implica una selección efectiva de variables y puede mejorar la capacidad predictiva y la interpretabilidad del modelo.</p>
 <p><strong>Elección de <span class="math inline">\(\lambda\)</span></strong><br>
-La eficacia de la selección mediante <em>Ridge</em> o <em>Lasso</em> depende de la elección adecuada del parámetro <span class="math inline">\(\lambda\)</span>. En la práctica se utiliza <em>validación cruzada</em> (véase <a href="#sec-CV" class="quarto-xref"><span>Sección 5.5</span></a>) para determinar el valor óptimo que minimiza el error de predicción.</p>
+La eficacia de la selección mediante <em>Ridge</em> o <em>Lasso</em> depende de la elección adecuada del parámetro <span class="math inline">\(\lambda\)</span>. En la práctica, se utiliza <em>validación cruzada</em> (véase <a href="#sec-CV" class="quarto-xref"><span>Sección 5.5</span></a>) para determinar el valor óptimo de <span class="math inline">\(\lambda\)</span> que minimiza el error de predicción. Como veremos, <code>R</code> también proporciona otro valor de <span class="math inline">\(\lambda\)</span> que busca el equilibrio entre el mínimo error de predicción y la mayor regularización de los parámetros.</p>
 </section>
 <section id="comparativa" class="level3" data-number="5.4.3">
 <h3 data-number="5.4.3" class="anchored" data-anchor-id="comparativa"><span class="header-section-number">5.4.3</span> Comparativa</h3>
 <p>Aunque ninguno de los dos métodos domina universalmente al otro, en determinados contextos se prefiere uno u otro. La regresión <em>Lasso</em> es preferible cuando se espera que únicamente un pequeño subconjunto de predictores sea relevante, mientras que la regresión <em>Ridge</em> es útil cuando todos los predictores (o la mayoría) contribuyen. Así, la regresión <em>Ridge</em> permite, “colateralmente”, ayudar con el problema de la multicolinealidad de variables explicativas, regularizando sus estimaciones.</p>
-<p>Como penalizaciones de tipo norma <span class="math inline">\(\ell_2\)</span> o norma <span class="math inline">\(\ell_1\)</span>, se tiene una interpretación geométrica de las restricciones que se imponen. Para el método <em>Ridge</em>, la restricción es una región esférica, mientras que para <em>Lasso</em> es una región en forma de rombo, favoreciendo soluciones <em>sparse</em> (<em>dispersas</em>). En <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> se puede encontrar la explicación detallada, y una figura ilustrativa muy elocuente:</p>
+<p>Como penalizaciones de tipo norma <span class="math inline">\(\ell_2\)</span> o <span class="math inline">\(\ell_1\)</span>, se tiene una interpretación geométrica de las restricciones que se imponen. Para el método <em>Ridge</em>, la restricción es una región esférica, mientras que para <em>Lasso</em> es una región en forma de rombo, favoreciendo soluciones <em>dispersas</em> (<em>sparse</em>). En <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> se puede encontrar la explicación detallada, y la siguiente figura ilustrativa muy elocuente:</p>
 <p><img src="img/lasso-picture.png" class="img-fluid"></p>
 <blockquote class="blockquote">
-<p>Nota: el lector interesado puede buscar información sobre otros métodos de regularización: <em>Elastic Net</em> (que es una combinación lineal de las penalizaciones <em>Ridge</em> y <em>Lasso</em>, especialmente útil cuando se sabe que hay muchas variables correlacionadas), <em>Group Lasso</em>, <em>Sparse Group Lasso</em>, etc.</p>
+<p><strong>Nota</strong>: el lector interesado puede buscar información sobre otros métodos de regularización: <em>Elastic Net</em> (que es una combinación lineal de las penalizaciones <em>Ridge</em> y <em>Lasso</em>, especialmente útil cuando se sabe que hay muchas variables correlacionadas), <em>Group Lasso</em>, <em>Sparse Group Lasso</em>, etc.</p>
 </blockquote>
 </section>
 </section>
 <section id="sec-CV" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="sec-CV"><span class="header-section-number">5.5</span> Validación cruzada</h2>
-<p>El procedimiento de <strong>validación cruzada</strong> (<em>cross-validation</em>) es una técnica de <strong>remuestreo</strong> ampliamente utilizada en “Machine Learning”, con un claro enfoque predictivo de los modelos, en lugar de explicativo (como en el <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a>). Su objetivo principal es evaluar la capacidad de generalización de un modelo, es decir, cómo se comporta al predecir datos no utilizados durante el ajuste.</p>
+<p>El procedimiento de <strong>validación cruzada</strong> (<em>cross-validation</em>) es una técnica de <strong>remuestreo</strong> ampliamente utilizada en <em>Machine Learning</em>, con un claro enfoque predictivo de los modelos, en lugar de explicativo (como en el <a href="Cap1-LM.html" class="quarto-xref"><span>Capítulo 1</span></a>). Su objetivo principal es evaluar la capacidad de generalización de un modelo, es decir, cómo se comporta al predecir datos no utilizados durante el ajuste/estimación.</p>
 <blockquote class="blockquote">
-<p>Nota: No constituye por sí solo un procedimiento de selección de variables, pero permite comparar distintos modelos candidatos y elegir aquel que presenta menor error de predicción.</p>
+<p><strong>Nota</strong>: no constituye por sí solo un procedimiento de selección de variables, pero permite comparar distintos modelos candidatos y elegir aquel que presenta menor error de predicción.</p>
 </blockquote>
-<p>La idea básica consiste en <em>particionar</em> (aleatoriamente) el conjunto de datos en dos subconjuntos <em>disjuntos</em>: uno para el <strong>entrenamiento</strong> (<em>train</em>), donde se ajusta el modelo, y otro para la <strong>validación</strong> (<em>test</em>), donde se evalúa su rendimiento. Esta partición suele ser desbalanceada, reservando típicamente un 80% o 90% de los datos para entrenamiento, y el restante 20% o 10% para validación (evaluación de la capacidad predictiva del modelo). En la práctica, la tasa de error de entrenamiento, calculada a partir de las observaciones utilizadas en el ajuste, tiende a subestimar la tasa de error del conjunto de validación. Especialmente si el conjunto de entrenamiento tiene pocas observaciones, lo que puede llevar a invalidar la generalización del modelo obtenido por entrenamiento. Por otro lado, interesa que la tasa de error sea lo menor posible en el conjunto de validación. Pero recordemos que la partición es aleatoria, por lo que dicha tasa de error puede variar con otra partición. Por lo que el resultado debe basarse en un consenso claro tras los resultados de varias particiones.</p>
-<p>Pues bien, el procedimiento de <em>validación cruzada</em> viene a aportar una solución a la dependencia respecto a una única división entrenamiento-validación. La partición a realizar se hace de forma <em>cruzada</em>, dividiendo (aleatoriamente) el conjunto total de datos en <span class="math inline">\(k\)</span> subconjuntos (en inglés se les denomina <strong>folds</strong>) con el mismo tamaño (o aproximadamente). En cada iteración, se selecciona uno de los subconjuntos como conjunto de validación y se utilizan los <span class="math inline">\(k-1\)</span> restantes para entrenamiento. Este proceso se repite <span class="math inline">\(k\)</span> veces, de modo que cada observación se utiliza una vez para validar y <span class="math inline">\(k-1\)</span> veces para entrenar. Se dice por ello que el método es eficiente al utilizar todos los datos tanto para entrenamiento como para validación. Cada modelo ajustado se evalúa mediante una métrica de error (el <em>Error Cuadrático Medio, MSE -Mean Squared Error-</em>, para problemas de regresión; la <em>tasa de error</em> para problemas de clasificación) que mide la precisión de las predicciones. Finalmente, se calcula el promedio de los <span class="math inline">\(k\)</span> <em>MSEs</em> (o la métrica elegida) para seleccionar el modelo que minimiza el error de predicción.</p>
+<p>Como punto de partida, describimos el enfoque de <em>conjunto de validación</em>. La idea básica consiste en <em>particionar</em> (aleatoriamente) el conjunto de datos en dos subconjuntos <em>disjuntos</em>: uno para el <strong>entrenamiento</strong> (<em>train</em>), donde se ajusta el modelo, y otro para la <strong>validación</strong> (<em>test</em>), donde se evalúa su rendimiento. Esta partición suele ser desbalanceada, reservando típicamente un 80% o 90% de los datos para entrenamiento, y el restante 20% o 10% para validación (evaluación de la capacidad predictiva del modelo). En la práctica, la tasa de error de entrenamiento, calculada a partir de las observaciones utilizadas en el ajuste, tiende a subestimar la tasa de error del conjunto de validación. Este problema puede ser especialmente importante si el conjunto de entrenamiento tiene pocas observaciones, lo que puede llevar a invalidar la generalización del modelo obtenido por entrenamiento. Por otro lado, interesa que la tasa de error sea lo menor posible en el conjunto de validación. Pero recordemos que la partición es aleatoria, por lo que dicha tasa de error puede variar con otra partición. Por ello, la conclusión debe basarse en un consenso claro tras los resultados de varias particiones.</p>
+<p>Pues bien, el procedimiento de <em>validación cruzada</em> viene a aportar una solución a la dependencia respecto a una única división entrenamiento-validación. La partición a realizar se hace de forma <em>cruzada</em>, dividiendo (aleatoriamente) el conjunto total de datos en <span class="math inline">\(k\)</span> subconjuntos (en inglés se les denomina <strong>folds</strong>) con el mismo tamaño (o aproximadamente). En cada iteración, se selecciona uno de los subconjuntos como conjunto de validación y se utilizan los <span class="math inline">\(k-1\)</span> restantes para entrenamiento. Este proceso se repite <span class="math inline">\(k\)</span> veces, de modo que cada observación se utiliza una vez para validar y <span class="math inline">\(k-1\)</span> veces para entrenar. Se dice por ello que el método es eficiente al utilizar todos los datos tanto para entrenamiento como para validación. Cada modelo ajustado se evalúa mediante una métrica de error (el <em>Error Cuadrático Medio, MSE -Mean Squared Error-</em>, para problemas de regresión; la <em>tasa de error</em> para problemas de clasificación) que mide la precisión de las predicciones. Finalmente, se calcula el promedio de los <span class="math inline">\(k\)</span> valores del <em>MSE</em> (o la métrica elegida) para seleccionar el modelo que minimiza el error de predicción.</p>
 <p><strong>Elección del número de <em>folds</em></strong><br>
-Habitualmente se utiliza <span class="math inline">\(k = 5\)</span> (<em>5-fold cross-validation</em>) o <span class="math inline">\(k=10\)</span>, pues ofrecen un buen equilibrio entre <em>sesgo y varianza</em> del modelo a generalizar (sin olvidar el coste computacional). Al aumentar <span class="math inline">\(k\)</span>, los modelos se ajustan con una proporción mayor de los datos y suele disminuir el sesgo de la estimación del error; sin embargo, el coste computacional aumenta y la estimación puede presentar mayor varianza.</p>
+Habitualmente se utiliza <span class="math inline">\(k = 5\)</span> (<em>5-fold cross-validation</em>) o <span class="math inline">\(k = 10\)</span>, pues ofrecen un buen equilibrio entre el <em>sesgo</em> y la <em>varianza</em> del modelo a generalizar (sin olvidar el coste computacional). Al aumentar <span class="math inline">\(k\)</span>, los modelos se ajustan con una proporción mayor de los datos y suele disminuir el sesgo de la estimación del error; sin embargo, el coste computacional aumenta y la estimación puede presentar mayor varianza.</p>
 <blockquote class="blockquote">
-<p>Nota: para profundizar sobre los conceptos de <em>sesgo</em> y <em>varianza</em> en este contexto puede consultarse el Capítulo 2 de <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span>.</p>
+<p><strong>Nota</strong>: para profundizar sobre los conceptos de <em>sesgo</em> y <em>varianza</em> en este contexto puede consultarse el Capítulo 2 de <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span>.</p>
 </blockquote>
 <p><strong>Estimación final</strong><br>
-Una vez identificado mediante validación cruzada el modelo óptimo para predicción, de entre los distintos modelos con distinto número de variables, se ajusta sobre el conjunto <em>completo</em> de datos disponibles. Esto permite obtener estimaciones más precisas de los parámetros, ya que el mejor modelo de un número determinado de variables en el conjunto completo puede diferir de los modelos obtenidos en cada subconjunto de entrenamiento.</p>
+Una vez identificado, mediante validación cruzada, el modelo “óptimo” candidato para predicción, con menor error estimado de predicción, se ajusta sobre el conjunto <em>completo</em> de datos disponibles. Esto permite obtener estimaciones más precisas de los parámetros, ya que las estimaciones del modelo óptimo en el conjunto completo pueden diferir de las obtenidas en cada subconjunto de entrenamiento.</p>
 <section id="leave-one-out-cv" class="level3" data-number="5.5.1">
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="leave-one-out-cv"><span class="header-section-number">5.5.1</span> Leave-One-Out CV</h3>
 <p>La estimación LOOCV (<em>validación cruzada dejando uno fuera</em>) es un caso particular de <em>validación cruzada</em> en el que, como su nombre indica, el número de <em>folds</em> coincide con el número total de observaciones. Esto lleva a un coste computacional considerable si <span class="math inline">\(n\)</span>, el número de observaciones, es grande, al tener que entrenar <span class="math inline">\(n\)</span> modelos. Ahora bien, para modelos lineales estimados mediante mínimos cuadrados existe una fórmula que ahorra tiempo de cálculo del LOOCV, pues se puede obtener al ajustar un sólo modelo: <span class="math display">\[ \text{LOOCV} = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{y_i - \hat{y}_i}{1 - h_i} \right)^2\]</span> donde:</p>
 <ul>
 <li><span class="math inline">\(\hat{y}_i\)</span> es el valor estimado para la observación <span class="math inline">\(i\)</span> en el modelo original, y</li>
-<li><span class="math inline">\(h_i\)</span> es el <em>leverage</em> que para el caso de regresión simple es (véase <a href="Cap1-LM.html#sec-Leverage" class="quarto-xref"><span>Sección 1.2.9</span></a>): <span class="math display">\[h_i = \dfrac{1}{n}+\dfrac{(x_i − \bar{x})^2}{\sum_{j=1}^n(x_{j} − \bar{x})^2}\]</span></li>
+<li><span class="math inline">\(h_i\)</span> es su <em>leverage</em> (véase <a href="Cap1-LM.html#sec-Leverage" class="quarto-xref"><span>Sección 1.2.9</span></a> para el caso de regresión simple).</li>
 </ul>
-<p>Como se puede apreciar, la fórmula es la del <em>MSE</em> ordinario salvo la “normalización” de cada <span class="math inline">\(i\)</span>-ésimo residuo considerado su <em>leverage</em> <span class="math inline">\(h_i\)</span>, que recoge lo que influye cada observación en el ajuste del modelo.</p>
+<p>Como se puede apreciar, la fórmula es la del <em>MSE</em> ordinario salvo la “normalización” de cada <span class="math inline">\(i\)</span>-ésimo residuo considerando su <em>leverage</em> <span class="math inline">\(h_i\)</span>, que recoge lo que influye cada observación en el ajuste del modelo.</p>
 <blockquote class="blockquote">
-<p>Nota: recordemos que el <em>leverage</em> varía entre <span class="math inline">\(1/n\)</span> y <span class="math inline">\(1\)</span>, y así, las observaciones con alto <em>leverage</em> reducen el denominador y pueden aumentar el valor del LOOCV, según sea el tamaño del residuo.</p>
+<p><strong>Nota</strong>: recordemos que el <em>leverage</em> varía entre <span class="math inline">\(1/n\)</span> y <span class="math inline">\(1\)</span>, y así, las observaciones con alto <em>leverage</em> reducen el denominador y pueden aumentar el valor del LOOCV, según sea el tamaño del residuo.</p>
 </blockquote>
-<p>En general, como cada ajuste utiliza <span class="math inline">\(n-1\)</span> observaciones, LOOCV suele presentar poco sesgo como estimador del error del modelo ajustado con el conjunto completo que el enfoque de un sólo conjunto de entrenamiento y validación. Sin embargo, puede tener una varianza relativamente elevada. Además, por construcción, su resultado es siempre el mismo para el conjunto de datos considerado (no hay aleatoriedad).</p>
+<p>En general, como cada ajuste utiliza <span class="math inline">\(n-1\)</span> observaciones, LOOCV suele presentar menor sesgo como estimador del error del modelo ajustado con el conjunto completo que el enfoque basado en un sólo conjunto de entrenamiento y validación. Sin embargo, puede tener una varianza relativamente elevada. Además, por construcción, su resultado es siempre el mismo para el conjunto de datos considerado (no hay aleatoriedad).</p>
 </section>
 </section>
 <section id="caso-práctico-boston" class="level2" data-number="5.6">
@@ -439,38 +452,38 @@ Una vez identificado mediante validación cruzada el modelo óptimo para predicc
 <li>Regresión <em>Ridge</em></li>
 <li>Regresión <em>Lasso</em></li>
 </ul>
-<p>El propósito es obtener un modelo de predicción para <code>medv</code>, seleccionando las variables que influyan en ella, utilizando los distintos métodos.</p>
-<p>Para ello conviene distinguir tres conceptos que suelen mezclarse:</p>
+<p>El propósito es obtener un modelo de predicción para <code>medv</code>, seleccionando las variables que en conjunto mejor se asocian con ella, utilizando los distintos métodos.</p>
+<p>En este punto, conviene distinguir tres conceptos que suelen mezclarse:</p>
 <ul>
-<li><em>Criterio</em> para <em>estimación</em> de modelos,</li>
-<li><em>Procedimiento</em> para <em>selección</em> de modelos,</li>
-<li><em>Métrica</em> (de capacidad predictiva) para <em>evaluación</em> de modelos.</li>
+<li><em>criterio</em> para la <em>estimación</em> de modelos,</li>
+<li><em>procedimiento</em> para la <em>selección</em> de modelos,</li>
+<li><em>métrica</em> (de capacidad predictiva) para la <em>evaluación</em> de modelos.</li>
 </ul>
 <blockquote class="blockquote">
-<p>Nota: para reproducir el caso práctico se requieren los paquetes <code>ISLR2</code>, <code>StepReg</code>, <code>boot</code>, <code>glmnet</code> y <code>cowplot</code>.</p>
+<p><strong>Nota</strong>: para reproducir el caso práctico se requieren los paquetes <code>ISLR2</code>, <code>StepReg</code>, <code>boot</code>, <code>glmnet</code> y <code>cowplot</code>.</p>
 </blockquote>
 <section id="sec-Stepwise-caso" class="level3" data-number="5.6.1">
 <h3 data-number="5.6.1" class="anchored" data-anchor-id="sec-Stepwise-caso"><span class="header-section-number">5.6.1</span> Selección <em>stepwise</em></h3>
-<p>Como se ha señalado en la <a href="#sec-Stepwise" class="quarto-xref"><span>Sección 5.3</span></a>, los métodos de selección de variables <em>stepwise</em> proporcionan el mejor modelo, obtenido por adición (forward) o eliminación (backward) de las variables explicativas.</p>
+<p>Como se ha señalado en la <a href="#sec-Stepwise" class="quarto-xref"><span>Sección 5.3</span></a>, los métodos de selección de variables <em>stepwise</em> proporcionan el mejor modelo encontrado a lo largo del proceso de adición (forward) o eliminación (backward) de las variables explicativas, según el criterio utilizado.</p>
 <p>En <code>R</code> existen distintas funciones que permiten aplicar estos procedimientos:</p>
 <ul>
-<li>paquete base de R, función <code>step()</code>.</li>
+<li>paquete <code>base</code> (precargado al iniciar <code>R</code>), función <code>step()</code>.</li>
 <li>paquete <code>MASS</code>, función <code>stepAIC()</code>.</li>
 <li>paquete <code>leaps</code>, función <code>regsubsets()</code>.</li>
 <li>paquete <code>StepReg</code>, función <code>stepwise()</code>.</li>
 </ul>
-<p>Algunas funciones, como <code>step()</code> o <code>stepAIC()</code> utilizan el criterio de información de Akaike (AIC) para la selección del modelo. En otras funciones se puede elegir otro criterio. También algunas permiten la selección bidireccional. En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> y <span class="citation" data-cites="CDR">Fernández-Avilés y Montero (<a href="#ref-CDR" role="doc-biblioref">2024</a>)</span> se pueden encontrar ejemplos de utilización de la función <code>regsubsets()</code>.</p>
+<p>Algunas funciones, como <code>step()</code> o <code>stepAIC()</code>, utilizan el criterio de información de Akaike (AIC) para la selección del modelo. En otras funciones se puede elegir otro criterio. También algunas permiten la selección bidireccional. En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> y <span class="citation" data-cites="CDR">Fernández-Avilés y Montero (<a href="#ref-CDR" role="doc-biblioref">2024</a>)</span> se pueden encontrar ejemplos de utilización de la función <code>regsubsets()</code>.</p>
 <section id="step" class="level4" data-number="5.6.1.1">
 <h4 data-number="5.6.1.1" class="anchored" data-anchor-id="step"><span class="header-section-number">5.6.1.1</span> <code>step()</code></h4>
 <p>Con esta función se obtiene la aplicación más simple y directa de este método:</p>
 <blockquote class="blockquote">
-<p>Nota: En la ayuda de la función: ?step, se puede ver que, por defecto, muestra todos los pasos dados para la obtención del mejor modelo (<code>trace=1</code>) y realiza la selección en ambas direcciones (<code>"both"</code>).</p>
+<p><strong>Nota</strong>: en la ayuda de la función: ?step, se puede ver que, por defecto, muestra cada uno de los pasos dados para la obtención del mejor modelo (<code>trace = 1</code>) y realiza la selección en ambas direcciones (<code>"both"</code>).</p>
 </blockquote>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Boston<span class="sc">$</span>chas <span class="ot">&lt;-</span> <span class="fu">factor</span>(Boston<span class="sc">$</span>chas) <span class="co"># se redefine `chas` al ser dicotómica</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> . , <span class="at">data =</span> Boston)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>step.rlm <span class="ot">&lt;-</span> <span class="fu">step</span>(rlm)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Boston<span class="sc">$</span>chas <span class="ot">&lt;-</span> <span class="fu">factor</span>(Boston<span class="sc">$</span>chas) <span class="co"># se redefine `chas` apropiadamente, al ser dicotómica</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rlm.medv <span class="ot">&lt;-</span> <span class="fu">lm</span>(medv <span class="sc">~</span> . , <span class="at">data =</span> Boston)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>step.rlm.medv <span class="ot">&lt;-</span> <span class="fu">step</span>(rlm.medv)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=1599.85
 medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + 
@@ -528,19 +541,19 @@ medv ~ crim + zn + chas + nox + rm + dis + rad + tax + ptratio +
 </div>
 </div>
 <blockquote class="blockquote">
-<p>Nota: aunque por defecto la <code>direction</code> es <code>both</code>, en la sentencia se parte del modelo completo y no se especifica un <code>scope</code> superior con posibles términos candidatos a añadir. Por ello, la <code>direction</code> efectiva es <code>backward</code>.</p>
+<p><strong>Nota</strong>: aunque por defecto la <code>direction</code> es <code>both</code>, en la sentencia se parte del modelo completo y no se especifica un <code>scope</code> superior con posibles términos candidatos a añadir. Por ello, la <code>direction</code> efectiva es <code>backward</code>.</p>
 </blockquote>
-<p>En la salida se aprecian sólo tres <em>pasos</em> (de eliminación, indicados por el signo “-”) hasta alcanzar el mejor modelo, a diferencia de todos los pasos descritos en los algoritmos en la parte teórica (<a href="#sec-Stepwise" class="quarto-xref"><span>Sección 5.3</span></a>).</p>
+<p>En la salida se aprecia cómo, en este caso, bastan sólo tres <em>pasos</em> (de eliminación, indicados por el signo “-”) hasta alcanzar el mejor modelo, a diferencia de todos los pasos descritos en los algoritmos en la parte teórica (<a href="#sec-Stepwise" class="quarto-xref"><span>Sección 5.3</span></a>).</p>
 <p>La comparativa de los distintos modelos hasta llegar al mejor se guarda en el <em>value</em> <code>$anova</code> y el modelo ajustado final, junto con su bondad de ajuste, etc., se puede obtener con la conocida función <code>summary()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>step.rlm<span class="sc">$</span>anova</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>step.rlm.medv<span class="sc">$</span>anova</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Step Df Deviance Resid. Df Resid. Dev      AIC
 1         NA       NA       493   11349.42 1599.855
 2 - indus  1 1.081197       494   11350.50 1597.903
 3   - age  1 1.686474       495   11352.19 1595.978</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(step.rlm)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(step.rlm.medv)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -575,20 +588,20 @@ F-statistic: 136.8 on 10 and 495 DF,  p-value: &lt; 2.2e-16</code></pre>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
 ¿Obtiene el mismo mejor modelo final utilizando el método <em>hacia adelante</em>? ¿A qué conclusión llega con ello?<br>
-<em>Nota:</em> Para aplicar el método <em>hacia adelante</em> debe definir el <code>scope</code> (modelo maximal).</p>
+<em>Nota técnica:</em> Para aplicar el método <em>hacia adelante</em> debe definir el <code>scope</code> (modelo maximal).</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>Nota: la citada función <code>MASS::stepAIC()</code> es una implementación más sofisticada que <code>step()</code> de este método, que admite otro tipo de objetos (como <code>glm</code> que se ve en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>). Más información/ejemplos en: <a href="https://fhernanb.github.io/libro_regresion/selec.html#función-stepaic" class="uri">https://fhernanb.github.io/libro_regresion/selec.html#función-stepaic</a></p>
+<p><strong>Nota</strong>: la citada función <code>MASS::stepAIC()</code> es una implementación más sofisticada que <code>step()</code> de este método, que admite otro tipo de objetos (como <code>glm</code> que se estudia en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>). Más información/ejemplos en: <a href="https://fhernanb.github.io/libro_regresion/16-selecvar.html#función-stepaic" class="uri">https://fhernanb.github.io/libro_regresion/16-selecvar.html#función-stepaic</a></p>
 </blockquote>
 </section>
 <section id="stepregstepwise" class="level4" data-number="5.6.1.2">
 <h4 data-number="5.6.1.2" class="anchored" data-anchor-id="stepregstepwise"><span class="header-section-number">5.6.1.2</span> <code>StepReg::stepwise()</code></h4>
-<p>El paquete <code>StepReg</code> es considerado por muchos usuarios el más completo y flexible para selección <em>stepwise</em>, dado que se puede aplicar a distintos tipos de modelos (todos los que se ven en esta asignatura, <code>lm</code>, <code>glm</code>… y más). Ofrece una gran variedad de criterios de selección, más de los vistos en la <a href="#sec-Criterios" class="quarto-xref"><span>Sección 5.2</span></a>. Asimismo, implementa las <em>direcciones</em> habituales (<code>"forward"</code>, <code>"backward"</code>, <code>"bidirection"</code>) y la selección del mejor subconjunto (<code>"subset"</code>, al igual que hace la función <code>leaps::regsubsets()</code>, que permite seleccionar el mejor modelo de 1, 2, 3, … variables).</p>
+<p>El paquete <code>StepReg</code> es considerado por muchos usuarios el más completo y flexible para selección <em>stepwise</em>, dado que se puede aplicar a distintos tipos de modelos (todos los que se ven en esta asignatura, <code>lm</code>, <code>glm</code>… y más). Ofrece una gran variedad de criterios de selección, más de los vistos en la <a href="#sec-Criterios" class="quarto-xref"><span>Sección 5.2</span></a>. Asimismo, implementa las <em>direcciones</em> habituales (<code>"forward"</code>, <code>"backward"</code>, <code>"bidirection"</code>) y la selección del mejor subconjunto (<code>"subset"</code>, al igual que hace la función <code>leaps::regsubsets()</code>).</p>
 <blockquote class="blockquote">
-<p>Nota: Más información en la ayuda de la función <code>?stepwise</code> o, mucho mejor, en su <em>vignette</em>: <a href="https://cran.r-project.org/web/packages/StepReg/vignettes/StepReg.html" class="uri">https://cran.r-project.org/web/packages/StepReg/vignettes/StepReg.html</a> que incluso contiene las fórmulas y referencias bibliográficas de los criterios seleccionables (AIC, BIC, etc.).</p>
+<p><strong>Nota</strong>: más información en la ayuda de la función <code>?stepwise</code>. O, mucho mejor, en: Li et al., “The R Journal: StepReg: A Comprehensive and Intuitive R Package for Stepwise Regression Analysis”, The R Journal, 2026 <a href="https://journal.r-project.org/articles/RJ-2026-005/" class="uri">https://journal.r-project.org/articles/RJ-2026-005/</a> que incluso contiene las fórmulas y referencias bibliográficas de los criterios seleccionables (AIC, BIC, etc. en el material suplementario).</p>
 </blockquote>
 <p>Aplicando esta función a nuestro caso práctico obtenemos:<br>
-<em>Nota: ¡Ojo! Es posible que algunas de las funciones tarden un tiempo en completar su ejecución.</em></p>
+<em>(¡Ojo! Es posible que algunas de las funciones tarden un tiempo en completar su ejecución.)</em></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StepReg)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Boston.Step <span class="ot">&lt;-</span> <span class="fu">stepwise</span>(<span class="at">formula =</span> medv <span class="sc">~</span> .,</span>
@@ -596,7 +609,7 @@ F-statistic: 136.8 on 10 and 495 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">type =</span> <span class="st">"linear"</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">strategy =</span> <span class="fu">c</span>(<span class="st">"forward"</span>, <span class="st">"backward"</span>),</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">metric =</span> <span class="fu">c</span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecutando Boston.Step se muestran los 4 ajustes correspondientes </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecutando Boston.Step se mostrarían los 4 ajustes correspondientes </span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># a las combinaciones de estrategias y criterios solicitadas.</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostramos aquí sólo el ajuste "extendido" de uno de ellos</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Boston.Step<span class="sc">$</span>forward<span class="sc">$</span>BIC)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -647,7 +660,7 @@ F-statistic: 136.8 on 10 and 495 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Boston.Subset <span class="ot">&lt;-</span> <span class="fu">stepwise</span>(<span class="at">formula =</span> medv <span class="sc">~</span> .,</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> Boston,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"linear"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">strategy =</span> <span class="fu">c</span>(<span class="st">"subset"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">strategy =</span> <span class="st">"subset"</span>,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">metric =</span> <span class="st">"AIC"</span>)</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>Boston.Subset</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -665,7 +678,7 @@ Coefficients:
    -1.51595      0.28393     -0.01229     -0.93096     -0.54651  </code></pre>
 </div>
 </div>
-<p>Se obtiene el mismo mejor modelo final que el obtenido por <em>stepwise</em>. Ahora bien, internamente se han generado los mejores modelos para cada número fijo de variables. En la mencionada <em>vignette</em> de la función se puede encontrar el siguiente código que permite visualizarlo:</p>
+<p>Se obtiene el mismo mejor modelo final que el obtenido por <em>stepwise</em>. Ahora bien, internamente se han generado los mejores modelos para cada número fijo de variables. Entre la documentación de la función se puede encontrar el siguiente código que permite visualizarlo:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plot_list <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">"subset"</span>),</span>
@@ -690,10 +703,10 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>Así, el mejor modelo con 2 “variables” (más bien parámetros, nótese que el último “predictor” es <code>1</code>) es el que contiene el término independiente <code>1</code> y la variable <code>lstat</code>; el mejor de 3 “variables” incluye las 2 anteriores y <code>rm</code>, etc. Así, el mejor modelo con hasta 5 “variables” es (en formato <code>R</code>) <code>1 + lstat + rm + ptratio + dis</code>.</p>
+<p>Así, el mejor modelo con 2 “variables” (más bien parámetros, nótese que aparece <code>1</code> como último predictor, cuando no lo es) contiene el término independiente <code>1</code> y la variable <code>lstat</code>; el mejor de 3 “variables” incluye los 2 términos anteriores y <code>rm</code>, etc. Así, el mejor modelo con hasta 5 “variables” es (en formato <code>R</code>) <code>1 + lstat + rm + ptratio + dis</code>.</p>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
-¿Cómo obtener ahora los parámetros del mejor modelo ajustado de <span class="math inline">\(k\)</span> variables?</p>
+¿Cómo obtener ahora los parámetros del mejor modelo ajustado con <span class="math inline">\(k\)</span> predictores?</p>
 </blockquote>
 </section>
 </section>
@@ -707,19 +720,12 @@ Coefficients:
 <li>paquete <code>mlr</code>, función <code>resample()</code>.</li>
 <li>…</li>
 </ul>
-<p>Aquí utilizamos la función <code>cv.glm()</code> del paquete <code>boot</code>, que se usa también en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>.</p>
-<p><em>Nota: Al haber un componente aleatorio en la partición de los subconjuntos de entrenamiento y validación, es importante utilizar la función <code>set.seed()</code> que establece la semilla de aleatorización que permite al lector la <strong>reproducibilidad</strong> de resultados.</em><br>
-<em>Además, es posible que algunas de las funciones tarden un tiempo en completar su ejecución.</em></p>
+<p>Aquí utilizamos la función <code>cv.glm()</code> del paquete <code>boot</code>, que se usa también en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>. Previamente volvemos a definir el modelo de regresión lineal completo utilizando la función <code>glm()</code>, que se ve (en detalle) en el <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>, y que es necesaria para la función <code>cv.glm()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Establecemos semilla de aleatorización</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustamos un modelo de regresión lineal completo</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># con la función glm() que se ve en detalle en el Capítulo 3</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># y que es necesaria para la función cv.glm</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>modelo.full <span class="ot">&lt;-</span> <span class="fu">glm</span>(medv <span class="sc">~</span> ., </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> gaussian,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> Boston)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo.full)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelo.full <span class="ot">&lt;-</span> <span class="fu">glm</span>(medv <span class="sc">~</span> ., </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> gaussian,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> Boston)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo.full)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -751,16 +757,22 @@ AIC: 3037.8
 
 Number of Fisher Scoring iterations: 2</code></pre>
 </div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Nota técnica</strong>: al haber un componente aleatorio en la partición de los subconjuntos de entrenamiento y validación, es importante utilizar la función <code>set.seed()</code> que establece la semilla de aleatorización que permite al lector la <strong>reproducibilidad</strong> de resultados. (Además, es posible que algunas de las funciones tarden un tiempo en completar su ejecución.)</p>
+</blockquote>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># procedimiento de validación cruzada</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.full <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.full, <span class="at">K =</span> <span class="dv">10</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimación del error de predicción</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.full<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>) <span class="co"># Establecemos la semilla de aleatorización</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.full <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.full, <span class="at">K =</span> <span class="dv">10</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimación del error de predicción</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.full<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 23.79801 23.72486</code></pre>
 </div>
 </div>
-<p>Como “resumen” del proceso de validación cruzada <span class="math inline">\(10\)</span>-fold obtenemos los valores <code>delta</code>, estimaciones del promedio de error de predicción, la primera es la estimación estándar y la segunda es una versión con corrección de sesgo. Estos 2 datos por sí solos no aportan información. Los comparamos con los de una validación cruzada <span class="math inline">\(2\)</span>-fold y con el MSE del modelo nulo (al que siempre se puede acudir, por no depender/contener variables explicativas).</p>
+<p>Como “resumen” del proceso de validación cruzada <span class="math inline">\(10\)</span>-fold obtenemos los valores <code>delta</code>, estimaciones del promedio de error de predicción, la primera es la estimación estándar y la segunda es una versión con corrección de sesgo. Estos dos valores por sí solos no aportan información. Los comparamos con los de una validación cruzada <span class="math inline">\(2\)</span>-fold para el mismo modelo y con el MSE del modelo nulo (al que siempre se puede acudir, por no depender/contener variables explicativas).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-fold CV</span></span>
@@ -778,23 +790,35 @@ Number of Fisher Scoring iterations: 2</code></pre>
 </div>
 <p>Para la semilla utilizada, los valores de <code>delta</code> para <span class="math inline">\(2\)</span>-fold CV son mayores (peores) que para <span class="math inline">\(10\)</span>-fold CV, pero mucho mejores que el MSE del modelo nulo con los datos completos.</p>
 <blockquote class="blockquote">
-<p>Nota: tenga en cuenta que el MSE del modelo nulo es un error de entrenamiento y no de una estimación obtenida mediante el mismo procedimiento de validación cruzada.</p>
+<p><strong>Nota</strong>: tenga en cuenta que el MSE del modelo nulo es un error de entrenamiento y no de una estimación obtenida mediante el mismo procedimiento de validación cruzada. Aunque también se pueden obtener dichas estimaciones del promedio de error de predicción por validación cruzada:</p>
 </blockquote>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>modelo.nulo <span class="ot">&lt;-</span> <span class="fu">glm</span>(medv <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> gaussian,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> Boston)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>) <span class="co"># Establecemos la misma semilla de aleatorización</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.nulo <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.nulo, <span class="at">K =</span> <span class="dv">10</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.nulo<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 84.75941 84.74147</code></pre>
+</div>
+</div>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
 ¿Diría que un <span class="math inline">\(2\)</span>-fold CV proporciona generalmente peores errores que un <span class="math inline">\(10\)</span>-fold CV? ¿Y que un <span class="math inline">\(10\)</span>-fold CV peores que un <span class="math inline">\(15\)</span>-fold CV?<br>
-Pruebe con distintas semillas de aleatorización para comprobar la dependencia de los resultados respecto a la semilla proporcionada. <em>Nota</em>: Otro punto a tener en cuenta en este análisis sería el volumen de datos que determina el número de observaciones para entrenamiento y validación.</p>
+Pruebe con distintas semillas de aleatorización para comprobar la dependencia de los resultados respecto a la semilla proporcionada.<br>
+<strong>Nota</strong>: otro punto a tener en cuenta en este análisis sería el volumen de datos (tamaño de la muestra) que determina el número de observaciones para entrenamiento y validación.</p>
 </blockquote>
 <p>Probemos a realizar otra <span class="math inline">\(10\)</span>-fold CV ajustando otro modelo, para intentar comprobar si baja el error de predicción.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustamos el modelo de regresión obtenido con stepwise()</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># de nuevo, con la función glm()</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>formula.step <span class="ot">&lt;-</span> Boston.Step<span class="sc">$</span>forward<span class="sc">$</span>AIC<span class="sc">$</span>call<span class="sc">$</span>formula</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>modelo.step <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula.step, </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> gaussian, </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> Boston)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo.step)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustamos el modelo de regresión obtenido con stepwise()</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># de nuevo, con la función glm()</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>formula.step <span class="ot">&lt;-</span> Boston.Step<span class="sc">$</span>forward<span class="sc">$</span>AIC<span class="sc">$</span>call<span class="sc">$</span>formula</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>modelo.step <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula.step, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> gaussian, </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> Boston)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo.step)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -824,16 +848,16 @@ AIC: 3033.9
 
 Number of Fisher Scoring iterations: 2</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validación cruzada</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.step <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.step, <span class="at">K =</span> <span class="dv">10</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.step<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validación cruzada</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.step <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.step, <span class="at">K =</span> <span class="dv">10</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>cv<span class="fl">.10</span>fold.step<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 23.55353 23.49375</code></pre>
 </div>
 </div>
 <p>Como se puede ver, para la semilla utilizada, el error de predicción baja ligeramente respecto al modelo completo.</p>
 <blockquote class="blockquote">
-<p>Nota: conviene mencionar que, la fórmula seleccionada mediante stepwise se ha obtenido utilizando el conjunto completo de datos. La validación cruzada reestima los coeficientes en cada partición, pero no repite el proceso de selección de variables dentro de cada conjunto de entrenamiento. Para evaluar (sin sesgo) el procedimiento completo de selección, esta debería realizarse de nuevo dentro de cada fold.</p>
+<p><strong>Nota</strong>: conviene mencionar que la fórmula seleccionada mediante stepwise se ha obtenido utilizando el conjunto completo de datos. La validación cruzada reestima los coeficientes en cada partición, pero no repite el proceso de selección de variables dentro de cada uno de ellas. Para evaluar (sin sesgo) el procedimiento completo de selección, esta debería realizarse de nuevo dentro de cada partición.</p>
 </blockquote>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
@@ -842,10 +866,10 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <p><strong>Estimación LOOCV</strong><br>
 Con la función <code>cv.glm()</code> también se puede obtener la estimación LOOCV, aunque lamentablemente no tiene implementada la fórmula “abreviada” para LOOCV, por lo que el coste computacional puede ser excesivo.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># LOOCV</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>cv.LOOCV <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.full)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>cv.LOOCV<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># LOOCV</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>cv.LOOCV <span class="ot">&lt;-</span> <span class="fu">cv.glm</span>(Boston, modelo.full)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>cv.LOOCV<span class="sc">$</span>delta</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 24.15953 24.15777</code></pre>
 </div>
@@ -855,39 +879,49 @@ En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a hr
 </section>
 <section id="regresión-ridge" class="level3" data-number="5.6.3">
 <h3 data-number="5.6.3" class="anchored" data-anchor-id="regresión-ridge"><span class="header-section-number">5.6.3</span> Regresión Ridge</h3>
-<p>Para ajustar un modelo de regresión <em>Ridge</em> (también para <em>Lasso</em>) utilizamos la función <code>glmnet()</code> del paquete <code>glmnet</code>.</p>
-<p>Los argumentos a proporcionar a la función <code>glmnet()</code> difieren de lo visto hasta ahora; en lugar de proporcionarle una <em>fórmula</em> de tipo <code>y ~ x1 + x2</code>, se le debe proporcionar el vector de respuestas y la matriz de diseño. Además, por defecto, la función <em>estandariza</em> las variables para que estén en la misma escala (elemento clave en las <em>regresiones Ridge</em> y <em>Lasso</em> como se ha indicado). También <code>glmnet()</code> incluye el argumento <code>alpha</code> que determina el tipo de modelo a ajustar. Cuando se establece <code>alpha = 0</code>, se ajusta un modelo de <em>regresión Ridge</em>; en cambio, si se establece <code>alpha = 1</code>, se ajusta un modelo de regresión <em>Lasso</em> (y cualquier valor intermedio entre 0 y 1 equivale a una combinación lineal de las penalizaciones <em>Ridge</em> y <em>Lasso</em>, esto es, a aplicar un modelo <em>elastic net</em>). Por último, el argumento <code>lambda</code> permite introducir los valores deseados del parámetro de penalización (por defecto toma una secuencia de 100 valores).</p>
+<p>Para ajustar un modelo de regresión <em>Ridge</em> (también para <em>Lasso</em>) utilizamos la función <code>glmnet()</code> del paquete <code>glmnet</code>. Los <em>argumentos</em> que necesita difieren de lo visto hasta ahora:</p>
+<ul>
+<li><code>x</code> e <code>y</code>: la <em>matriz de diseño</em> y el vector de respuestas, respectivamente (en lugar de proporcionarle una <em>fórmula</em> de tipo <code>y ~ x1 + x2</code>).<br>
+Por defecto, la función <em>estandariza</em> las variables para que estén en la misma escala (elemento clave en las <em>regresiones Ridge</em> y <em>Lasso</em> como se ha indicado).</li>
+<li><code>alpha</code>, para determinar el tipo de modelo a ajustar:
+<ul>
+<li><code>alpha = 0</code> ajusta/estima un modelo de <em>regresión Ridge</em></li>
+<li><code>alpha = 1</code> ajusta/estima un modelo de regresión <em>Lasso</em></li>
+<li>cualquier valor intermedio entre 0 y 1 equivale a una combinación lineal de las penalizaciones <em>Ridge</em> y <em>Lasso</em>, esto es, a aplicar un modelo <em>Elastic net</em>.</li>
+</ul></li>
+<li><code>lambda</code> (opcional), permite introducir los valores deseados del parámetro de penalización (por defecto toma una secuencia de 100 valores).</li>
+</ul>
 <blockquote class="blockquote">
-<p>Nota: la función <code>glmnet()</code> requiere una matriz con entradas numéricas, por lo que las variables cualitativas deben convertirse en variables <em>dummy</em>. Esta conversión puede realizarse con <code>model.matrix()</code>, que genera automáticamente las columnas necesarias a partir de las variables definidas como <em>factor</em>.</p>
+<p><strong>Nota</strong>: la función <code>glmnet()</code> requiere una matriz con entradas numéricas, por lo que las variables cualitativas deben convertirse en variables <em>ficticias</em> (<em>dummy</em>). Esta conversión puede realizarse con <code>model.matrix()</code>, que genera automáticamente las columnas necesarias a partir de las variables definidas como <em>factor</em> (puede generar más columnas que variables originales).</p>
 </blockquote>
-<p>Comenzamos ajustando un modelo de <em>regresión Ridge</em> como primer paso.</p>
+<p>Ajustamos el modelo completo mediante <em>regresión Ridge</em>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Cargando paquete requerido: Matrix</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loaded glmnet 5.0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> Boston)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> Boston<span class="sc">$</span>medv               </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>mod.Ridge <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(x, y, <span class="at">alpha =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(medv <span class="sc">~</span> ., <span class="at">data =</span> Boston)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> Boston<span class="sc">$</span>medv               </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>mod.Ridge <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(x, y, <span class="at">alpha =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>La mejor manera de mostrar la información recogida en el objeto <code>mod.Ridge</code> (y recomendada por los creadores del paquete) es utilizando las funciones <code>plot()</code>, <code>print()</code>, <code>coef()</code> y <code>predict()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.Ridge, <span class="at">xvar =</span> <span class="st">"lambda"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.Ridge, <span class="at">xvar =</span> <span class="st">"lambda"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Cada curva corresponde a la magnitud del parámetro (<em>coefficient</em>) asociado a cada variable (etiquetadas en este caso) en función de <span class="math inline">\(\lambda\)</span>, el parámetro de penalización (en escala logarítmica). A mayor penalización, los parámetros estimados tienden a cero, siendo la variable 5 la que más “tarda” en tender hacia cero. A menor penalización, las estimaciones de los parámetros se asemejan a las de mínimos cuadrados (técnicamente cuando <span class="math inline">\(\lambda = 0\)</span>). En el eje horizontal superior se indican (también en función de <span class="math inline">\(\lambda\)</span>) los grados de libertad del modelo, número de parámetros (excluido el término independiente) distintos de cero (12 en todos los casos, el número total de variables).</p>
-<p>Ejecutando <code>print(mod.Ridge)</code> se obtiene una salida con los 100 valores que toma <code>lambda</code> por defecto (calculados en función del número de variables y observaciones, y de <code>alpha</code>, entre otros). Aquí sólo mostramos los primeros y los últimos.</p>
+<p>Cada curva corresponde a la magnitud del parámetro (<em>coefficient</em>) asociado a cada variable (numeradas en este caso), en función de <span class="math inline">\(\lambda\)</span>, el parámetro de penalización (en escala logarítmica, y con signo negativo en este gráfico). A mayor penalización, los parámetros estimados tienden a cero, siendo el asociado a la variable 5 el que más “tarda” en tender hacia cero. A menor penalización, las estimaciones de los parámetros se asemejan a las de mínimos cuadrados (técnicamente cuando <span class="math inline">\(\lambda = 0\)</span>). En el eje horizontal superior se indican (también en función de <span class="math inline">\(\lambda\)</span>) los grados de libertad del modelo, número de parámetros (excluido el término independiente) distintos de cero (12 en todos los casos, el número total de variables).</p>
+<p>Ejecutando <code>print(mod.Ridge)</code> se obtiene una salida con los 100 valores que, por defecto, toma <code>lambda</code> (calculados en función del número de variables y observaciones, y de <code>alpha</code>, entre otros). Aquí sólo mostramos los primeros y los últimos.</p>
 <blockquote class="blockquote">
-<p>Nota: <code>glmnet()</code> se detendría antes de tiempo si % de <em>deviance</em> no cambia lo suficiente de un valor de lambda a otro (como vamos a ver al aplicar <em>Lasso</em> a estos datos).</p>
+<p><strong>Nota</strong>: <code>glmnet()</code> se detendría antes de tiempo si el porcentaje de <em>deviance</em> no cambia lo suficiente de un valor de lambda a otro (como vamos a ver al aplicar <em>Lasso</em> a estos datos).</p>
 </blockquote>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -909,10 +943,10 @@ En los libros <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a hr
 100 12 72.80 0.6778</code></pre>
 </div>
 </div>
-<p>En esta salida se muestran los grados de libertad, el % de <em>deviance</em> explicada (véase <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>) y el valor de <span class="math inline">\(\lambda\)</span>. Se aprecia que los grados de libertad siempre son 12, el número total de variables: la regresión <em>Ridge</em>, como se ha comentado, no realiza selección efectiva de variables. El <em>% de deviance</em> y <em>Lambda</em> muestran una relación inversa, conforme disminuye lambda, la penalización, aumenta el % de <em>deviance</em> explicada.</p>
-<p>La función <code>coef()</code> permite obtener las estimaciones de los parámetros para todos los modelos de regresión <em>Ridge</em> ajustados (los 100!!), o para un valor concreto de <span class="math inline">\(\lambda\)</span> de los predeterminados (aunque hay que especificarlos como <code>s</code>). Aquí se opta por mostrar los del <span class="math inline">\(\lambda\)</span> más pequeño, <code>0.6778</code>, y del más grande, <code>6778</code>, de la salida de <code>print()</code>, para observar los distintos valores de las estimaciones de los parámetros.</p>
+<p>En esta salida se muestran los grados de libertad, el porcentaje de <em>deviance</em> explicada (véase <a href="Cap3-GLM.html" class="quarto-xref"><span>Capítulo 3</span></a>) y el valor de penalización lambda. Se aprecia que los grados de libertad siempre son 12, el número total de variables: la regresión <em>Ridge</em>, como se ha comentado, no realiza selección efectiva de variables. El porcentaje de <em>deviance</em> y lambda muestran una relación inversa: conforme disminuye lambda, aumenta el porcentaje de <em>deviance</em> explicada.</p>
+<p>La función <code>coef()</code> permite obtener las estimaciones de los parámetros para todos los modelos de regresión <em>Ridge</em> ajustados (los 100!!), o para un valor concreto de <span class="math inline">\(\lambda\)</span> de los predeterminados (aunque hay que especificarlo como <code>s</code>). Aquí se opta por mostrar los del <span class="math inline">\(\lambda\)</span> más pequeño, <code>0.6778</code>, y del más grande, <code>6778</code>, de la salida de <code>print()</code>, para observar los distintos valores de las estimaciones de los parámetros.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.6778</span>, <span class="dv">6778</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.6778</span>, <span class="dv">6778</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 2 sparse Matrix of class "dgCMatrix"
               s=   0.6778   s=6778.0000
@@ -931,36 +965,34 @@ ptratio      -0.842519232 -2.178965e-36
 lstat        -0.494016657 -9.596458e-37</code></pre>
 </div>
 </div>
-<p>Para comparación, obtengamos también sus normas <span class="math inline">\(\ell_2\)</span>:</p>
+<p>Para compararlos, obtengamos también sus normas <span class="math inline">\(\ell_2\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>coef.Ridge <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fl">0.6778</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(coef.Ridge<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>coef.Ridge1 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="fl">0.6778</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Nótese que se descarta el término independiente</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(coef.Ridge1<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13.72551</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>coef.Ridge <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="dv">6778</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(coef.Ridge<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>coef.Ridge2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">coef</span>(mod.Ridge, <span class="at">s =</span> <span class="dv">6778</span>))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(coef.Ridge2<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.615202e-35</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(sum(coef(mod.Ridge, s = 0.6778)^2))</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(sum(coef(mod.Ridge, s = 6778)^2))</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Como era esperable, un <span class="math inline">\(\lambda\)</span> mayor implica un menor valor de norma <span class="math inline">\(\ell_2\)</span>.</p>
 <blockquote class="blockquote">
-<p>Nota: el lector interesado puede explorar el funcionamiento de la función <code>predict()</code>, que permite obtener predicciones para cualquier valor de <span class="math inline">\(\lambda\)</span>, y más detalles del paquete <code>glmnet</code> en <a href="https://glmnet.stanford.edu/articles/glmnet.html#linear-regression-family-gaussian-default" class="uri">https://glmnet.stanford.edu/articles/glmnet.html#linear-regression-family-gaussian-default</a></p>
+<p><strong>Nota</strong>: el lector interesado puede explorar el funcionamiento de la función <code>predict()</code>, que permite obtener predicciones para cualquier valor de <span class="math inline">\(\lambda\)</span>, y más detalles del paquete <code>glmnet</code> en <a href="https://glmnet.stanford.edu/articles/glmnet.html#linear-regression-family-gaussian-default" class="uri">https://glmnet.stanford.edu/articles/glmnet.html#linear-regression-family-gaussian-default</a></p>
 </blockquote>
 <section id="elección-de-lambda-por-cv" class="level4" data-number="5.6.3.1">
 <h4 data-number="5.6.3.1" class="anchored" data-anchor-id="elección-de-lambda-por-cv"><span class="header-section-number">5.6.3.1</span> Elección de <span class="math inline">\(\lambda\)</span> por CV</h4>
 <p>Para elegir el mejor valor del parámetro de penalización, <span class="math inline">\(\lambda\)</span>, de entre los 100 modelos obtenidos con la función <code>glmnet()</code>, se utiliza en la práctica validación cruzada mediante la función <code>cv.glmnet()</code>. De forma predeterminada, la función realiza una <span class="math inline">\(10\)</span>-fold CV (ajustable con el argumento <code>nfolds</code>). De nuevo, para <em>reproducibilidad</em> de resultados, se debe establecer una semilla de aleatorización.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste modelo Ridge por CV</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x, y,</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type.measure =</span> <span class="st">"mse"</span>,</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">alpha =</span> <span class="dv">0</span>)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Resumen de la CV</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod.cv.Ridge)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste regresión Ridge por CV</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x, y,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type.measure =</span> <span class="st">"mse"</span>,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">alpha =</span> <span class="dv">0</span>)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod.cv.Ridge)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:  cv.glmnet(x = x, y = y, type.measure = "mse", alpha = 0) 
@@ -972,30 +1004,29 @@ min  0.678   100   25.57 4.194      12
 1se  5.248    78   29.59 5.586      12</code></pre>
 </div>
 </div>
-<p>El resumen proporciona el valor mínimo (óptimo) de <span class="math inline">\(\lambda\)</span>, y el valor <code>1se</code>, un valor mayor, más regularizado, cuyo error estimado se encuentra dentro de 1 error estándar del mínimo, Utilizar el valor del <code>1se</code> ayuda a “reducir el sobreajuste”: en <em>Ridge</em> con una mayor contracción de los valores de los parámetros, aunque sin hacerlos 0; en <em>Lasso</em> (como veremos en el ejemplo) sí que los hace 0, haciendo una selección efectiva de variables (un modelo más reducido).</p>
-<p>La función <code>plot()</code> aplicada a un objeto de clase <code>cv.glmnet</code> genera un gráfico con las medias estimadas del MSE para los <em>k-folds</em> (puntos rojos), para cada valor de <span class="math inline">\(\lambda\)</span> considerado, junto con las barras verticales de error de dichas estimaciones. Además señala con líneas punteadas los 2 valores de <span class="math inline">\(\lambda\)</span> del resumen anterior, tanto el del mínimo, como el <code>1se</code>.</p>
+<p>El resumen proporciona el valor mínimo (óptimo) de <span class="math inline">\(\lambda\)</span>, y el valor <code>1se</code>, un valor mayor, más regularizado, cuyo error estimado se encuentra dentro de 1 error estándar del mínimo. Utilizar el valor del <code>1se</code> ayuda a “reducir el sobreajuste”: en <em>Ridge</em> con una mayor contracción de los valores de los parámetros, aunque sin hacerlos 0; en <em>Lasso</em> sí que los puede hacer 0 (como veremos en el ejemplo), haciendo una selección efectiva de variables (un modelo más reducido).</p>
+<p>La función <code>plot()</code> aplicada a un objeto de clase <code>cv.glmnet</code> genera un gráfico con las medias estimadas del MSE para los <em>k-folds</em> (puntos rojos), para cada valor de <span class="math inline">\(\lambda\)</span> considerado, junto con las barras verticales de error de dichas estimaciones. Además, señala con líneas punteadas los dos valores de <span class="math inline">\(\lambda\)</span> del resumen anterior, tanto el correspondiente al mínimo como al <code>1se</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico </span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.cv.Ridge)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.cv.Ridge)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>El inconveniente es que los <span class="math inline">\(\lambda\)</span> que aparecen en el resumen no están en la escala logarítmica del gráfico, lo que suele confundir:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mejor lambda por CV</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge<span class="sc">$</span>lambda.min; <span class="fu">log</span>(mod.cv.Ridge<span class="sc">$</span>lambda.min)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mejor lambda por CV</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge<span class="sc">$</span>lambda.min; <span class="fu">log</span>(mod.cv.Ridge<span class="sc">$</span>lambda.min)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6777654</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.3889541</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge<span class="sc">$</span>lambda<span class="fl">.1</span>se; <span class="fu">log</span>(mod.cv.Ridge<span class="sc">$</span>lambda<span class="fl">.1</span>se)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>mod.cv.Ridge<span class="sc">$</span>lambda<span class="fl">.1</span>se; <span class="fu">log</span>(mod.cv.Ridge<span class="sc">$</span>lambda<span class="fl">.1</span>se)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.247691</code></pre>
 </div>
@@ -1005,8 +1036,7 @@ min  0.678   100   25.57 4.194      12
 </div>
 <p>Por último, obtenemos las estimaciones de los parámetros del modelo para el mejor <span class="math inline">\(\lambda\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimaciones del modelo con el mejor lambda</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.cv.Ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.cv.Ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 1 sparse Matrix of class "dgCMatrix"
                lambda.min
@@ -1029,41 +1059,41 @@ lstat        -0.494019020</code></pre>
 <blockquote class="blockquote">
 <p><strong>Pregunta</strong><br>
 ¿Se obtiene menor MSE con el modelo obtenido por stepwise, <code>modelo.step</code>, o con el obtenido aquí con el <span class="math inline">\(\lambda\)</span> determinado por validación cruzada?<br>
-Ayuda: Para los objetos de clase <code>cv.glmnet</code> como el obtenido en este apartado, no se puede aplicar la función <code>cv.glm()</code> que sí aplicamos a <code>modelo.step</code>, por lo que no se tendrá un resultado comparable. No obstante, se pueden calcular los MSE globales tanto del <code>modelo.step</code> como del modelo Ridge con el <span class="math inline">\(\lambda\)</span> mínimo:</p>
+<em>Ayuda</em>: para los objetos de clase <code>cv.glmnet</code> como el obtenido en este apartado, no se puede aplicar la función <code>cv.glm()</code> que sí aplicamos a <code>modelo.step</code>, por lo que no se tendrá un resultado comparable. No obstante, se pueden calcular los MSE globales tanto del <code>modelo.step</code> como del modelo Ridge con el <span class="math inline">\(\lambda\)</span> mínimo:</p>
 </blockquote>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>pred.Ridge <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod.cv.Ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>, <span class="at">newx =</span> x)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((pred.Ridge <span class="sc">-</span> y)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>pred.step <span class="ot">&lt;-</span> ...</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pred.Ridge <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod.cv.Ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>, <span class="at">newx =</span> x)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>((pred.Ridge <span class="sc">-</span> y)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>pred.step <span class="ot">&lt;-</span> ...</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="regresión-lasso-1" class="level3" data-number="5.6.4">
 <h3 data-number="5.6.4" class="anchored" data-anchor-id="regresión-lasso-1"><span class="header-section-number">5.6.4</span> Regresión Lasso</h3>
-<p>La idea de aplicar regresión <em>Lasso</em> es que puede producir un modelo más reducido (parsimonioso, <em>sparse</em>) y por lo tanto, más interpretable que la regresión <em>Ridge</em>.</p>
-<p>Para ajustar un modelo mediante <em>Lasso</em> utilizamos, como anteriormente, la función <code>glmnet()</code>, cambiando el argumento a <code>alpha = 1</code>.</p>
+<p>La regresión <em>Lasso</em> (con penalización basada en la norma <span class="math inline">\(\ell_1\)</span>) puede producir un modelo más reducido (parsimonioso, <em>sparse</em>) y, por lo tanto, más interpretable que la regresión <em>Ridge</em>. Para ajustar un modelo con penalización <em>Lasso</em> utilizamos, como anteriormente, la función <code>glmnet()</code>, cambiando el argumento a <code>alpha = 1</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>mod.lasso <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(x, y, <span class="at">alpha =</span> <span class="dv">1</span>)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.lasso, <span class="at">xvar =</span> <span class="st">"norm"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>mod.Lasso <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(x, y, <span class="at">alpha =</span> <span class="dv">1</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.Lasso, <span class="at">xvar =</span> <span class="st">"norm"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.lasso, <span class="at">xvar =</span> <span class="st">"lambda"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.Lasso, <span class="at">xvar =</span> <span class="st">"lambda"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-21-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>En este caso, se presentan dos gráficos que varían en los valores del eje X. En el primero se dibujan los coeficientes respecto de la norma <span class="math inline">\(\ell_1\)</span>, mientras que en el segundo se dibujan respecto a la escala logarítmica de <span class="math inline">\(\lambda\)</span>. Comparando este segundo con el mostrado en la regresión <em>Ridge</em>, ahora no es el parámetro asociado a la variable 5 el último que <em>tiende a</em> cero, sino el de la variable 12, que no tiende sino que <em>se hace efectivamente</em> cero. Puede comprobarse que las curvas alcanzan el cero y se mantienen en él, mostrando cómo el modelo ajustado mediante <em>Lasso</em> (basado en la norma <span class="math inline">\(\ell_1\)</span>) sí que realiza una selección efectiva de variables. Además, ahora en el eje horizontal superior sí que cambian los grados de libertad del modelo, siendo 0 el último valor, indicando que no queda ninguna variable explicativa (sí queda el término independiente en el modelo: modelo nulo). Y para el valor <span class="math inline">\(-\log(\lambda)=0\)</span> se tienen 4 grados de libertad, por lo que para <span class="math inline">\(\lambda = 1\)</span> sólo quedan 4 variables con parámetro no nulo en el modelo <em>Lasso</em>. Obtengamos los parámetros para este caso:</p>
+<p>En este caso, se presentan dos gráficos que varían en los valores del eje X. En el primero se dibujan los coeficientes respecto de la norma <span class="math inline">\(\ell_1\)</span>, mientras que en el segundo se dibujan respecto a la escala logarítmica de <span class="math inline">\(\lambda\)</span>. Comparando este segundo con el mostrado en la regresión <em>Ridge</em>, ahora no es el parámetro asociado a la variable 5 el último que <em>tiende a</em> cero, sino el de la variable 12. Y éste no tiende sino que alcanza exactamente el valor cero, como indica ahora el eje horizontal superior en el que sí cambian los grados de libertad del modelo, siendo 0 el último valor, indicando que no queda ninguna variable explicativa (sí queda el término independiente en el modelo: modelo nulo). Así se observa cómo el modelo ajustado mediante penalización <em>Lasso</em> sí realiza una selección efectiva de variables.</p>
+<p>Por ejemplo, para el valor <span class="math inline">\(-\log(\lambda)=0\)</span> se tienen 4 grados de libertad, es decir, para <span class="math inline">\(\lambda = 1\)</span> sólo quedan 4 variables con coeficiente no nulo en el modelo <em>Lasso</em>. Obtengamos las estimaciones de los parámetros para este caso:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.lasso, <span class="at">s =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Lasso, <span class="at">s =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 1 sparse Matrix of class "dgCMatrix"
                     s=1
@@ -1082,8 +1112,8 @@ ptratio     -0.62605141
 lstat       -0.50806175</code></pre>
 </div>
 </div>
-<p>Se ve qué cuatro variables quedan en este modelo <em>Lasso</em>, y sus correspondientes parámetros estimados.</p>
-<p>Al igual que en la regresión <em>Ridge</em>, con <code>print()</code> se obtiene la tabla asociada al gráfico anterior. En ella se pueden ver los grados de libertad y el % de <em>deviance</em> explicada para cada valor de <span class="math inline">\(\lambda\)</span>. Aquí se muestran de nuevo los primeros valores y los últimos:</p>
+<p>Se ve qué cuatro variables quedan en este modelo <em>Lasso</em>, y sus correspondientes coeficientes estimados.</p>
+<p>Al igual que en la regresión <em>Ridge</em>, con <code>print()</code> se obtiene la tabla asociada al gráfico anterior. En ella se pueden ver los grados de libertad y el porcentaje de <em>deviance</em> explicada para cada valor de lambda. Aquí se muestran de nuevo los primeros valores y los últimos:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  Df  %Dev Lambda
@@ -1105,12 +1135,12 @@ lstat       -0.50806175</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
-<p>Nota: recuérdese que los valores de <span class="math inline">\(\lambda\)</span> los calcula la función <code>glmnet()</code> a partir del número de observaciones y variables, y de <code>alpha</code>, entre otros.<br>
-Recuérdese también que se ha dicho que, en este caso, no llega a mostrar los 100 valores de <span class="math inline">\(\lambda\)</span> al no haber ganancia del % de devianza de un <span class="math inline">\(\lambda\)</span> a otro (técnicamente: si el cambio fraccional en la devianza es inferior a <span class="math inline">\(10^{-5}\)</span>, o se alcanza el 99.9% de devianza explicada).</p>
+<p><strong>Nota</strong>: recuérdese que los valores de <span class="math inline">\(\lambda\)</span> los calcula la función <code>glmnet()</code> a partir del número de observaciones y variables, y de <code>alpha</code>, entre otros.<br>
+También se ha dicho que, en este caso, no llega a mostrar los 100 valores de <span class="math inline">\(\lambda\)</span> al no haber ganancia del porcentaje de <em>deviance</em> de un lambda a otro (técnicamente: si el cambio fraccional en la <em>deviance</em> es inferior a <span class="math inline">\(10^{-5}\)</span>, o se alcanza el 99,9% de <em>deviance</em> explicada).</p>
 </blockquote>
 <p>Como en la regresión <em>Ridge</em>, obtenemos los parámetros estimados para los dos casos extremos y calculamos su norma <span class="math inline">\(\ell_1\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.lasso, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.005759</span>, <span class="fl">6.778</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.Lasso, <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.005759</span>, <span class="fl">6.778</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 2 sparse Matrix of class "dgCMatrix"
                s=0.005759 s=6.778000
@@ -1128,16 +1158,14 @@ tax          -0.011962505    .
 ptratio      -0.930411914    .      
 lstat        -0.549746736    .      </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">coef</span>(mod.lasso, <span class="at">s =</span> <span class="fl">0.005759</span>)[<span class="sc">-</span><span class="dv">1</span>]))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">coef</span>(mod.Lasso, <span class="at">s =</span> <span class="fl">0.005759</span>)[<span class="sc">-</span><span class="dv">1</span>]))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.25315</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">coef</span>(mod.lasso, <span class="at">s =</span> <span class="fl">6.778</span>)[<span class="sc">-</span><span class="dv">1</span>]))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(<span class="fu">coef</span>(mod.Lasso, <span class="at">s =</span> <span class="fl">6.778</span>)[<span class="sc">-</span><span class="dv">1</span>]))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(abs(coef(mod.lasso, s = 0.005759)))</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(abs(coef(mod.lasso, s = 6.778)))</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="elección-de-lambda-por-cv-1" class="level4" data-number="5.6.4.1">
 <h4 data-number="5.6.4.1" class="anchored" data-anchor-id="elección-de-lambda-por-cv-1"><span class="header-section-number">5.6.4.1</span> Elección de <span class="math inline">\(\lambda\)</span> por CV</h4>
@@ -1145,29 +1173,28 @@ lstat        -0.549746736    .      </code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(pi)</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste modelo Lasso por CV</span></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>mod.cv.lasso <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x, y,</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>mod.cv.Lasso <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x, y,</span>
 <span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type.measure =</span> <span class="st">"mse"</span>,</span>
 <span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">alpha =</span> <span class="dv">1</span>)</span>
 <span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Mejor lambda</span></span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>mod.cv.lasso<span class="sc">$</span>lambda.min; <span class="fu">log</span>(mod.cv.lasso<span class="sc">$</span>lambda.min)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>mod.cv.Lasso<span class="sc">$</span>lambda.min; <span class="fu">log</span>(mod.cv.Lasso<span class="sc">$</span>lambda.min)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.02800535</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -3.57536</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico </span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.cv.lasso)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.cv.Lasso)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Cap5-Seleccion_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimaciones del modelo con los mejores lambda</span></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.cv.lasso, <span class="at">s =</span> <span class="fu">c</span>(mod.cv.lasso<span class="sc">$</span>lambda.min, </span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>                         mod.cv.lasso<span class="sc">$</span>lambda<span class="fl">.1</span>se))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimaciones del modelo con los lambda "óptimos"</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod.cv.Lasso, <span class="at">s =</span> <span class="fu">c</span>(mod.cv.Lasso<span class="sc">$</span>lambda.min, </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>                         mod.cv.Lasso<span class="sc">$</span>lambda<span class="fl">.1</span>se))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 x 2 sparse Matrix of class "dgCMatrix"
             s=0.02800535  s=0.60335695
@@ -1186,40 +1213,40 @@ ptratio      -0.91524475 -7.171471e-01
 lstat        -0.54588257 -5.234412e-01</code></pre>
 </div>
 </div>
-<p>Ahora, para el mejor <span class="math inline">\(\lambda\)</span> obtenido por CV sí se obtiene una estimación de parámetro igual a <span class="math inline">\(0\)</span>, el asociado a la variable <code>age</code> (que ya habíamos visto que era poco significativa en el análisis inferencial del modelo lineal, <a href="Cap1-LM.html#sec-rlm-Boston" class="quarto-xref"><span>Sección 1.5.2</span></a>). En este caso, la selección de variables es mínima (ya conocíamos que la mayoría de variables sí que influye significativamente en la respuesta). Por ello se incluye también la estimación de parámetros para <span class="math inline">\(\lambda=\)</span><code>1se</code>, que realiza una selección más efectiva de variables, concretamente, elimina 4 de ellas.</p>
-<p>Además, cambian las estimaciones respecto a los correspondientes modelos lineales. Por ejemplo:</p>
+<p>Ahora, para el mejor <span class="math inline">\(\lambda\)</span> obtenido por CV sí se obtienen parámetros estimados iguales a <span class="math inline">\(0\)</span>, los asociados a las variables <code>age</code> (que ya habíamos visto que era poco significativa en el análisis inferencial del modelo lineal, <a href="Cap1-LM.html#sec-rlm-Boston" class="quarto-xref"><span>Sección 1.5.2</span></a>), e <code>indus</code> (como en el modelo obtenido por <em>stepwise</em>). En este caso, la selección de variables es mínima (ya conocíamos que la mayoría de variables se asocian significativamente con la respuesta).</p>
+<p>Como alternativa a valorar (según el contexto del problema), se incluye la estimación de parámetros para <span class="math inline">\(\lambda=\)</span><code>1se</code>, que realiza una selección más efectiva de variables, concretamente, elimina 4 de ellas (deja 4 coeficientes exactamente iguales a cero y regulariza/contrae los coeficientes de las variables que se mantienen en el modelo).</p>
+<p>Además, en el caso de eliminar sólo las variables <code>age</code> e <code>indus</code>, también cambian las estimaciones respecto a los correspondientes modelos lineales. Por ejemplo:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(medv <span class="sc">~</span> . <span class="sc">-</span> age, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(medv <span class="sc">~</span> . <span class="sc">-</span> age <span class="sc">-</span> indus, </span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> Boston))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = medv ~ . - age, data = Boston)
+lm(formula = medv ~ . - age - indus, data = Boston)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--15.1851  -2.7330  -0.6116   1.8555  26.3838 
+-15.1814  -2.7625  -0.6243   1.8448  26.3920 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  41.525128   4.919684   8.441 3.52e-16 ***
-crim         -0.121426   0.032969  -3.683 0.000256 ***
-zn            0.046512   0.013766   3.379 0.000785 ***
-indus         0.013451   0.062086   0.217 0.828577    
-chas1         2.852773   0.867912   3.287 0.001085 ** 
-nox         -18.485070   3.713714  -4.978 8.91e-07 ***
-rm            3.681070   0.411230   8.951  &lt; 2e-16 ***
-dis          -1.506777   0.192570  -7.825 3.12e-14 ***
-rad           0.287940   0.066627   4.322 1.87e-05 ***
-tax          -0.012653   0.003796  -3.333 0.000923 ***
-ptratio      -0.934649   0.131653  -7.099 4.39e-12 ***
-lstat        -0.547409   0.047669 -11.483  &lt; 2e-16 ***
+(Intercept)  41.451747   4.903283   8.454 3.18e-16 ***
+crim         -0.121665   0.032919  -3.696 0.000244 ***
+zn            0.046191   0.013673   3.378 0.000787 ***
+chas1         2.871873   0.862591   3.329 0.000935 ***
+nox         -18.262427   3.565247  -5.122 4.33e-07 ***
+rm            3.672957   0.409127   8.978  &lt; 2e-16 ***
+dis          -1.515951   0.187675  -8.078 5.08e-15 ***
+rad           0.283932   0.063945   4.440 1.11e-05 ***
+tax          -0.012292   0.003407  -3.608 0.000340 ***
+ptratio      -0.930961   0.130423  -7.138 3.39e-12 ***
+lstat        -0.546509   0.047442 -11.519  &lt; 2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.794 on 494 degrees of freedom
-Multiple R-squared:  0.7343,    Adjusted R-squared:  0.7284 
-F-statistic: 124.1 on 11 and 494 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 4.789 on 495 degrees of freedom
+Multiple R-squared:  0.7342,    Adjusted R-squared:  0.7289 
+F-statistic: 136.8 on 10 and 495 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
@@ -1230,15 +1257,15 @@ F-statistic: 124.1 on 11 and 494 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="epílogo" class="level3" data-number="5.6.5">
 <h3 data-number="5.6.5" class="anchored" data-anchor-id="epílogo"><span class="header-section-number">5.6.5</span> Epílogo</h3>
-<p>En el material asociado al libro <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> se pueden encontrar ejemplos de estas técnicas de selección de variables utilizando distintas funciones de <code>R</code> y el conjunto de datos <code>Hitters</code> (véase <a href="https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch6-varselect-lab.html" class="uri">https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch6-varselect-lab.html</a>). También en <span class="citation" data-cites="CDRDurban">Durbán (<a href="#ref-CDRDurban" role="doc-biblioref">2024</a>)</span>. En <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> hay un ejemplo de métodos <em>stepwise</em> utilizando <code>R</code> basado en el conjunto de datos <code>statedata</code>, y otro de regresión <em>Ridge</em>, basado en el conjunto de datos <code>meatspec</code> y la función <code>lm.ridge()</code> del paquete <code>MASS</code>.</p>
+<p>En el material asociado al libro <span class="citation" data-cites="ISLR2">James et&nbsp;al. (<a href="#ref-ISLR2" role="doc-biblioref">2013</a>)</span> se pueden encontrar ejemplos de estas técnicas de selección de variables utilizando distintas funciones de <code>R</code> y el conjunto de datos <code>Hitters</code> (véase <a href="https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch6-varselect-lab.html" class="uri">https://hastie.su.domains/ISLR2/Labs/Rmarkdown_Notebooks/Ch6-varselect-lab.html</a>). También en <span class="citation" data-cites="CDRDurban">Durbán (<a href="#ref-CDRDurban" role="doc-biblioref">2024</a>)</span>. En <span class="citation" data-cites="Faraway">Faraway (<a href="#ref-Faraway" role="doc-biblioref">2004</a>)</span> hay un ejemplo de selección <em>stepwise</em> utilizando <code>R</code> basado en el conjunto de datos <code>statedata</code>, y otro de regresión <em>Ridge</em>, basado en el conjunto de datos <code>meatspec</code> y la función <code>lm.ridge()</code> del paquete <code>MASS</code>.</p>
 </section>
 </section>
 <section id="resumen" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="resumen"><span class="header-section-number">5.7</span> Resumen</h2>
-<p>El presente capítulo aborda la problemática de la selección de un subconjunto óptimo de variables explicativas en modelos de regresión, especialmente en contextos de alta dimensionalidad, con numerosas variables (incluso cuando se tienen más variables que observaciones, <span class="math inline">\(k &gt; n\)</span>, como ocurre en áreas como la genómica o el análisis de imágenes médicas). Esta situación plantea desafíos como la multicolinealidad, la irrelevancia estadística de algunas variables y la imposibilidad de estimar de forma única todos los parámetros del modelo completo.</p>
-<p>Se presentan distintos métodos de selección automática de variables, con énfasis en el enfoque predictivo, propio del <em>machine learning</em>: (a) selección paso a paso (<em>stepwise</em>) y selección del mejor subconjunto; (b) métodos de regularización, centrándose en las regresiones <em>Ridge</em> y <em>Lasso</em> y (c) comparación de modelos mediante validación cruzada <em>k-fold</em>, incluida LOOCV. Se advierte sobre los riesgos de interpretar resultados estadísticamente significativos sin considerar el contexto del problema (el sentido práctico de las variables), especialmente cuando se realizan múltiples contrastes.</p>
-<p>Los métodos stepwise incluyen las variantes hacia adelante, hacia atrás y bidireccional. La selección de variables se basa en criterios/métricas como AIC, BIC o <span class="math inline">\(C_p\)</span> de Mallows, que equilibran la bondad de ajuste y la complejidad/parsimonia del modelo. Por su parte, los métodos de regularización se basan en penalizar la magnitud de los parámetros para controlar el sobreajuste, siendo útiles para reducir la multicolinealidad, contrayendo las estimaciones, y, en el caso de <em>Lasso</em> para eliminar variables irrelevantes. Por último, la validación cruzada, basándose en el remuestreo, selecciona el modelo óptimo evaluando la capacidad predictiva de los distintos modelos.</p>
-<p>El capítulo incluye un caso práctico basado en el conjunto de datos <code>Boston</code>, aplicando distintas funciones de <code>R</code> que tienen implementados los métodos de selección indicados arriba, describiendo y comparando las variables seleccionadas y el comportamiento predictivo <em>fuera de muestra</em> observado.</p>
+<p>El presente capítulo aborda la problemática de la selección de un subconjunto óptimo de variables explicativas en modelos de regresión, especialmente en contextos de alta dimensionalidad, con numerosas variables (incluso cuando se tienen más variables que observaciones, <span class="math inline">\(k &gt; n\)</span>, como ocurre en áreas como la genómica o el análisis de imágenes médicas). Esta selección pretende resolver los desafíos que plantean la multicolinealidad, la irrelevancia estadística de algunas variables y la imposibilidad de estimar de forma única todos los parámetros del modelo completo.</p>
+<p>Se presentan distintos métodos de selección automática de variables, con énfasis en el enfoque predictivo, propio del <em>Machine Learning</em>: (a) selección <em>stepwise</em> y selección del mejor subconjunto; (b) métodos de regularización, centrándose en las regresiones <em>Ridge</em> y <em>Lasso</em>; y (c) comparación de modelos mediante validación cruzada <em>k-fold</em>, incluida LOOCV. Se advierte sobre los riesgos de interpretar resultados estadísticamente significativos sin considerar el contexto del problema (el sentido práctico de las variables), especialmente cuando se realizan múltiples contrastes.</p>
+<p>Los métodos de selección <em>stepwise</em> incluyen las variantes hacia adelante, hacia atrás y bidireccional. La selección de variables se basa en criterios como AIC, BIC o <span class="math inline">\(C_p\)</span> de Mallows, que equilibran la bondad de ajuste y la complejidad/parsimonia del modelo. Por su parte, los métodos de regularización se basan en penalizar la magnitud de los parámetros para controlar el sobreajuste, siendo útiles para mitigar sus efectos, contrayendo las estimaciones, y, en el caso de <em>Lasso</em>, para eliminar variables irrelevantes. Por último, la validación cruzada, basada en el remuestreo, permite estimar y comparar la capacidad predictiva de los modelos candidatos.</p>
+<p>El capítulo incluye un caso práctico basado en el conjunto de datos <code>Boston</code>, aplicando distintas funciones de <code>R</code> que implementan los métodos de selección descritos anteriormente, describiendo y comparando las variables seleccionadas y el comportamiento predictivo <em>fuera de muestra</em> observado.</p>
 </section>
 <section id="bibliografía" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="bibliografía">Bibliografía</h2>
