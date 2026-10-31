@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -95,10 +98,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -128,7 +131,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -409,7 +412,8 @@ En <span class="citation" data-cites="mccullagh1989glm">McCullagh y Nelder (<a h
 <blockquote class="blockquote">
 <p><strong>Detalles técnicos</strong>:<br>
 1. El sistema de ecuaciones que hay que resolver no tiene solución analítica, por lo que se acude a métodos iterativos basados en el algoritmo de <em>Newton-Raphson</em> o en el método de <em>scoring</em> de Fisher. En la práctica se alcanzan las condiciones de convergencia de uno u otro método en pocas iteraciones.<br>
-Cabe añadir que la estimación MV requiere un tamaño de muestra suficiente para obtener estimaciones fiables. 2. El procedimiento descrito puede incluir variables cualitativas. Conviene recordar que, cuando contienen más de 2 categorías, <span class="math inline">\(p\)</span>, el número de parámetros del modelo aumenta (al introducir variables ficticias -<em>dummy</em>-).</p>
+Cabe añadir que la estimación MV requiere un tamaño de muestra suficiente para obtener estimaciones fiables.<br>
+2. El procedimiento descrito puede incluir variables cualitativas. Conviene recordar que, cuando contienen más de 2 categorías, el número de parámetros del modelo aumenta (al introducir variables ficticias -<em>dummy</em>-).</p>
 </blockquote>
 <p><strong>Deviance</strong><br>
 Se define aquí la <strong>deviance</strong> en la observación <span class="math inline">\(i\)</span> como: <span class="math display">\[d_i = -2 \big[ y_i \log(p_i(\hat{\boldsymbol{\beta}})) + (1-y_i) \log(1-p_i(\hat{\boldsymbol{\beta}})) \big].\]</span></p>
@@ -831,8 +835,8 @@ Number of Fisher Scoring iterations: 4</code></pre>
 Considere el resto de variables explicativas (continuas) en <code>cleveland</code> para interpretar y visualizar la curva logística.</p>
 </blockquote>
 </section>
-<section id="adecuación-del-modelo" class="level4" data-number="3.4.2.3">
-<h4 data-number="3.4.2.3" class="anchored" data-anchor-id="adecuación-del-modelo"><span class="header-section-number">3.4.2.3</span> Adecuación del modelo</h4>
+<section id="sec-Adecuacion-glm" class="level4" data-number="3.4.2.3">
+<h4 data-number="3.4.2.3" class="anchored" data-anchor-id="sec-Adecuacion-glm"><span class="header-section-number">3.4.2.3</span> Adecuación del modelo</h4>
 <p>En la salida del <code>summary()</code> aparecen las <em>deviance</em> del modelo nulo y del estimado, junto con sus grados de libertad. También el valor del criterio <em>AIC</em> del modelo estimado (véase <a href="Cap5-Seleccion.html#sec-Criterios" class="quarto-xref"><span>Sección 5.2</span></a>). Estos valores nos permiten valorar la adecuación del modelo y compararlo con otros modelos.</p>
 <p>Con los valores de <em>deviance</em> se puede realizar el contraste de razón de verosimilitudes (<a href="#sec-Adecuacion" class="quarto-xref"><span>Sección 3.2.3</span></a>), entre el modelo planteado y el modelo nulo, cuyo estadístico se sabe que se distribuye siguiendo una <span class="math inline">\(\chi^2\)</span> con sus correspondientes grados de libertad. Este contraste se obtiene en <code>R</code> con la función <code>anova()</code>:</p>
 <div class="cell">
@@ -967,19 +971,19 @@ X-squared = 9.4523, df = 8, p-value = 0.3056</code></pre>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(IM)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        dfb.1_     dfb.edad      dfb.dep     dfb.sex1      dfb.tdl2
-1 -0.022844185 -0.020786069 -0.005563319 -0.018116120  0.0626025715
-2 -0.003722509  0.002813234  0.001744401  0.001554249  0.0006383858
-3 -0.004139688  0.002917667  0.003670001  0.001835896  0.0013357414
-4 -0.045094721  0.067342468 -0.063400816 -0.007002033 -0.0186124991
-5 -0.016557422  0.016119987 -0.006893702  0.017711357 -0.0139071573
-6  0.004129511 -0.006421940 -0.006792558 -0.012556615 -0.0470949795
-       dfb.tdl3      dfb.tdl4    dfb.dhsp        dffit    cov.r       cook.d
-1  0.0780843859  0.0808190736 0.047403486 -0.109428900 1.092902 1.641869e-03
-2  0.0005670912  0.0020374487 0.003765506  0.005323641 1.030909 3.888022e-06
-3  0.0008043251  0.0026035383 0.002982941  0.005882517 1.031287 4.747198e-06
-4 -0.0349327845 -0.0096329707 0.040487155 -0.120471065 1.104423 1.989897e-03
-5  0.0009563405  0.0016969155 0.006550035 -0.031777942 1.051678 1.385225e-04
-6 -0.0008017285 -0.0009789851 0.026158881 -0.078738616 1.062517 8.501020e-04
+1 -0.023925419 -0.021769889 -0.005826635 -0.018973570  0.0655656003
+2 -0.003899801  0.002947220  0.001827482  0.001628273  0.0006687902
+3 -0.004336843  0.003056623  0.003844787  0.001923331  0.0013993567
+4 -0.047228549  0.070529033 -0.066400867 -0.007333361 -0.0194932202
+5 -0.017345030  0.016886788 -0.007221624  0.018553856 -0.0145686973
+6  0.004325065 -0.006726052 -0.007114220 -0.013151235 -0.0493251666
+       dfb.tdl3     dfb.tdl4    dfb.dhsp        dffit    cov.r       cook.d
+1  0.0817801811  0.084644304 0.049647131 -0.114608256 1.092400 1.641869e-03
+2  0.0005941000  0.002134486 0.003944846  0.005577190 1.030887 3.888022e-06
+3  0.0008426314  0.002727533 0.003125005  0.006162675 1.031263 4.747198e-06
+4 -0.0365857618 -0.010088791 0.042402958 -0.126171611 1.103896 1.989897e-03
+5  0.0010018320  0.001777635 0.006861609 -0.033289565 1.051564 1.385225e-04
+6 -0.0008396944 -0.001025345 0.027397637 -0.082467290 1.062067 8.501020e-04
           hat
 1 0.064257672
 2 0.003490216
